@@ -378,12 +378,14 @@ function attachDragEvents(slot, app) {
 
 // 开始拖拽
 function startDrag(e, app, slot) {
-    e.preventDefault();
-    
+    // 不要立即 preventDefault，否则会阻止触摸设备上的 click 事件
+    const startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    const startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
     longPressTimer = setTimeout(() => {
         isDragging = true;
         draggedApp = app;
-        
+
         // 创建拖拽元素
         draggedElement = document.createElement('div');
         draggedElement.className = 'app-icon dragging-icon';
@@ -391,33 +393,50 @@ function startDrag(e, app, slot) {
         draggedElement.style.width = '80px';
         draggedElement.style.height = '80px';
         document.body.appendChild(draggedElement);
-        
+
         slot.classList.add('dragging');
-        
+
         // 移动事件
         document.addEventListener('mousemove', onDragMove);
         document.addEventListener('touchmove', onDragMove, { passive: false });
-        
+
         // 结束事件
         document.addEventListener('mouseup', onDragEnd);
         document.addEventListener('touchend', onDragEnd);
-        
+
         // 初始位置
-        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
-        updateDragPosition(clientX, clientY);
+        updateDragPosition(startX, startY);
     }, 300);
-    
+
+    // 监听移动，如果手指移动超过阈值则取消长按（防止滚动时误触发）
+    const cancelOnMove = (moveEvent) => {
+        const mx = moveEvent.type.includes('touch') ? moveEvent.touches[0].clientX : moveEvent.clientX;
+        const my = moveEvent.type.includes('touch') ? moveEvent.touches[0].clientY : moveEvent.clientY;
+        if (Math.abs(mx - startX) > 10 || Math.abs(my - startY) > 10) {
+            clearTimeout(longPressTimer);
+            cleanup();
+        }
+    };
+
+    const cleanup = () => {
+        document.removeEventListener('mouseup', cancelLongPress);
+        document.removeEventListener('touchend', cancelLongPress);
+        document.removeEventListener('mousemove', cancelOnMove);
+        document.removeEventListener('touchmove', cancelOnMove);
+    };
+
     // 如果提前释放，取消长按
     const cancelLongPress = () => {
         clearTimeout(longPressTimer);
-        document.removeEventListener('mouseup', cancelLongPress);
-        document.removeEventListener('touchend', cancelLongPress);
+        cleanup();
     };
-    
+
     document.addEventListener('mouseup', cancelLongPress);
     document.addEventListener('touchend', cancelLongPress);
+    document.addEventListener('mousemove', cancelOnMove);
+    document.addEventListener('touchmove', cancelOnMove, { passive: true });
 }
+
 
 // 拖拽移动
 function onDragMove(e) {
@@ -562,12 +581,14 @@ function attachWidgetDragEvents(slot, widget) {
 
 // 开始拖拽小组件
 function startWidgetDrag(e, widget, slot) {
-    e.preventDefault();
-    
+    // 不要立即 preventDefault，否则会阻止触摸设备上的 click 事件
+    const startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    const startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
     longPressTimer = setTimeout(() => {
         isDragging = true;
         draggedApp = widget;
-        
+
         // 创建拖拽元素
         draggedElement = document.createElement('div');
         draggedElement.className = 'widget dragging-icon';
@@ -575,28 +596,44 @@ function startWidgetDrag(e, widget, slot) {
         draggedElement.style.height = '80px';
         draggedElement.innerHTML = widget.type === 'clock' ? '🕐' : widget.type === 'todo' ? '✅' : '📅';
         document.body.appendChild(draggedElement);
-        
+
         slot.classList.add('dragging');
-        
+
         document.addEventListener('mousemove', onDragMove);
         document.addEventListener('touchmove', onDragMove, { passive: false });
         document.addEventListener('mouseup', onWidgetDragEnd);
         document.addEventListener('touchend', onWidgetDragEnd);
-        
-        const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
-        updateDragPosition(clientX, clientY);
+
+        updateDragPosition(startX, startY);
     }, 300);
-    
-    const cancelLongPress = () => {
-        clearTimeout(longPressTimer);
+
+    const cancelOnMove = (moveEvent) => {
+        const mx = moveEvent.type.includes('touch') ? moveEvent.touches[0].clientX : moveEvent.clientX;
+        const my = moveEvent.type.includes('touch') ? moveEvent.touches[0].clientY : moveEvent.clientY;
+        if (Math.abs(mx - startX) > 10 || Math.abs(my - startY) > 10) {
+            clearTimeout(longPressTimer);
+            cleanup();
+        }
+    };
+
+    const cleanup = () => {
         document.removeEventListener('mouseup', cancelLongPress);
         document.removeEventListener('touchend', cancelLongPress);
+        document.removeEventListener('mousemove', cancelOnMove);
+        document.removeEventListener('touchmove', cancelOnMove);
     };
-    
+
+    const cancelLongPress = () => {
+        clearTimeout(longPressTimer);
+        cleanup();
+    };
+
     document.addEventListener('mouseup', cancelLongPress);
     document.addEventListener('touchend', cancelLongPress);
+    document.addEventListener('mousemove', cancelOnMove);
+    document.addEventListener('touchmove', cancelOnMove, { passive: true });
 }
+
 
 // 结束小组件拖拽
 function onWidgetDragEnd(e) {
