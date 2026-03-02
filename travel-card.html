@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>📅 行程卡</title>
+    <link rel="stylesheet" href="travel-card.css">
+</head>
+<body>
+    <!-- 主容器 -->
+    <div class="travel-card-container">
+        <!-- 返回按钮 -->
+        <a href="message.html" class="back-to-message-btn">
+            <span>←</span>
+            <span>返回消息</span>
+        </a>
+
+        <!-- 页面头部 -->
+        <div class="travel-card-header">
+            <div class="header-title">
+                <h1>📅 行程卡盒</h1>
+                <p class="header-subtitle">查看所有联系人的行程卡片</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="TravelCard.batchRefresh()" title="批量刷新">
+                    🔄
+                </button>
+                <button class="action-btn" onclick="TravelCard.batchConsolidate()" title="批量固化记忆">
+                    💾
+                </button>
+                <button class="action-btn" onclick="TravelCard.openSettings()" title="设置">
+                    ⚙️
+                </button>
+            </div>
+        </div>
+
+        <!-- 卡片盒主体 -->
+        <div class="travel-card-box" id="travelCardBox">
+            <!-- 卡片将动态生成 -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">📭</div>
+                <p>暂无行程卡</p>
+                <p class="empty-hint">请先在消息app中添加联系人</p>
+                <a href="message.html" class="footer-btn" style="margin: 20px auto; max-width: 200px; text-decoration: none;">
+                    <span>➕</span>
+                    <span>添加联系人</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 单个行程卡模态框 -->
+    <div class="travel-card-modal" id="travelCardModal">
+        <div class="modal-content">
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <button class="modal-back-btn" onclick="TravelCard.closeCardModal()">‹</button>
+                <div class="modal-header-info">
+                    <img id="modalAvatar" src="" alt="头像" class="modal-avatar">
+                    <div class="modal-title-area">
+                        <h3 id="modalContactName">联系人</h3>
+                        <div class="modal-date-selector">
+                            <button onclick="TravelCard.previousDate()" class="date-nav-btn">‹</button>
+                            <span id="modalCurrentDate">2026-02-25</span>
+                            <button onclick="TravelCard.nextDate()" class="date-nav-btn">›</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="modal-close-btn" onclick="TravelCard.closeCardModal()">×</button>
+            </div>
+
+            <!-- 模态框主体 - 时间轴 -->
+            <div class="modal-body">
+                <div class="timeline-container" id="timelineContainer">
+                    <!-- 加载状态 -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="loading-spinner"></div>
+                        <p>正在生成行程卡...</p>
+                    </div>
+                    
+                    <!-- 时间轴将动态生成 -->
+                </div>
+            </div>
+
+            <!-- 模态框底部操作栏 -->
+            <div class="modal-footer">
+                <button class="footer-btn" onclick="TravelCard.regenerateCard()">
+                    <span>🔄</span>
+                    <span>重新生成</span>
+                </button>
+                <button class="footer-btn" onclick="TravelCard.consolidateMemory()">
+                    <span>💾</span>
+                    <span>固化记忆</span>
+                </button>
+                <button class="footer-btn" onclick="TravelCard.openSleepSettings()">
+                    <span>😴</span>
+                    <span>睡眠设置</span>
+                </button>
+                <button class="footer-btn" onclick="TravelCard.openMemoryBank()">
+                    <span>📚</span>
+                    <span>记忆库</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 行程卡设置模态框 -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>⚙️ 行程卡设置</h3>
+                <button class="close-btn" onclick="TravelCard.closeSettings()">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-group">
+                    <label>最大记忆条数</label>
+                    <input type="number" id="maxMemoryCount" value="100" min="10" max="500">
+                    <p class="setting-hint">超过此数量的旧记忆将自动删除</p>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="autoDehydrate" checked>
+                        <span>自动固化记忆</span>
+                    </label>
+                    <p class="setting-hint">每天23:59自动总结当天行程</p>
+                </div>
+                
+                <div class="setting-group">
+                    <label>行程卡生成提示词</label>
+                    <textarea id="defaultPrompt" rows="6" placeholder="输入AI生成行程卡的提示词模板..."></textarea>
+                    <p class="setting-hint">支持变量：{charName}, {date}, {timezone}</p>
+                </div>
+                
+                <!-- CSS美化方案管理 -->
+                <div class="setting-group">
+                    <label>🎨 CSS美化方案</label>
+                    <div class="css-scheme-selector">
+                        <select id="cssSchemeSelect" onchange="TravelCard.switchCSSScheme(this.value)">
+                            <!-- 方案列表将动态生成 -->
+                        </select>
+                        <button class="btn-small" onclick="TravelCard.openCSSEditor()">编辑</button>
+                        <button class="btn-small" onclick="TravelCard.createNewCSSScheme()">新建</button>
+                        <button class="btn-small btn-danger" onclick="TravelCard.deleteCSSScheme()">删除</button>
+                    </div>
+                    <p class="setting-hint">自定义行程卡的外观样式</p>
+                </div>
+                
+                <!-- 背景设置 -->
+                <div class="setting-group">
+                    <label>🖼️ 页面背景</label>
+                    <div class="background-input-group">
+                        <input type="text" id="pageBackgroundUrl" placeholder="输入图片URL或留空使用默认">
+                        <button class="btn-small" onclick="document.getElementById('pageBackgroundFile').click()">上传</button>
+                        <input type="file" id="pageBackgroundFile" accept="image/*" style="display: none;" onchange="TravelCard.handleBackgroundUpload(this, 'page')">
+                        <button class="btn-small btn-danger" onclick="TravelCard.clearBackground('page')">清除</button>
+                    </div>
+                    <p class="setting-hint">设置行程卡页面的背景图片</p>
+                </div>
+                
+                <div class="setting-group">
+                    <label>🎴 卡片背景</label>
+                    <div class="background-input-group">
+                        <input type="text" id="cardBackgroundUrl" placeholder="输入图片URL或留空使用默认">
+                        <button class="btn-small" onclick="document.getElementById('cardBackgroundFile').click()">上传</button>
+                        <input type="file" id="cardBackgroundFile" accept="image/*" style="display: none;" onchange="TravelCard.handleBackgroundUpload(this, 'card')">
+                        <button class="btn-small btn-danger" onclick="TravelCard.clearBackground('card')">清除</button>
+                    </div>
+                    <p class="setting-hint">设置卡片内容区域的背景图片</p>
+                </div>
+                
+                <!-- 字体设置 -->
+                <div class="setting-group">
+                    <label>🔤 自定义字体</label>
+                    <div class="background-input-group">
+                        <input type="text" id="customFontUrl" placeholder="输入字体文件URL（.woff, .woff2, .ttf等）">
+                        <button class="btn-small" onclick="TravelCard.applyCustomFont()">应用</button>
+                        <button class="btn-small btn-danger" onclick="TravelCard.clearCustomFont()">清除</button>
+                    </div>
+                    <p class="setting-hint">设置行程卡页面的自定义字体（仅在此页面生效）</p>
+                </div>
+                
+                <div class="setting-actions">
+                    <button class="btn-cancel" onclick="TravelCard.closeSettings()">取消</button>
+                    <button class="btn-save" onclick="TravelCard.saveSettings()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS编辑器模态框 -->
+    <div class="settings-modal" id="cssEditorModal">
+        <div class="settings-content" style="max-width: 900px; max-height: 90vh;">
+            <div class="settings-header">
+                <h3>🎨 CSS美化编辑器</h3>
+                <button class="close-btn" onclick="TravelCard.closeCSSEditor()">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="setting-group">
+                    <label>方案名称</label>
+                    <input type="text" id="cssSchemeName" placeholder="例如：粉色少女心">
+                </div>
+                
+                <div class="setting-group">
+                    <label>自定义CSS代码</label>
+                    <textarea id="cssSchemeCode" rows="20" placeholder="输入CSS代码..." style="font-family: 'Courier New', monospace; font-size: 13px;"></textarea>
+                    <p class="setting-hint">提示：使用CSS变量可以更方便地修改颜色和样式</p>
+                </div>
+                
+                <div class="css-hint-box">
+                    <h4>💡 可用的CSS变量：</h4>
+                    <pre>/* 主题色 */
+--travel-card-bg-color: 背景色
+--travel-card-border-color: 边框色
+--travel-card-text-color: 文字色
+--travel-card-time-color: 时间色
+--travel-card-activity-color: 活动色
+--travel-card-shadow-color: 阴影色
+--travel-card-accent-color: 强调色
+--travel-card-locked-color: 锁定色
+
+/* 交互效果色 */
+--travel-card-hover-bg: 按钮hover背景色
+--travel-card-hover-overlay: 半透明hover效果
+
+/* 背景设置 */
+--travel-card-page-bg: 页面背景色
+--travel-card-page-bg-image: 页面背景图片
+--travel-card-container-bg: 容器背景色
+--travel-card-card-bg-image: 卡片背景图片
+
+/* 示例：修改为蓝色主题 */
+:root {
+    --travel-card-accent-color: #4A90E2;
+    --travel-card-time-color: #5DADE2;
+    --travel-card-shadow-color: #AED6F1;
+    --travel-card-hover-bg: #3498DB;
+}
+
+/* 示例：设置背景图片 */
+:root {
+    --travel-card-page-bg-image: url(https://example.com/bg.jpg);
+    --travel-card-card-bg-image: url(https://example.com/card-bg.jpg);
+}</pre>
+                </div>
+                
+                <div class="setting-actions">
+                    <button class="btn-cancel" onclick="TravelCard.closeCSSEditor()">取消</button>
+                    <button class="btn-save" onclick="TravelCard.saveCSSScheme()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 记忆库模态框 -->
+    <div class="settings-modal" id="memoryBankModal">
+        <div class="settings-content" style="max-width: 800px; max-height: 90vh;">
+            <div class="settings-header">
+                <h3>💾 记忆库</h3>
+                <button class="close-btn" onclick="TravelCard.closeMemoryBank()">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="memory-bank-info">
+                    <p>查看、编辑和删除固化的记忆</p>
+                </div>
+                
+                <div class="memory-bank-controls">
+                    <input type="text" id="memorySearch" placeholder="搜索记忆..." onkeyup="TravelCard.searchMemories()">
+                    <button class="btn-small" onclick="TravelCard.clearAllMemories()">清空所有记忆</button>
+                </div>
+                
+                <div id="memoryBankList">
+                    <!-- 记忆列表将动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 睡眠时间设置模态框 -->
+    <div class="settings-modal" id="sleepSettingsModal">
+        <div class="settings-content" style="max-width: 500px;">
+            <div class="settings-header">
+                <h3>😴 睡眠时间设置</h3>
+                <button class="close-btn" onclick="TravelCard.closeSleepSettings()">×</button>
+            </div>
+            <div class="settings-body">
+                <div class="sleep-settings-info">
+                    <p>为 <strong id="sleepSettingsContactName">联系人</strong> 设置个性化的睡眠时间</p>
+                </div>
+                
+                <div class="setting-group">
+                    <label>🌙 睡觉时间</label>
+                    <input type="time" id="bedtimeInput" value="23:30">
+                    <p class="setting-hint">角色通常什么时候睡觉</p>
+                </div>
+                
+                <div class="setting-group">
+                    <label>🌅 起床时间</label>
+                    <input type="time" id="wakeupTimeInput" value="08:00">
+                    <p class="setting-hint">角色通常什么时候起床</p>
+                </div>
+                
+                <div class="sleep-preview">
+                    <h4>📊 睡眠时间预览</h4>
+                    <div class="sleep-duration" id="sleepDurationDisplay">
+                        睡眠时长：约 8.5 小时
+                    </div>
+                    <div class="sleep-schedule">
+                        <div class="schedule-item">
+                            <span class="schedule-time" id="previewBedtime">23:30</span>
+                            <span class="schedule-activity">😴 睡觉</span>
+                        </div>
+                        <div class="schedule-divider">～</div>
+                        <div class="schedule-item">
+                            <span class="schedule-time" id="previewWakeup">08:00</span>
+                            <span class="schedule-activity">🌅 起床</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="setting-actions">
+                    <button class="btn-cancel" onclick="TravelCard.closeSleepSettings()">取消</button>
+                    <button class="btn-save" onclick="TravelCard.saveSleepSettings()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="travel-card.js"></script>
+</body>
+</html>

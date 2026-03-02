@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CHAR的世界微博</title>
+<link rel="stylesheet" href="couple-twitter.css">
+</head>
+<body>
+<!-- 世界观切换栏 -->
+<div id="worldBar" class="world-bar"></div>
+
+<!-- 主内容区 -->
+<div id="mainContent" class="main-content">
+  <!-- CHAR选择界面 -->
+  <div id="charSelector" class="view" style="display:none">
+    <div class="selector-title">选择你的世界</div>
+    <div class="selector-subtitle">选择一个CHAR，进入TA的世界微博</div>
+    <div id="charList" class="char-list"></div>
+  </div>
+
+  <!-- User账号设置界面 -->
+  <div id="userSetup" class="view" style="display:none">
+    <div class="selector-title">设置你的身份</div>
+    <div class="selector-subtitle" id="setupSubtitle"></div>
+    <div class="setup-form">
+      <div class="setup-field">
+        <label>昵称</label>
+        <input type="text" id="setupNickname" placeholder="你在这个世界的名字" maxlength="20">
+      </div>
+      <div class="setup-field">
+        <label>头像 Emoji</label>
+        <input type="text" id="setupEmoji" placeholder="选一个emoji" maxlength="4" value="🌸">
+      </div>
+      <div class="setup-field">
+        <label>个性签名</label>
+        <input type="text" id="setupBio" placeholder="一句话介绍自己" maxlength="50">
+      </div>
+      <button class="btn-primary" onclick="confirmUserSetup()">进入世界</button>
+    </div>
+  </div>
+
+  <!-- 首页信息流 -->
+  <div id="feedView" class="view" style="display:none">
+    <div class="feed-header">
+      <span class="feed-title" id="feedTitle">世界微博</span>
+      <button class="btn-icon" onclick="worldRefresh()" id="refreshBtn">🔄</button>
+    </div>
+    <div id="feedList" class="feed-list"></div>
+    <button class="fab" onclick="openNewPost()">✏️</button>
+  </div>
+
+  <!-- 热搜榜 -->
+  <div id="trendingView" class="view" style="display:none">
+    <div class="feed-header">
+      <span class="feed-title">🔥 热搜榜</span>
+      <button class="btn-icon" onclick="refreshTrending()">🔄</button>
+    </div>
+    <div class="trending-categories" id="trendingCategories"></div>
+    <div id="trendingList" class="trending-list"></div>
+  </div>
+
+  <!-- CP超话 -->
+  <div id="cpView" class="view" style="display:none">
+    <div class="feed-header">
+      <span class="feed-title">💕 CP超话</span>
+      <div>
+        <button class="btn-icon" onclick="refreshCp()">🔄</button>
+        <button class="btn-icon" onclick="openCpNewPost()">✏️</button>
+      </div>
+    </div>
+    <div id="cpMilestone" class="cp-milestone"></div>
+    <div id="cpFeedList" class="feed-list"></div>
+  </div>
+
+  <!-- 私信 -->
+  <div id="dmView" class="view" style="display:none">
+    <div class="feed-header">
+      <span class="feed-title">💌 私信</span>
+      <button class="btn-icon" onclick="refreshDm()">🔄</button>
+    </div>
+    <div id="dmInbox" class="dm-inbox"></div>
+  </div>
+
+  <!-- 我的 -->
+  <div id="profileView" class="view" style="display:none">
+    <div id="profileContent" class="profile-content"></div>
+  </div>
+</div>
+
+<!-- 底部Tab栏 -->
+<div id="tabBar" class="tab-bar" style="display:none">
+  <button class="tab active" data-tab="feed" onclick="switchTab('feed')">🏠<span>首页</span></button>
+  <button class="tab" data-tab="trending" onclick="switchTab('trending')">🔥<span>热搜</span></button>
+  <button class="tab" data-tab="cp" onclick="switchTab('cp')">💕<span>CP超话</span></button>
+  <button class="tab" data-tab="dm" onclick="switchTab('dm')">💌<span>私信</span></button>
+  <button class="tab" data-tab="profile" onclick="switchTab('profile')">👤<span>我的</span></button>
+</div>
+
+<!-- 模态框容器 -->
+<div id="modalOverlay" class="modal-overlay" style="display:none" onclick="closeAllModals()"></div>
+
+<!-- 帖子详情模态框 -->
+<div id="postDetailModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('postDetail')">←</button>
+    <span>帖子详情</span>
+  </div>
+  <div id="postDetailContent" class="modal-body"></div>
+</div>
+
+<!-- 发帖模态框 -->
+<div id="newPostModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('newPost')">取消</button>
+    <span>发帖</span>
+    <button class="btn-post" onclick="submitPost()">发布</button>
+  </div>
+  <div class="modal-body">
+    <div id="newPostTopic" class="new-post-topic" style="display:none"></div>
+    <textarea id="newPostContent" class="new-post-textarea" placeholder="说点什么..." maxlength="500"></textarea>
+  </div>
+</div>
+
+<!-- 个人主页模态框 -->
+<div id="profileModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('profile')">←</button>
+    <span id="profileModalTitle">个人主页</span>
+  </div>
+  <div id="profileModalContent" class="modal-body"></div>
+</div>
+
+<!-- NPC信息卡片模态框 -->
+<div id="npcCardModal" class="modal modal-sm" style="display:none">
+  <div id="npcCardContent"></div>
+  <button class="btn-close-sm" onclick="closeModal('npcCard')">关闭</button>
+</div>
+
+<!-- 世界观管理模态框 -->
+<div id="worldManagerModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('worldManager')">←</button>
+    <span>世界观管理</span>
+  </div>
+  <div id="worldManagerContent" class="modal-body"></div>
+</div>
+
+<!-- 情侣关系页模态框 -->
+<div id="coupleModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('couple')">←</button>
+    <span>情侣关系</span>
+  </div>
+  <div id="coupleContent" class="modal-body"></div>
+</div>
+
+<!-- 粉丝群模态框 -->
+<div id="fanGroupModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('fanGroup')">←</button>
+    <span>粉丝群</span>
+  </div>
+  <div id="fanGroupContent" class="modal-body"></div>
+  <div class="chat-input-bar">
+    <input type="text" id="fanMsgInput" placeholder="说点什么..." maxlength="200">
+    <button onclick="sendFanMessage()">发送</button>
+  </div>
+</div>
+
+<!-- 直播间模态框 -->
+<div id="liveModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="endLivestream()">退出</button>
+    <span id="liveTitle">🔴 直播中</span>
+  </div>
+  <div id="liveContent" class="modal-body live-body"></div>
+  <div id="liveStagingArea" class="live-staging" style="display:none">
+    <div class="staging-label">📝 待发送 <span id="stagingCount">0</span> 条</div>
+    <div id="stagingList" class="staging-list"></div>
+    <button class="staging-send-btn" onclick="flushLiveMessages()">📤 合并发送</button>
+  </div>
+  <div class="chat-input-bar">
+    <input type="text" id="liveMsgInput" placeholder="（动作描写）&quot;语言描写&quot;" maxlength="200">
+    <button onclick="stageLiveMessage()">暂存</button>
+  </div>
+</div>
+
+<!-- 私信对话模态框 -->
+<div id="dmChatModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('dmChat')">←</button>
+    <span id="dmChatTitle">私信</span>
+    <button class="btn-icon" onclick="charAutoReply()">🤖</button>
+  </div>
+  <div id="dmChatContent" class="modal-body"></div>
+  <div class="chat-input-bar">
+    <input type="text" id="dmMsgInput" placeholder="回复..." maxlength="300">
+    <button onclick="sendDmReply()">发送</button>
+  </div>
+</div>
+
+<!-- 广告邀请模态框 -->
+<div id="adModal" class="modal modal-sm" style="display:none">
+  <div id="adContent"></div>
+</div>
+
+<!-- 争议事件模态框 -->
+<div id="controversyModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('controversy')">←</button>
+    <span>⚠️ 争议事件</span>
+  </div>
+  <div id="controversyContent" class="modal-body"></div>
+</div>
+
+<!-- 话题帖子模态框 -->
+<div id="topicPostsModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('topicPosts')">←</button>
+    <span id="topicPostsTitle">话题</span>
+  </div>
+  <div id="topicPostsList" class="modal-body feed-list"></div>
+</div>
+
+<!-- 收藏模态框 -->
+<div id="bookmarksModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('bookmarks')">←</button>
+    <span>⭐ 我的收藏</span>
+  </div>
+  <div id="bookmarkList" class="modal-body feed-list"></div>
+</div>
+
+<!-- 头像库管理模态框 -->
+<div id="avatarMgrModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeModal('avatarMgr')">←</button>
+    <span>头像库管理</span>
+  </div>
+  <div id="avatarMgrContent" class="modal-body"></div>
+</div>
+
+<!-- CSS主题编辑器模态框 -->
+<div id="cssEditorModal" class="modal" style="display:none">
+  <div class="modal-header">
+    <button class="btn-back" onclick="closeCssEditor()">←</button>
+    <span>🎨 自定义CSS</span>
+    <button class="btn-post" onclick="saveCssScheme()">保存</button>
+  </div>
+  <div class="css-editor-toolbar">
+    <select id="cssSchemeSelect" onchange="loadSelectedScheme()"></select>
+    <button class="css-tb-btn" onclick="createCssScheme()">＋新建</button>
+    <button class="css-tb-btn del" onclick="deleteCssScheme()">🗑️</button>
+  </div>
+  <div class="modal-body" style="padding:0">
+    <textarea id="cssEditorArea" class="css-editor-textarea" spellcheck="false"></textarea>
+  </div>
+  <div class="css-editor-footer">
+    <button class="css-preview-btn" onclick="previewCss()">👁️ 预览</button>
+    <button class="css-reset-btn" onclick="resetToDefault()">↩️ 恢复默认</button>
+  </div>
+</div>
+
+<!-- 加载指示器 -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">世界运转中...</div>
+</div>
+
+<script src="couple-twitter.js"></script>
+</body>
+</html>

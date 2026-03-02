@@ -1,0 +1,2749 @@
+/* CSS变量定义 - 计划页面完整的自定义变量系统 */
+:root {
+    /* 主要颜色变量 */
+    --primary-color: #c9a87c;
+    --secondary-color: #e8dcc8;
+    --background-color: #f5f1e8;
+    --text-color: #5a4a3a;
+    --card-color: #ffffff;
+    
+    /* 扩展颜色变量 */
+    --accent-color: #d4c4a8;
+    --muted-color: #8b7355;
+    --success-color: #6b9b6b;
+    --warning-color: #b87c7c;
+    --danger-color: #d4a574;
+    --light-bg: #fdfbf7;
+    --hover-bg: #f5ede0;
+    --nav-hover-bg: #faf8f3;
+    --border-light: #e8dcc8;
+    --border-dark: #d4c4a8;
+    --border-accent: #a67c52;
+    
+    /* 按钮颜色 */
+    --btn-primary-bg: var(--primary-color);
+    --btn-primary-hover: #b89968;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: var(--accent-color);
+    --btn-secondary-hover: var(--accent-color);
+    --btn-secondary-text: #ffffff;
+    --btn-danger-bg: var(--danger-color);
+    --btn-danger-hover: #c09460;
+    --btn-danger-text: #ffffff;
+    
+    /* 输入框颜色 */
+    --input-bg: var(--card-color);
+    --input-border: var(--border-light);
+    --input-focus-border: var(--primary-color);
+    --input-text: var(--text-color);
+    
+    /* 模态框颜色 */
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    --modal-bg: var(--card-color);
+    --modal-border: var(--border-light);
+    --modal-shadow: rgba(0, 0, 0, 0.2);
+    
+    /* 卡片颜色 */
+    --card-border: var(--border-light);
+    --card-hover-border: var(--primary-color);
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    
+    /* 导航颜色 */
+    --nav-bg: var(--card-color);
+    --nav-border: var(--border-light);
+    --nav-text: var(--muted-color);
+    --nav-hover-bg: var(--nav-hover-bg);
+    --nav-active-bg: var(--hover-bg);
+    --nav-active-text: var(--text-color);
+    --nav-active-border: var(--border-accent);
+    
+    /* 统计和活动颜色 */
+    --stats-bg: var(--card-color);
+    --stats-border: var(--border-light);
+    --stats-item-bg: var(--nav-hover-bg);
+    --stats-label-text: var(--muted-color);
+    --stats-value-text: var(--text-color);
+    
+    /* 头像颜色 */
+    --avatar-bg: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%);
+    --avatar-border: var(--accent-color);
+    --avatar-label-text: var(--muted-color);
+    
+    /* 习惯追踪器颜色 */
+    --habit-tracker-bg: var(--card-color);
+    --habit-tracker-border: var(--border-light);
+    --habit-row-bg: var(--light-bg);
+    --habit-row-border: var(--border-light);
+    --habit-name-text: var(--text-color);
+    --habit-day-bg: var(--card-color);
+    --habit-day-border: var(--border-light);
+    --habit-day-hover-border: var(--primary-color);
+    --habit-completed-bg: #c9e4c9;
+    --habit-completed-border: #a8c9a8;
+    --habit-incomplete-bg: #f5d4d4;
+    --habit-incomplete-border: #d4a8a8;
+    --day-label-text: #a89580;
+    
+    /* 日历颜色 */
+    --calendar-bg: var(--card-color);
+    --calendar-border: var(--border-light);
+    --calendar-cell-bg: var(--light-bg);
+    --calendar-cell-border: var(--border-light);
+    --calendar-cell-hover-bg: var(--hover-bg);
+    --calendar-today-bg: var(--primary-color);
+    --calendar-today-text: var(--btn-primary-text);
+    --calendar-today-border: var(--border-accent);
+    --calendar-other-month-text: var(--accent-color);
+    --calendar-weekday-text: #a89580;
+    --calendar-todo-dot: var(--danger-color);
+    
+    /* 心情日历颜色 */
+    --mood-cell-bg: var(--light-bg);
+    --mood-cell-border: var(--border-light);
+    --mood-cell-hover-border: var(--primary-color);
+    --mood-cell-selected-bg: var(--hover-bg);
+    --mood-cell-selected-border: var(--border-accent);
+    
+    /* 记账颜色 */
+    --accounting-item-bg: var(--light-bg);
+    --accounting-item-border: var(--border-light);
+    --accounting-income-border: var(--success-color);
+    --accounting-expense-border: var(--warning-color);
+    --accounting-income-text: var(--success-color);
+    --accounting-expense-text: var(--warning-color);
+    --accounting-category-text: #a89580;
+    
+    /* TODO颜色 */
+    --todo-day-bg: var(--light-bg);
+    --todo-day-border: var(--border-light);
+    --todo-day-hover-border: var(--primary-color);
+    --todo-day-hover-shadow: rgba(169, 124, 82, 0.15);
+    --todo-weekly-bg: var(--hover-bg);
+    --todo-weekly-border: var(--accent-color);
+    --todo-title-text: var(--border-accent);
+    --todo-title-border: var(--border-light);
+    --todo-task-text: var(--text-color);
+    --todo-weekly-title-text: var(--muted-color);
+    
+    /* 表单颜色 */
+    --form-bg: var(--light-bg);
+    --form-border: var(--border-light);
+    --form-label-text: var(--text-color);
+    --form-input-bg: var(--card-color);
+    --form-input-border: var(--border-light);
+    --form-input-focus-border: var(--primary-color);
+    --form-input-text: var(--text-color);
+    
+    /* 设置弹窗颜色 */
+    --settings-tab-text: #a89580;
+    --settings-tab-active-text: var(--text-color);
+    --settings-tab-active-border: var(--primary-color);
+    --settings-section-bg: var(--light-bg);
+    --settings-section-border: var(--border-light);
+    --settings-scheme-bg: var(--card-color);
+    --settings-scheme-border: var(--border-light);
+    --settings-scheme-active-bg: var(--hover-bg);
+    --settings-scheme-active-border: var(--primary-color);
+    --settings-scheme-hover-border: var(--accent-color);
+    
+    /* 保存颜色功能 */
+    --saved-color-border: var(--border-light);
+    --saved-color-hover-border: var(--primary-color);
+    --saved-color-selected-border: var(--border-accent);
+    --saved-color-selected-shadow: rgba(166, 124, 82, 0.3);
+    --saved-color-delete-bg: var(--danger-color);
+    --no-saved-colors-text: #a89580;
+    
+    /* 预览区域颜色 */
+    --preview-bg: var(--background-color);
+    --preview-text: var(--text-color);
+    --preview-border: var(--border-light);
+    
+    /* 滚动条颜色 */
+    --scrollbar-track: var(--hover-bg);
+    --scrollbar-thumb: var(--accent-color);
+    --scrollbar-thumb-hover: var(--primary-color);
+    
+    /* 布局变量 */
+    --border-radius: 16px;
+    --shadow-intensity: 0.5;
+    --animation-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+/* 主容器 - 全屏布局 */
+.health-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--border-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    z-index: 100;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: var(--card-color);
+    box-shadow: 0 2px 8px var(--modal-shadow);
+}
+
+/* 左侧导航栏 */
+.sidebar {
+    width: 80px;
+    background: var(--nav-bg);
+    border-right: 2px solid var(--nav-border);
+    display: flex;
+    flex-direction: column;
+    padding: 80px 0 20px;
+    gap: 5px;
+}
+
+.nav-item {
+    padding: 20px 10px;
+    text-align: center;
+    color: var(--nav-text);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 13px;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    letter-spacing: 2px;
+    border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+    background: var(--nav-hover-bg);
+    border-left-color: var(--primary-color);
+}
+
+.nav-item.active {
+    background: var(--nav-active-bg);
+    color: var(--nav-active-text);
+    border-left-color: var(--nav-active-border);
+    font-weight: bold;
+}
+
+/* 中间区域 */
+.middle-section {
+    width: 200px;
+    background: var(--light-bg);
+    border-right: 2px solid var(--border-light);
+    padding: 80px 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+/* 头像区 */
+.avatar-box {
+    background: var(--card-color);
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--avatar-bg);
+    border: 3px solid var(--avatar-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    overflow: hidden;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.05);
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#avatarDisplay {
+    font-size: 45px;
+}
+
+.avatar-label {
+    font-size: 11px;
+    color: var(--avatar-label-text);
+    line-height: 1.6;
+}
+
+/* 统计看板 */
+.stats-box {
+    background: var(--stats-bg);
+    border: 2px solid var(--stats-border);
+    border-radius: 12px;
+    padding: 15px;
+    flex: 1;
+}
+
+.stats-box h3 {
+    font-size: 13px;
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.stats-month-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.stats-month-nav button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 11px;
+    transition: background 0.3s;
+    min-width: 24px;
+}
+
+.stats-month-nav button:hover {
+    background: var(--accent-color);
+}
+
+#statsMonth {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 80px;
+    text-align: center;
+}
+
+#statsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--stats-item-bg);
+    border-radius: 6px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--stats-label-text);
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--stats-value-text);
+}
+
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    margin: 10px auto;
+}
+
+/* 本月活动 */
+.activity-box {
+    background: var(--card-color);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 15px;
+    max-height: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-box h3 {
+    font-size: 13px;
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.activity-month-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.activity-month-nav button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 11px;
+    transition: background 0.3s;
+    min-width: 24px;
+}
+
+.activity-month-nav button:hover {
+    background: var(--accent-color);
+}
+
+#activityMonth {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 80px;
+    text-align: center;
+}
+
+#activityList {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.activity-item {
+    padding: 8px;
+    background: var(--stats-item-bg);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-date {
+    font-weight: bold;
+    color: var(--border-accent);
+    font-size: 10px;
+}
+
+.activity-title {
+    flex: 1;
+    margin: 0 8px;
+    color: var(--text-color);
+}
+
+.activity-delete {
+    background: var(--btn-danger-bg);
+    color: var(--btn-danger-text);
+    border: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 9px;
+}
+
+.add-btn {
+    width: 100%;
+    padding: 8px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: background 0.3s;
+}
+
+.add-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+/* 右侧主内容区 */
+.main-content {
+    flex: 1;
+    padding: 80px 30px 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 习惯追踪器 */
+.habit-tracker {
+    background: var(--habit-tracker-bg);
+    border: 2px solid var(--habit-tracker-border);
+    border-radius: 16px;
+    padding: 25px;
+    overflow-x: auto;
+    min-height: 200px;
+}
+
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-shrink: 0;
+}
+
+.tracker-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.month-display {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.month-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.month-nav button,
+.calendar-header button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.month-nav button:hover,
+.calendar-header button:hover {
+    background: var(--accent-color);
+}
+
+.add-habit-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.add-habit-btn:hover {
+    background: var(--btn-primary-hover);
+    transform: scale(1.05);
+}
+
+/* 习惯内容区 */
+.habit-content {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* 日期标注行 */
+.habit-days-header {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 10px;
+    margin-left: 55px;
+}
+
+.day-label {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: var(--day-label-text);
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* 习惯列表 */
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.habit-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--habit-row-bg);
+    border-radius: 10px;
+    border: 1px solid var(--habit-row-border);
+}
+
+.habit-name {
+    width: 110px;
+    min-width: 110px;
+    font-size: 12px;
+    color: var(--habit-name-text);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+.habit-days {
+    display: flex;
+    gap: 3px;
+    flex-wrap: nowrap;
+    margin-left: -63px;
+}
+
+.habit-day-cell {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    border: 1px solid var(--habit-day-border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--habit-day-bg);
+    flex-shrink: 0;
+}
+
+.habit-day-cell:hover {
+    border-color: var(--habit-day-hover-border);
+    transform: scale(1.15);
+}
+
+.habit-day-cell.completed {
+    background: var(--habit-completed-bg);
+    border-color: var(--habit-completed-border);
+}
+
+.habit-day-cell.incomplete {
+    background: var(--habit-incomplete-bg);
+    border-color: var(--habit-incomplete-border);
+}
+
+.habit-delete {
+    background: var(--btn-danger-bg);
+    color: var(--btn-danger-text);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    transition: background 0.3s;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.habit-delete:hover {
+    background: var(--btn-danger-hover);
+}
+
+/* 日历和新功能区域 */
+.calendar-and-features {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* 右侧功能区 */
+.side-features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+/* 日历 */
+.calendar-section {
+    background: var(--calendar-bg);
+    border: 2px solid var(--calendar-border);
+    border-radius: 16px;
+    padding: 15px;
+    width: 400px;
+    flex-shrink: 0;
+}
+
+.calendar-section h3 {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 12px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+#calendarMonth {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 100px;
+    text-align: center;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--calendar-weekday-text);
+    font-size: 10px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-cell {
+    aspect-ratio: 1;
+    border: 1px solid var(--calendar-cell-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 11px;
+    background: var(--calendar-cell-bg);
+    color: var(--text-color);
+    position: relative;
+}
+
+.cal-cell:hover {
+    background: var(--calendar-cell-hover-bg);
+}
+
+.cal-cell.today {
+    background: var(--calendar-today-bg);
+    color: var(--calendar-today-text);
+    font-weight: bold;
+    border-color: var(--calendar-today-border);
+}
+
+.cal-cell.other-month {
+    color: var(--calendar-other-month-text);
+}
+
+.cal-cell.has-todo::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    background: var(--calendar-todo-dot);
+    border-radius: 50%;
+}
+
+.cal-cell.has-cover {
+    background-size: cover;
+    background-position: center;
+    color: var(--btn-primary-text);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    font-weight: bold;
+}
+
+/* 记账板块 */
+.accounting-section {
+    background: var(--card-color);
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: 15px;
+    min-height: 200px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-header h3 {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.section-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.stats-btn, .add-btn-small, .settings-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.stats-btn:hover, .add-btn-small:hover, .settings-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.accounting-list {
+    max-height: 150px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.accounting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--accounting-item-bg);
+    border-radius: 8px;
+    border: 1px solid var(--accounting-item-border);
+    font-size: 12px;
+}
+
+.accounting-item.income {
+    border-left: 4px solid var(--accounting-income-border);
+}
+
+.accounting-item.expense {
+    border-left: 4px solid var(--accounting-expense-border);
+}
+
+.accounting-amount {
+    font-weight: bold;
+}
+
+.accounting-amount.income {
+    color: var(--accounting-income-text);
+}
+
+.accounting-amount.expense {
+    color: var(--accounting-expense-text);
+}
+
+.accounting-details {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.accounting-category {
+    font-size: 10px;
+    color: var(--accounting-category-text);
+}
+
+/* 心情日历 */
+.mood-section {
+    background: var(--card-color);
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.mood-week-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.mood-week-nav button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.mood-week-nav button:hover {
+    background: var(--accent-color);
+}
+
+#moodWeekDisplay {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 120px;
+    text-align: center;
+}
+
+.mood-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--calendar-weekday-text);
+    font-size: 10px;
+}
+
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.mood-cell {
+    aspect-ratio: 1;
+    border: 2px solid var(--mood-cell-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 20px;
+    background: var(--mood-cell-bg);
+    min-height: 40px;
+}
+
+.mood-cell:hover {
+    border-color: var(--mood-cell-hover-border);
+    transform: scale(1.05);
+}
+
+.mood-cell.selected {
+    border-color: var(--mood-cell-selected-border);
+    background: var(--mood-cell-selected-bg);
+}
+
+/* 日历弹窗 */
+.calendar-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.calendar-modal.active {
+    display: flex;
+}
+
+.calendar-modal-content {
+    background: var(--modal-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.calendar-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.calendar-modal-header h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--calendar-weekday-text);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--text-color);
+}
+
+.calendar-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-option-btn {
+    background: var(--settings-section-bg);
+    border: 2px solid var(--settings-section-border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s;
+}
+
+.modal-option-btn:hover {
+    background: var(--settings-scheme-active-bg);
+    border-color: var(--settings-scheme-active-border);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--todo-day-hover-shadow);
+}
+
+.option-icon {
+    font-size: 32px;
+}
+
+.option-text {
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* 周计划 */
+.todo-section {
+    background: var(--card-color);
+    border: 2px solid var(--card-border);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.couple-space-container {
+    flex: 1;
+    display: none;
+    flex-direction: column; /* 确保垂直排列，子元素默认撑满宽度 */
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    min-height: 0; /* 允许内部 flex 子元素正确溢出并滚动（防止底部留白） */
+}
+
+.couple-space-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 16px;
+}
+
+.couple-space-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--card-border);
+    box-shadow: 0 4px 12px var(--card-shadow);
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.couple-avatar-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.couple-avatar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.couple-avatar-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--avatar-bg);
+    border: 2px solid var(--avatar-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 24px;
+}
+
+.couple-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.couple-avatar-label {
+    font-size: 11px;
+    color: var(--avatar-label-text);
+    max-width: 64px;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.couple-avatar-item.active .couple-avatar-circle {
+    border-color: var(--primary-color);
+}
+
+.couple-space-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.couple-space-actions .add-btn,
+.couple-space-actions .stats-btn {
+    width: auto;
+    padding: 6px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.couple-space-actions .stats-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+.couple-active-name {
+    font-size: 13px;
+    color: var(--text-color);
+    margin-right: 4px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+.couple-space-main {
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+    overflow-y: auto;
+    min-height: 0;
+    padding-bottom: 20px;
+    /* Custom Scrollbar for better look */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.couple-space-main::-webkit-scrollbar {
+    width: 6px;
+}
+
+.couple-space-main::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.couple-space-main::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 3px;
+}
+
+.couple-space-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 260px; /* Prevent columns from being too narrow */
+}
+
+.couple-card {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--card-border);
+    box-shadow: 0 4px 12px var(--card-shadow);
+    padding: 16px;
+    min-height: 100px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.couple-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--card-shadow);
+}
+
+.couple-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.couple-card-body {
+    font-size: 13px;
+    color: var(--muted-color);
+    line-height: 1.5;
+    word-break: break-word; /* 防止文字溢出 */
+    overflow-wrap: break-word; /* 增强兼容性 */
+}
+
+.couple-card-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.couple-card-refresh {
+    border: none;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.couple-card-refresh:hover {
+    background: var(--accent-color);
+}
+
+.couple-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.couple-modal-content {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--card-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    padding: 16px 18px 14px;
+    width: 420px;
+    max-width: 90%;
+    max-height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.couple-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.couple-modal-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.couple-modal-close {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--muted-color);
+}
+
+.couple-modal-body {
+    font-size: 13px;
+    color: var(--text-color);
+    line-height: 1.5;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.couple-modal-footer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.couple-settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.couple-settings-row label {
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.couple-settings-row input[type="time"],
+.couple-settings-row input[type="number"] {
+    flex: 0 0 140px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid var(--card-border);
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 12px;
+}
+
+.couple-cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.couple-cal-header span {
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.couple-cal-nav-btn {
+    border: none;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.couple-cal-nav-btn:hover {
+    background: var(--accent-color);
+}
+
+.couple-cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-size: 10px;
+    color: var(--muted-color);
+    margin-bottom: 4px;
+    gap: 2px;
+}
+
+.couple-cal-weekdays span {
+    text-align: center;
+}
+
+.couple-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    font-size: 11px;
+}
+
+.couple-cal-cell {
+    min-height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    padding: 2px 3px;
+}
+
+.couple-cal-cell-empty {
+    border: none;
+    background: transparent;
+    cursor: default;
+}
+
+.couple-cal-cell-number {
+    font-size: 9px;
+    color: var(--muted-color);
+    text-align: right;
+}
+
+.couple-cal-cell-value {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.todo-section h3 {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.week-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.week-controls button {
+    background: var(--secondary-color);
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.week-controls button:hover {
+    background: var(--accent-color);
+}
+
+#weekDisplay {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 120px;
+    text-align: center;
+}
+
+.weekly-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    min-height: 400px;
+}
+
+.todo-day {
+    border: 2px solid var(--todo-day-border);
+    border-radius: 10px;
+    padding: 12px;
+    min-height: 180px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: var(--todo-day-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-day.weekly-todo {
+    background: var(--todo-weekly-bg);
+    border-color: var(--todo-weekly-border);
+}
+
+.todo-day.weekly-todo .todo-day-title {
+    color: var(--todo-weekly-title-text);
+}
+
+.todo-day:hover {
+    border-color: var(--todo-day-hover-border);
+    box-shadow: 0 4px 12px var(--todo-day-hover-shadow);
+}
+
+.todo-day-title {
+    font-weight: bold;
+    font-size: 11px;
+    color: var(--todo-title-text);
+    margin-bottom: 8px;
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--todo-title-border);
+    flex-shrink: 0;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 120px;
+}
+
+.todo-task {
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    word-break: break-word;
+    color: var(--todo-task-text);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.todo-task:hover {
+    transform: translateX(2px);
+}
+
+.todo-task:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.todo-task.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+    order: 999;
+}
+
+/* TODO弹窗 */
+.todo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.todo-modal.active {
+    display: flex;
+}
+
+.todo-modal-content {
+    background: var(--modal-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.todo-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.todo-modal-header h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.todo-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.todo-input-group input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--form-input-text);
+    background: var(--form-input-bg);
+}
+
+.todo-input-group input[type="text"]:focus {
+    border-color: var(--form-input-focus-border);
+    outline: none;
+}
+
+.todo-input-group input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.todo-input-group button {
+    padding: 10px 20px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.todo-input-group button:hover {
+    background: var(--btn-primary-hover);
+}
+
+.todo-list-modal {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.todo-item-modal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--form-input-border);
+    transition: all 0.2s;
+}
+
+.todo-item-modal:hover {
+    background: var(--settings-scheme-active-bg);
+}
+
+.todo-item-modal input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.todo-item-modal span {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.todo-item-modal.completed span {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.todo-item-modal button {
+    background: var(--btn-danger-bg);
+    color: var(--btn-danger-text);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.todo-item-modal button:hover {
+    background: var(--btn-danger-hover);
+}
+
+.todo-task {
+    padding: 6px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    background: var(--settings-scheme-active-bg);
+    word-break: break-word;
+    color: var(--text-color);
+}
+
+.todo-task.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.todo-note {
+    font-size: 11px;
+    color: var(--muted-color);
+    line-height: 1.6;
+    padding: 12px;
+    background: var(--nav-hover-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+/* 记账弹窗 */
+.accounting-modal, .accounting-stats-modal, .mood-settings-modal, .mood-stats-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.accounting-modal.active, .accounting-stats-modal.active, .mood-settings-modal.active, .mood-stats-modal.active {
+    display: flex;
+}
+
+.accounting-modal-content, .accounting-stats-content, .mood-settings-content, .mood-stats-content {
+    background: var(--modal-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.accounting-modal-header, .mood-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.accounting-modal-header h3, .mood-modal-header h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.accounting-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-row label {
+    min-width: 60px;
+    font-size: 14px;
+    color: var(--form-label-text);
+    font-weight: 500;
+}
+
+.form-row input, .form-row select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--form-input-text);
+    background: var(--form-input-bg);
+}
+
+.form-row input:focus, .form-row select:focus {
+    border-color: var(--form-input-focus-border);
+    outline: none;
+}
+
+.form-row button {
+    padding: 8px 12px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.form-row button:hover {
+    background: var(--btn-primary-hover);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.form-actions button {
+    padding: 12px 24px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.form-actions button:hover {
+    background: var(--btn-primary-hover);
+}
+
+/* 统计标签页 */
+.stats-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.stats-tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--settings-tab-text);
+    transition: all 0.3s;
+}
+
+.stats-tab.active {
+    color: var(--settings-tab-active-text);
+    border-bottom-color: var(--settings-tab-active-border);
+    font-weight: bold;
+}
+
+.stats-tab:hover {
+    color: var(--settings-tab-active-text);
+}
+
+.stats-content {
+    min-height: 200px;
+}
+
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    background: var(--settings-section-bg);
+    border: 2px solid var(--settings-section-border);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stats-card.income {
+    border-left: 4px solid var(--success-color);
+}
+
+.stats-card.expense {
+    border-left: 4px solid var(--warning-color);
+}
+
+.stats-label {
+    font-size: 12px;
+    color: var(--stats-label-text);
+    margin-bottom: 5px;
+}
+
+.stats-amount {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.stats-amount.income {
+    color: var(--success-color);
+}
+
+.stats-amount.expense {
+    color: var(--warning-color);
+}
+
+/* 心情设置 */
+.schemes-list, .mood-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.scheme-item, .mood-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--settings-section-bg);
+    border: 2px solid var(--settings-section-border);
+    border-radius: 8px;
+}
+
+.scheme-item.active {
+    border-color: var(--settings-scheme-active-border);
+    background: var(--settings-scheme-active-bg);
+}
+
+.mood-item-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mood-emoji {
+    font-size: 20px;
+}
+
+.mood-item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.mood-item-actions button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.edit-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+}
+
+.delete-btn {
+    background: var(--btn-danger-bg);
+    color: var(--btn-danger-text);
+}
+
+/* 年度心情统计 */
+.yearly-mood-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.month-mood-grid {
+    background: var(--settings-section-bg);
+    border: 2px solid var(--settings-section-border);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.month-title {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.month-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.month-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border-radius: 3px;
+    background: var(--card-color);
+}
+
+.month-day.has-mood {
+    font-size: 10px;
+}
+/* 心情选择器弹窗 */
+.mood-selector-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.mood-selector-content {
+    background: var(--modal-bg);
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 300px;
+    width: 90%;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.mood-selector-content h4 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.mood-option {
+    padding: 10px;
+    margin: 5px 0;
+    background: var(--settings-section-bg);
+    border: 2px solid var(--settings-section-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.mood-option:hover {
+    background: var(--settings-scheme-active-bg);
+    border-color: var(--settings-scheme-active-border);
+}
+
+.mood-selector-content button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.mood-selector-content button:hover {
+    background: var(--btn-primary-hover);
+}
+/* 保存颜色功能 */
+.saved-colors {
+    margin: 15px 0;
+    padding: 12px;
+    background: var(--settings-section-bg);
+    border: 1px solid var(--settings-section-border);
+    border-radius: 8px;
+}
+
+.saved-colors-label {
+    font-size: 12px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.saved-colors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+    min-height: 32px;
+    align-items: center;
+}
+
+.saved-color-item {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 2px solid var(--saved-color-border);
+    transition: all 0.3s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saved-color-item:hover {
+    border-color: var(--saved-color-hover-border);
+    transform: scale(1.1);
+}
+
+.saved-color-item.selected {
+    border-color: var(--saved-color-selected-border);
+    box-shadow: 0 0 0 2px var(--saved-color-selected-shadow);
+}
+
+.saved-color-item .delete-color {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    background: var(--saved-color-delete-bg);
+    color: var(--btn-danger-text);
+    border: none;
+    border-radius: 50%;
+    font-size: 10px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.saved-color-item:hover .delete-color {
+    display: flex;
+}
+
+.save-color-btn {
+    width: 100%;
+    padding: 6px 12px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: background 0.3s;
+}
+
+.save-color-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.save-color-btn:disabled {
+    background: var(--accent-color);
+    cursor: not-allowed;
+}
+
+.no-saved-colors {
+    color: var(--no-saved-colors-text);
+    font-size: 11px;
+    text-align: center;
+    padding: 8px;
+    font-style: italic;
+}
+/* 主设置按钮 */
+.settings-btn-main {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--accent-color);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+    z-index: 100;
+    transition: all 0.3s;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn-main:hover {
+    background: var(--card-color);
+    box-shadow: 0 2px 8px var(--card-shadow);
+    transform: rotate(90deg);
+}
+
+/* 健康app设置弹窗 */
+.health-settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.health-settings-modal.active {
+    display: flex;
+}
+
+.health-settings-content {
+    background: var(--modal-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.health-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.health-settings-header h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* 设置标签页 */
+.settings-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.settings-tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--settings-tab-text);
+    transition: all 0.3s;
+}
+
+.settings-tab.active {
+    color: var(--settings-tab-active-text);
+    border-bottom-color: var(--settings-tab-active-border);
+    font-weight: bold;
+}
+
+.settings-tab:hover {
+    color: var(--settings-tab-active-text);
+}
+
+.settings-tab-content {
+    display: none;
+}
+
+.settings-tab-content.active {
+    display: block;
+}
+
+/* CSS设置 */
+.css-schemes-section, .css-editor-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: var(--settings-section-bg);
+    border: 1px solid var(--settings-section-border);
+    border-radius: 8px;
+}
+
+.css-schemes-section h4, .css-editor-section h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.css-schemes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.css-scheme-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--settings-scheme-bg);
+    border: 2px solid var(--settings-scheme-border);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.css-scheme-item.active {
+    border-color: var(--settings-scheme-active-border);
+    background: var(--settings-scheme-active-bg);
+}
+
+.css-scheme-item:hover {
+    border-color: var(--settings-scheme-hover-border);
+}
+
+.css-scheme-name {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.css-scheme-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.css-scheme-actions button, .css-editor-actions button, .font-actions button {
+    padding: 6px 12px;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.css-scheme-actions button:hover, .css-editor-actions button:hover, .font-actions button:hover {
+    background: var(--btn-primary-hover);
+}
+
+.css-editor {
+    width: 100%;
+    height: 300px;
+    padding: 12px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    resize: vertical;
+    margin-bottom: 15px;
+    background: var(--form-input-bg);
+    color: var(--form-input-text);
+}
+
+.css-editor:focus {
+    border-color: var(--form-input-focus-border);
+    outline: none;
+}
+
+.css-editor-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 背景设置 */
+.background-section, .font-section {
+    padding: 15px;
+    background: var(--settings-section-bg);
+    border: 1px solid var(--settings-section-border);
+    border-radius: 8px;
+}
+
+.background-section h4, .font-section h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.background-preview, .font-preview {
+    width: 100%;
+    height: 120px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--preview-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.preview-text {
+    color: var(--preview-text);
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}
+
+.background-controls, .font-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-row label {
+    min-width: 100px;
+    font-size: 14px;
+    color: var(--form-label-text);
+    font-weight: 500;
+}
+
+.form-row input, .form-row select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--form-input-border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--form-input-text);
+    background: var(--form-input-bg);
+}
+
+.form-row input:focus, .form-row select:focus {
+    border-color: var(--form-input-focus-border);
+    outline: none;
+}
+
+.form-row input[type="range"] {
+    flex: 1;
+}
+
+#fontSizeValue {
+    min-width: 40px;
+    font-size: 12px;
+    color: var(--muted-color);
+}
+
+.font-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .health-settings-content {
+        width: 95%;
+        padding: 20px;
+        max-height: 90vh;
+    }
+    
+    .settings-tabs {
+        flex-direction: column;
+    }
+    
+    .css-editor-actions, .font-actions {
+        flex-direction: column;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .form-row label {
+        min-width: auto;
+    }
+}
+/* 设置描述文字 */
+.settings-desc {
+    font-size: 12px;
+    color: var(--muted-color);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    font-style: italic;
+}
+/* 整个情侣空间面板容器 */
+.couple-space-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    width: 100%; /* 确保占满宽度 */
+    box-sizing: border-box; /* 防止 padding 撑破宽度 */
+
+    /* 占满父容器高度，让内部滚动而不是限制为视窗的固定高度 */
+    flex: 1 1 auto;
+    height: 100%;
+    overflow-y: auto; /* 内容多了自动出现滚动条 */
+    scrollbar-width: thin; /* 让滚动条细一点，好看 */
+    scrollbar-color: var(--primary-color) transparent;
+}
+
+/* 隐藏 Webkit 浏览器的丑陋滚动条 */
+.couple-space-dashboard::-webkit-scrollbar {
+    width: 6px;
+}
+.couple-space-dashboard::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* 自动调整卡片大小：Grid 布局比 Flex 更聪明 */
+.couple-sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 关键！卡片太挤时会自动换行 */
+    gap: 15px;
+    width: 100%; /* 确保 Grid 占满容器 */
+}
+
+/* ==================== 分享页面样式 ==================== */
+
+.share-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.share-section {
+    background: var(--card-color, #fff);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.share-section h3 {
+    margin: 0 0 15px 0;
+    color: var(--text-color, #5a4a3a);
+    font-size: 16px;
+}
+
+.share-desc {
+    color: var(--muted-color, #8b7355);
+    font-size: 13px;
+    margin: 0 0 12px 0;
+}
+
+.share-period-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.period-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--border-light, #e8dcc8);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-color, #5a4a3a);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.period-btn.active {
+    background: var(--primary-color, #c9a87c);
+    color: #fff;
+    border-color: var(--primary-color, #c9a87c);
+}
+
+.share-action-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    background: var(--secondary-color, #e8dcc8);
+    color: var(--text-color, #5a4a3a);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.share-action-btn:hover {
+    opacity: 0.85;
+}
+
+.share-action-btn.primary {
+    background: var(--primary-color, #c9a87c);
+    color: #fff;
+}
+
+.share-btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.report-preview {
+    background: var(--light-bg, #fdfbf7);
+    border: 1px solid var(--border-light, #e8dcc8);
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 400px;
+    overflow-y: auto;
+    color: var(--text-color, #5a4a3a);
+    font-family: inherit;
+}
+
+.diary-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.diary-thumb {
+    width: 100px;
+    height: 70px;
+    border: 2px solid var(--border-light, #e8dcc8);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-color, #5a4a3a);
+    background: var(--light-bg, #fdfbf7);
+    transition: all 0.2s;
+    text-align: center;
+    padding: 4px;
+}
+
+.diary-thumb:hover {
+    border-color: var(--primary-color, #c9a87c);
+    background: var(--hover-bg, #f5ede0);
+}
+
+/* 选择CHAR弹窗 */
+.share-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.share-modal-content {
+    background: var(--card-color, #fff);
+    border-radius: 16px;
+    padding: 24px;
+    width: 340px;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.share-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.share-modal-header h3 {
+    margin: 0;
+}
+
+.share-char-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.share-char-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 2px solid var(--border-light, #e8dcc8);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.share-char-item:hover {
+    background: var(--hover-bg, #f5ede0);
+}
+
+.share-char-item.selected {
+    border-color: var(--primary-color, #c9a87c);
+    background: rgba(201, 168, 124, 0.1);
+}
+
+.char-avatar {
+    font-size: 24px;
+}
+
+.share-modal-footer {
+    text-align: right;
+}
+
+.share-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-color, #fff);
+    padding: 12px 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-size: 14px;
+    z-index: 1001;
+    color: var(--text-color, #5a4a3a);
+}

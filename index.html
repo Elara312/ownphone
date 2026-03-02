@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>iPad 模拟器</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="widgets.css">
+</head>
+<body>
+    <div class="ipad-screen">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="time">10:30</span>
+            </div>
+            <div class="status-right">
+                <span style="font-size:11px">●●●●</span>
+                <span style="font-size:11px">WiFi</span>
+                <span>🔋 100%</span>
+            </div>
+        </div>
+
+        <!-- 桌面网格 -->
+        <div class="desktop-grid" id="desktopGrid">
+            <!-- 4行 x 6列 = 24个槽位 -->
+        </div>
+
+        <!-- Dock 栏 -->
+        <div class="dock" id="dock">
+            <!-- 12个槽位 -->
+        </div>
+    </div>
+
+    <!-- 待办弹窗 -->
+    <div class="todo-modal" id="todoModal">
+        <div class="todo-modal-content">
+            <div class="todo-modal-header">
+                <h2>📝 待办清单</h2>
+                <button class="todo-modal-close" onclick="closeTodoModal()">×</button>
+            </div>
+            <div class="todo-date-selector">
+                <input type="date" id="todoDate">
+            </div>
+            <div class="todo-input-group">
+                <input type="text" id="todoInput" placeholder="添加新任务...">
+                <button onclick="addTodo()">添加</button>
+            </div>
+            <div class="todo-list" id="todoList"></div>
+        </div>
+    </div>
+
+    <script src="widgets.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

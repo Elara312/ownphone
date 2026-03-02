@@ -1,0 +1,385 @@
+/* 小组件通用样式 */
+.widget {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 
+        0 2px 12px rgba(0, 0, 0, 0.06),
+        0 4px 20px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    cursor: grab;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    min-height: 80px;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.25s ease;
+}
+
+.widget:hover {
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        0 8px 28px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.widget:active {
+    cursor: grabbing;
+}
+
+.widget-close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+}
+
+.widget-close:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.widget:hover .widget-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 时钟小组件 (2x1) */
+.clock-widget {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    padding: 10px 20px;
+}
+
+.clock-time {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2d2d3a;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.clock-date {
+    font-size: 14px;
+    color: #8888a0;
+    font-weight: 500;
+}
+
+/* 待办清单小组件 (2x1) */
+.todo-widget {
+    display: flex;
+    height: 100%;
+    padding: 10px 14px;
+}
+
+.todo-left {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    padding-right: 14px;
+}
+
+.todo-day {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2d2d3a;
+    line-height: 1;
+}
+
+.todo-month {
+    font-size: 12px;
+    color: #8888a0;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.todo-right {
+    flex: 1;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.todo-item {
+    font-size: 12px;
+    color: #3d3d4a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+
+.todo-item.completed {
+    text-decoration: line-through;
+    color: #b0b0c0;
+}
+
+/* 日历小组件 (2x1) */
+.calendar-widget {
+    display: flex;
+    height: 100%;
+    padding: 10px 14px;
+}
+
+.calendar-left {
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    padding-right: 14px;
+}
+
+.calendar-weekday {
+    font-size: 13px;
+    color: #8888a0;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.calendar-day {
+    font-size: 44px;
+    font-weight: 700;
+    color: #2d2d3a;
+    line-height: 1;
+    margin: 4px 0;
+}
+
+.calendar-right {
+    flex: 1;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calendar-header {
+    font-size: 11px;
+    font-weight: 600;
+    color: #4d4d5a;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 4px;
+}
+
+.calendar-weekdays span {
+    font-size: 9px;
+    color: #a0a0b0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-days span {
+    font-size: 9px;
+    color: #4d4d5a;
+    text-align: center;
+    padding: 2px;
+    border-radius: 50%;
+    line-height: 1.6;
+}
+
+.calendar-days span.today {
+    background: #6366f1;
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-days span.other-month {
+    color: #d0d0d8;
+}
+
+/* 待办弹窗 */
+.todo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.todo-modal.active {
+    display: flex;
+}
+
+.todo-modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 28px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.todo-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.todo-modal-header h2 {
+    font-size: 18px;
+    color: #2d2d3a;
+    font-weight: 600;
+}
+
+.todo-modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.todo-modal-close:hover {
+    color: #333;
+}
+
+.todo-date-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.todo-date-selector input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.todo-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.todo-input-group input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.todo-input-group button {
+    padding: 10px 18px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.todo-input-group button:hover {
+    background: #5558e6;
+}
+
+.todo-input-group button:active {
+    transform: scale(0.96);
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.todo-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.todo-list-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.todo-list-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #6366f1;
+}
+
+.todo-list-item span {
+    flex: 1;
+    font-size: 14px;
+    color: #3d3d4a;
+}
+
+.todo-list-item.completed span {
+    text-decoration: line-through;
+    color: #b0b0c0;
+}
+
+.todo-list-item button {
+    background: #f87171;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.todo-list-item button:hover {
+    background: #ef4444;
+}

@@ -1,0 +1,21 @@
+# Kiro IDE
+.kiro/
+
+# 测试文件
+test-*.html
+debug-*.html
+
+# 本地服务器
+serve.js
+
+# 文档（不需要部署）
+*.md
+!README.md
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 嵌套仓库
+NeteaseCloudMusicApi/

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>网易云音乐</title>
+    <link rel="stylesheet" href="music.css">
+</head>
+<body>
+    <div class="music-app">
+        <!-- 顶部导航 -->
+        <header class="music-header">
+            <button class="music-back" onclick="window.location.href='index.html'">‹</button>
+            <div class="music-header-center">
+                <select id="charSelect" class="char-picker" onchange="onCharChange()">
+                    <option value="">选择CHAR</option>
+                </select>
+            </div>
+            <button class="music-header-btn" id="loginStatusBtn" onclick="openModal('settingsModal')" title="设置">🔴 未登录</button>
+            <button class="music-header-btn" onclick="openMusicSearch()">🔍</button>
+        </header>
+
+        <!-- Tab 导航 -->
+        <nav class="music-tabs">
+            <button class="music-tab active" data-tab="discover" onclick="switchTab('discover')">发现</button>
+            <button class="music-tab" data-tab="playlist" onclick="switchTab('playlist')">歌单</button>
+            <button class="music-tab" data-tab="shares" onclick="switchTab('shares')">分享</button>
+        </nav>
+
+        <!-- 内容区 -->
+        <main class="music-content">
+            <!-- 发现页 -->
+            <section class="tab-panel active" id="panel-discover">
+                <div class="discover-section">
+                    <h3 class="section-title">🎵 TA们的歌单</h3>
+                    <div class="playlist-grid" id="allPlaylistsGrid">
+                        <div class="empty-state">选择CHAR后查看歌单</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 歌单页 -->
+            <section class="tab-panel" id="panel-playlist">
+                <div class="playlist-header-bar">
+                    <button class="action-btn" onclick="generatePlaylist()">🤖 AI生成歌单</button>
+                    <button class="action-btn" onclick="createEmptyPlaylist()">➕ 新建歌单</button>
+                </div>
+                <div id="charPlaylists" class="playlist-list">
+                    <div class="empty-state">选择CHAR后查看歌单</div>
+                </div>
+            </section>
+
+            <!-- 分享页 -->
+            <section class="tab-panel" id="panel-shares">
+                <div class="shares-toolbar">
+                    <button class="action-btn" onclick="generateShare()">🎁 让TA分享一首歌</button>
+                </div>
+                <div id="sharesList" class="shares-list">
+                    <div class="empty-state">还没有分享记录</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部迷你播放器 -->
+        <div class="mini-player" id="miniPlayer" onclick="openFullPlayer(event)">
+            <div class="mini-player-info">
+                <div class="mini-album-art" id="miniAlbumArt">🎵</div>
+                <div class="mini-song-info">
+                    <span class="mini-song-name" id="miniSongName">未在播放</span>
+                    <span class="mini-artist" id="miniArtist"></span>
+                </div>
+            </div>
+            <div class="mini-controls">
+                <button class="mini-ctrl-btn" onclick="event.stopPropagation();togglePlay()">
+                    <span id="miniPlayIcon">▶</span>
+                </button>
+                <button class="mini-ctrl-btn" onclick="event.stopPropagation();playNext()">⏭</button>
+                <button class="mini-ctrl-btn listen-together-btn" id="miniListenBtn" onclick="event.stopPropagation();inviteListenTogether()" title="一起听">👥</button>
+            </div>
+            <div class="mini-progress" id="miniProgress"><div class="mini-progress-fill" id="miniProgressFill"></div></div>
+        </div>
+    </div>
+
+    <!-- 全屏播放器 -->
+    <div class="full-player-overlay" id="fullPlayer">
+        <div class="full-player">
+            <div class="full-player-header">
+                <button class="fp-close" onclick="closeFullPlayer()">▾</button>
+                <div class="fp-title">
+                    <div class="fp-song-name" id="fpSongName">未在播放</div>
+                    <div class="fp-artist" id="fpArtist"></div>
+                </div>
+                <button class="fp-share-btn" onclick="shareCurrentSong()">↗</button>
+            </div>
+            <div class="fp-album-area">
+                <div class="fp-album-art" id="fpAlbumArt">🎵</div>
+            </div>
+            <div class="fp-progress-area">
+                <input type="range" class="fp-progress" id="fpProgress" min="0" max="100" value="0" oninput="seekTo(this.value)">
+                <div class="fp-time">
+                    <span id="fpCurrentTime">0:00</span>
+                    <span id="fpDuration">0:00</span>
+                </div>
+            </div>
+            <div class="fp-controls">
+                <button class="fp-ctrl" onclick="toggleShuffle()"><span id="shuffleIcon">🔀</span></button>
+                <button class="fp-ctrl" onclick="playPrev()">⏮</button>
+                <button class="fp-ctrl fp-play" onclick="togglePlay()"><span id="fpPlayIcon">▶</span></button>
+                <button class="fp-ctrl" onclick="playNext()">⏭</button>
+                <button class="fp-ctrl" onclick="toggleRepeat()"><span id="repeatIcon">🔁</span></button>
+            </div>
+            <div class="fp-extra">
+                <button class="fp-extra-btn" onclick="inviteListenTogether()">👥 一起听</button>
+                <button class="fp-extra-btn" onclick="openPlayQueue()">📋 播放列表</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 一起听覆盖层 -->
+    <div class="listen-together-overlay" id="listenTogetherOverlay">
+        <div class="lt-container">
+            <div class="lt-header">
+                <span class="lt-title">🎧 一起听</span>
+                <button class="lt-close" onclick="endListenTogether()">✕</button>
+            </div>
+            <div class="lt-avatars">
+                <div class="lt-avatar lt-user-avatar">👤</div>
+                <div class="lt-heart">♥</div>
+                <div class="lt-avatar lt-char-avatar" id="ltCharAvatar">🎭</div>
+            </div>
+            <div class="lt-song-info">
+                <div class="lt-song-name" id="ltSongName">--</div>
+                <div class="lt-artist" id="ltArtist">--</div>
+            </div>
+            <div class="lt-progress-bar">
+                <div class="lt-progress-fill" id="ltProgressFill"></div>
+            </div>
+            <div class="lt-comments" id="ltComments"></div>
+            <div class="lt-input-area">
+                <input type="text" class="lt-input" id="ltInput" placeholder="说点什么..." onkeydown="if(event.key==='Enter')sendLtMessage()">
+                <button class="lt-send" onclick="sendLtMessage()">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 搜索弹窗 -->
+    <div class="music-modal" id="searchModal">
+        <div class="modal-content search-modal-content">
+            <div class="modal-header">
+                <span>🔍 搜索音乐</span>
+                <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-bar">
+                    <input type="text" id="musicSearchInput" placeholder="搜索歌曲名或歌手..." onkeydown="if(event.key==='Enter')searchMusic()">
+                    <button class="search-go" onclick="searchMusic()">搜索</button>
+                </div>
+                <div class="search-tip">输入关键词搜索，或直接粘贴音乐URL添加</div>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 歌单详情弹窗 -->
+    <div class="music-modal" id="playlistDetailModal">
+        <div class="modal-content playlist-detail-content">
+            <div class="modal-header">
+                <span id="plDetailTitle">歌单详情</span>
+                <button class="modal-close" onclick="closeModal('playlistDetailModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="pl-detail-info">
+                    <div class="pl-detail-cover" id="plDetailCover">🎵</div>
+                    <div class="pl-detail-meta">
+                        <div class="pl-detail-name" id="plDetailName"></div>
+                        <div class="pl-detail-desc" id="plDetailDesc"></div>
+                        <div class="pl-detail-actions">
+                            <button class="action-btn small" onclick="playAllPlaylist()">▶ 全部播放</button>
+                            <button class="action-btn small" onclick="addSongToPlaylist()">➕ 添加歌曲</button>
+                            <button class="action-btn small danger" onclick="deleteCurrentPlaylist()">🗑️ 删除歌单</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="plDetailSongs" class="pl-detail-songs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加歌曲弹窗 -->
+    <div class="music-modal" id="addSongModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>➕ 添加歌曲</span>
+                <button class="modal-close" onclick="closeModal('addSongModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>歌曲名</label>
+                    <input type="text" id="addSongName" placeholder="歌曲名称">
+                </div>
+                <div class="form-group">
+                    <label>歌手</label>
+                    <input type="text" id="addSongArtist" placeholder="歌手名">
+                </div>
+                <div class="form-group">
+                    <label>音乐URL（可选，填写后可直接播放）</label>
+                    <input type="text" id="addSongUrl" placeholder="https://...mp3">
+                </div>
+                <div class="form-group">
+                    <label>风格标签（逗号分隔）</label>
+                    <input type="text" id="addSongTags" placeholder="流行,华语,抒情">
+                </div>
+                <button class="action-btn full" onclick="confirmAddSong()">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 播放队列弹窗 -->
+    <div class="music-modal" id="playQueueModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>📋 播放列表</span>
+                <button class="modal-close" onclick="closeModal('playQueueModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="playQueueList" class="play-queue-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新建歌单弹窗 -->
+    <div class="music-modal" id="newPlaylistModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>➕ 新建歌单</span>
+                <button class="modal-close" onclick="closeModal('newPlaylistModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>歌单名称</label>
+                    <input type="text" id="newPlName" placeholder="给歌单起个名字">
+                </div>
+                <div class="form-group">
+                    <label>描述</label>
+                    <textarea id="newPlDesc" placeholder="描述一下这个歌单..." rows="3"></textarea>
+                </div>
+                <button class="action-btn full" onclick="confirmCreatePlaylist()">创建</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="music-modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>⚙️ 音乐服务设置</span>
+                <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:8px;padding:12px;margin-bottom:16px;">
+                    <div style="font-size:13px;color:#4CAF50;">✨ 无需部署！默认使用公开API，打开即可搜索和播放音乐</div>
+                </div>
+                <div class="form-group">
+                    <label>自建 NeteaseCloudMusicApi 地址（可选）</label>
+                    <input type="text" id="neteaseApiUrl" placeholder="留空则使用公开API">
+                    <div class="search-tip" style="margin-top:6px;">
+                        填写自建API可获得VIP音质和扫码登录功能<br>
+                        <span style="color:rgba(255,255,255,0.4);font-size:11px;">如需自建：Fork <a href="https://github.com/GuihongWang/NeteaseCloudMusicApi" target="_blank" style="color:#e94560;">NeteaseCloudMusicApi</a> 部署到 Vercel</span>
+                    </div>
+                </div>
+                <button class="action-btn full" onclick="saveNeteaseApiUrl()">💾 保存设置</button>
+
+                <div id="qrLoginSection" style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+                    <label style="font-size:13px;color:rgba(255,255,255,0.6);display:block;margin-bottom:10px;">扫码登录网易云（登录后可听VIP歌曲完整版）</label>
+                    <div id="loginInfoBox" style="display:none;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:8px;padding:10px;margin-bottom:10px;">
+                        <span id="loginInfoText" style="font-size:13px;color:#4CAF50;"></span>
+                        <button onclick="logoutNetease()" style="float:right;background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.6);border-radius:4px;padding:2px 8px;font-size:12px;cursor:pointer;">退出登录</button>
+                        <div style="clear:both;"></div>
+                    </div>
+                    <div style="text-align:center;">
+                        <img id="qrCodeImg" style="display:none;max-width:200px;border-radius:8px;margin-bottom:10px;" alt="二维码">
+                        <div id="qrLoginStatus" style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:10px;">点击下方按钮获取登录二维码</div>
+                    </div>
+                    <button class="action-btn full" id="qrLoginBtn" onclick="startQrLogin()">📱 获取登录二维码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="music.js"></script>
+</body>
+</html>

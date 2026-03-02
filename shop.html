@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>商店</title>
+    <link rel="stylesheet" href="shop.css">
+</head>
+<body>
+    <div class="shop-app">
+        <!-- 顶部导航 -->
+        <header class="shop-header">
+            <button class="shop-back" onclick="window.location.href='index.html'">‹</button>
+            <div class="shop-header-center">
+                <select id="charSelect" class="char-picker" onchange="onCharChange()">
+                    <option value="">选择CHAR</option>
+                </select>
+            </div>
+            <div class="shop-wallet">
+                <span class="wallet-icon">💰</span>
+                <span class="wallet-amount" id="walletAmount">0</span>
+            </div>
+        </header>
+
+        <!-- 搜索栏 -->
+        <div class="shop-search-bar">
+            <div class="search-input-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="搜索好物..." onkeydown="if(event.key==='Enter')searchProducts()">
+            </div>
+            <button class="search-go-btn" onclick="searchProducts()">搜索</button>
+        </div>
+
+        <!-- Tab 导航 -->
+        <nav class="shop-tabs">
+            <button class="shop-tab active" data-tab="home" onclick="switchTab('home')">🏠 推荐</button>
+            <button class="shop-tab" data-tab="search-results" onclick="switchTab('search-results')">🔎 搜索</button>
+            <button class="shop-tab" data-tab="custom" onclick="switchTab('custom')">✨ 自定义</button>
+
+        </nav>
+
+        <!-- 内容区 -->
+        <main class="shop-content">
+            <!-- 推荐页 -->
+            <section class="tab-panel active" id="panel-home">
+                <div class="panel-toolbar">
+                    <span class="toolbar-title">为你们推荐</span>
+                    <button class="toolbar-btn" id="refreshRecommendBtn" onclick="refreshRecommend()">🔄 换一批</button>
+                </div>
+                <div class="product-grid" id="recommendGrid">
+                    <div class="empty-state">
+                        <div class="empty-icon">🎁</div>
+                        <p>选择CHAR后点击「换一批」获取推荐</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 搜索结果页 -->
+            <section class="tab-panel" id="panel-search-results">
+                <div class="panel-toolbar">
+                    <span class="toolbar-title" id="searchResultTitle">搜索结果</span>
+                    <button class="toolbar-btn" onclick="searchProducts()">🔄 换一批</button>
+                </div>
+                <div class="product-grid" id="searchGrid">
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <p>输入关键词搜索情侣好物</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 自定义商品页 -->
+            <section class="tab-panel" id="panel-custom">
+                <div class="panel-toolbar">
+                    <span class="toolbar-title">我的商品</span>
+                    <button class="toolbar-btn" onclick="openAddProduct()">➕ 添加商品</button>
+                </div>
+                <div class="product-grid" id="customGrid">
+                    <div class="empty-state">
+                        <div class="empty-icon">✨</div>
+                        <p>还没有自定义商品，点击添加</p>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <!-- 购买确认弹窗 -->
+    <div class="modal-overlay" id="buyModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">确认购买</div>
+            <div class="modal-body" id="buyModalBody"></div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeBuyModal()">取消</button>
+                <button class="modal-btn confirm" onclick="confirmBuy()">💳 确认支付</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加商品弹窗 -->
+    <div class="modal-overlay" id="addProductModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">添加自定义商品</div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <label>商品名称</label>
+                    <input type="text" id="addProdName" placeholder="如：一个拥抱券">
+                </div>
+                <div class="form-row">
+                    <label>商品描述</label>
+                    <textarea id="addProdDesc" rows="2" placeholder="描述一下这个商品..."></textarea>
+                </div>
+                <div class="form-row">
+                    <label>价格（积分）</label>
+                    <input type="number" id="addProdPrice" min="1" placeholder="50">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeAddProduct()">取消</button>
+                <button class="modal-btn confirm" onclick="saveCustomProduct()">✅ 添加</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="shop.js"></script>
+</body>
+</html>

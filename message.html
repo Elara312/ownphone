@@ -1,0 +1,2040 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>💬 消息</title>
+    <link rel="stylesheet" href="message.css">
+    <script src="couple-space.js"></script>
+</head>
+<body>
+    <!-- 主容器：左侧导航 + 右侧内容 -->
+    <div class="main-container">
+        <!-- 左侧导航栏 -->
+        <div class="left-sidebar">
+            <div class="sidebar-nav-item active" onclick="switchMainTab('me')" data-tab="me">
+                <span>我</span>
+            </div>
+            <div class="sidebar-nav-item" onclick="switchMainTab('contacts')" data-tab="contacts">
+                <span>联系人</span>
+            </div>
+            
+            <div class="sidebar-nav-item" onclick="switchMainTab('npc')" data-tab="npc">
+                <span>NPC</span>
+            </div>
+            <div class="sidebar-nav-item" onclick="openTravelCard()" data-tab="travel-card">
+                <span>行程卡</span>
+            </div>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="main-content">
+            <!-- 我的页面 -->
+            <div class="content-panel active" id="panel-me">
+                <!-- 返回桌面按钮 -->
+                <a href="index.html" class="back-to-desktop-btn">
+                    <span>←</span>
+                    <span>返回桌面</span>
+                </a>
+
+                <!-- 顶部头像圆圈 -->
+                <div class="top-avatar-circle">
+                    <div class="avatar-circle-container">
+                        <div class="avatar-glow"></div>
+                        <img id="mainAvatar" src="" alt="我" class="circle-avatar">
+                    </div>
+                    <div class="avatar-label" id="currentProfileName">未设置</div>
+                </div>
+
+                <!-- 内容区域 -->
+                <div class="me-content">
+                    <div class="me-section">
+                        <h3>我的信息</h3>
+                        <div class="me-info-box">
+                            <p><strong>真实姓名：</strong><span id="displayRealName">未设置</span></p>
+                            <button onclick="openPage('page-info')">编辑我的信息</button>
+                        </div>
+                    </div>
+
+                    <div class="me-section">
+                        <h3>我的头像库</h3>
+                        <div class="me-info-box">
+                            <button onclick="openPage('page-avatars')">管理头像库</button>
+                        </div>
+                    </div>
+
+                    <div class="me-section">
+                        <h3>主题样式</h3>
+                        <div class="me-info-box">
+                            <button onclick="openCSSThemeManager()">查看/编辑CSS主题</button>
+                            <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                                自定义消息app的全局样式
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="me-section">
+                        <h3>🤖 AI提示词管理</h3>
+                        <div class="me-info-box">
+                            <button onclick="openPromptManager()">管理AI提示词</button>
+                            <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                                统一管理所有AI提示词，支持多方案切换
+                            </p>
+                        </div>
+                    </div>
+
+                    html
+                    <div class="me-section">
+                        <h3>账号管理</h3>
+                        <div class="me-info-box">
+                            <button onclick="openProfileSelector()">切换账号</button>
+                            <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                                切换当前使用的人设方案
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 页面背景图设置 -->
+                    <div class="me-section">
+                        <h3>🖼️ 页面背景图</h3>
+                        <div class="me-info-box">
+                            <p style="font-size: 12px; color: #000000; margin-bottom: 12px;">设置各个页面的背景图</p>
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: block; margin-bottom: 4px; font-weight: bold;">选择页面：</label>
+                                <select id="bgTypeSelect" onchange="updateBackgroundType()" style="width: 100%; padding: 8px; border: 2px solid #000; font-family: inherit;">
+                                    <option value="myBg">我背景</option>
+                                    <option value="contactBg">联系人背景</option>
+
+                                    <option value="npcBg">NPC页面背景</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <input type="text" id="bgImageUrl" placeholder="输入图片URL" style="width: 100%; padding: 8px; border: 2px solid #000; font-family: inherit; box-sizing: border-box;">
+                            </div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                <button onclick="applyBackgroundUrl()">应用URL</button>
+                                <button onclick="uploadBackgroundImage()">上传图片</button>
+                            </div>
+                            <input type="file" id="bgImageFile" accept="image/*" style="display: none;" onchange="handleBackgroundUpload(event)">
+                            <div id="bgPreview" style="min-height: 80px; border: 2px dashed #ccc; border-radius: 8px; background-size: cover; background-position: center; background-repeat: repeat; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px; margin-bottom: 8px;">背景图预览</div>
+                            <button onclick="clearBackgroundImage()" style="width: 100%;">清除背景图</button>
+                            <p style="font-size: 12px; color: #000000; margin-top: 8px;">为不同页面设置背景图，图片会自动平铺</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系人页面 -->
+            <div class="content-panel" id="panel-contacts">
+                <div class="panel-header">
+                    <div class="panel-title-area">
+                        <span class="panel-note">点击进入即可聊天 | 同一分组内的CHAR处于同一世界观</span>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="action-icon-btn" onclick="openCreateGroup()" title="创建分组">📁</button>
+                        <button class="action-icon-btn" onclick="openAddContact()" title="添加联系人">➕</button>
+                    </div>
+                </div>
+
+                <div class="contacts-groups-container" id="contactsGroupsContainer">
+                    <!-- 分组将动态生成 -->
+                </div>
+            </div>
+
+            <!-- NPC页面 -->
+            <div class="content-panel" id="panel-npc">
+                <div class="panel-header">
+                    <div class="panel-title-area">
+                        <span class="panel-note">点击添加NPC，这些NPC会作为CHAR的NPC，或者CHAR1的NPC</span>
+                    </div>
+                    <div class="panel-actions">
+                        <button class="action-icon-btn" onclick="openAddNPC()" title="添加NPC">➕</button>
+                    </div>
+                </div>
+
+                <div class="npc-info-box">
+                    <p>选择一个CHAR，为其创建NPC角色，设置头像、人设和关系</p>
+                    <p>关系可选：🟢 CHAR可知 / 🔴 CHAR不知</p>
+                    <p>点击"关系图"查看和编辑NPC之间、NPC与同分组CHAR之间的关系网络</p>
+                </div>
+
+                <div class="npc-list" id="npcList">
+                    <!-- NPC列表将动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPC 创建/编辑页 -->
+    <div class="page" id="page-add-contact">
+        <div class="page-header">
+            <button class="back-btn" onclick="closePageToMain('page-add-contact')">‹ 返回</button>
+            <h3 id="contactFormTitle">添加联系人</h3>
+            <button class="save-btn" onclick="saveContact()">保存</button>
+        </div>
+
+        <div class="page-content">
+            <input type="hidden" id="editingContactId">
+            
+            <!-- 头像选择 -->
+            <div class="avatar-select-section">
+                <img id="contactAvatar" src="" alt="头像" class="contact-avatar-preview">
+                <button class="select-avatar-btn" onclick="openAvatarSelector()">
+                    从头像库选择
+                </button>
+            </div>
+
+            <!-- 封图选择 -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>封图（联系人卡片背景图）</label>
+                    <div class="cover-image-preview" id="coverImagePreview">
+                        <img id="contactCoverImage" src="" alt="封图预览" style="display: none;">
+                        <div class="cover-placeholder">暂无封图</div>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <input type="text" id="contactCoverUrl" placeholder="输入封图 URL" style="flex: 1;">
+                        <button class="btn-small" onclick="applyCoverUrl()">应用</button>
+                    </div>
+                    <input type="file" id="contactCoverUpload" accept="image/*" onchange="uploadCoverImage(event)" style="margin-top: 8px; font-size: 12px;">
+                    <button class="btn-small" onclick="clearCoverImage()" style="margin-top: 8px;">
+                        清除封图
+                    </button>
+                    <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                        封图将显示在联系人卡片的上方区域
+                    </p>
+                </div>
+            </div>
+
+            <!-- 表单 -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>姓名（真实姓名）*</label>
+                    <input type="text" id="contactName" placeholder="输入CHAR的真实姓名" required>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        这是CHAR的真实姓名，AI会知道这个名字
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>备注（显示名称）</label>
+                    <input type="text" id="contactNickname" placeholder="输入你对TA的备注（可选）">
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        备注仅你可见，CHAR不知道你给TA的备注。如不填写，将显示真实姓名
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>分组</label>
+                    <select id="contactGroup">
+                        <option value="">选择分组</option>
+                        <!-- 分组选项将动态生成 -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>性别</label>
+                    <select id="contactGender">
+                        <option value="">不设置</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>气泡颜色方案</label>
+                    <select id="contactBubbleScheme" onchange="previewBubbleScheme()">
+                        <option value="default">默认蓝色</option>
+                    </select>
+                    <button class="btn-small" onclick="openBubbleCustomizer()" style="margin-top: 10px;">
+                        自定义气泡样式
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>通话记录气泡样式</label>
+                    <select id="contactCallBubbleScheme" onchange="previewCallBubbleScheme()">
+                        <option value="default">默认样式（跟随聊天气泡）</option>
+                    </select>
+                    <button class="btn-small" onclick="openCallBubbleCustomizer()" style="margin-top: 10px;">
+                        自定义通话记录气泡
+                    </button>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        自定义语音/视频通话结束后的气泡样式
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>用户人设</label>
+                    <select id="contactUserPersona" onchange="updateUserPersonaPreview()">
+                        <option value="">不使用用户人设</option>
+                        <!-- 用户人设选项将动态生成 -->
+                    </select>
+                    <div id="userPersonaPreview" style="margin-top: 8px; padding: 8px; background: rgba(255, 182, 193, 0.1); border: 1px solid #FFB6C1; border-radius: 4px; font-size: 12px; color: #000000; display: none;">
+                        <div style="font-weight: bold; margin-bottom: 4px;">人设预览：</div>
+                        <div id="userPersonaContent"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        从"我-账号管理"中选择用户人设，CHAR 在回复时会参考这个信息
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>CHAR人设</label>
+                    <textarea id="contactPersonality" rows="4" placeholder="描述CHAR的性格、背景、说话方式等..."></textarea>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        设置CHAR的基础人设，这将影响TA的回复风格和行为表现
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>关联世界书（备忘录）</label>
+                    <div id="contactWorldBookList" style="display: flex; flex-direction: column; gap: 6px;">
+                    </div>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        可以为该联系人选择一个或多个世界书，用于在聊天提示词中注入世界观设定。
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>📖 共读书籍挂载</label>
+                    <div id="contactMountedBookList" style="display: flex; flex-direction: column; gap: 6px;">
+                    </div>
+                    <p style="font-size: 12px; color: #000000; margin-top: 4px;">
+                        挂载共读书籍后，TA会感知你的阅读进度，在聊天中召回书中记忆。
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>初次见面语</label>
+                    <input type="text" id="contactGreeting" placeholder="第一次见面时 TA 会说什么？">
+                </div>
+
+                <div class="form-group">
+                    <label>自动回复（按状态）</label>
+                    <p style="font-size: 12px; color: #000000; margin-bottom: 6px;">
+                        当AI状态处于下列状态时，将把对应的自动回复策略加入提示词中。
+                    </p>
+                    <textarea id="autoReplyRulesInput" rows="4" placeholder="例如：&#10;睡觉中 => 我在睡觉，明天再聊吧~&#10;工作中 => 我现在在工作，可能回复较慢~"></textarea>
+                    <p style="font-size: 12px; color: #7f8c8d; margin-top: 4px;">
+                        每行一条规则，格式为：状态文本 =&gt; 自动回复内容。
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label>API 方案</label>
+                    <select id="contactApiScheme" onchange="loadApiSchemeForContact()">
+                        <option value="">使用默认配置</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>AI 模型</label>
+                    <select id="contactModel">
+                        <option value="">使用默认模型</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>消息提示音 URL</label>
+                    <input type="text" id="contactNotificationSound" placeholder="https://example.com/sound.mp3">
+                </div>
+
+                <div class="form-group">
+                    <label>来电铃声 URL</label>
+                    <input type="text" id="contactRingtone" placeholder="https://example.com/ringtone.mp3">
+                </div>
+
+                <div class="form-group">
+                    <label>聊天背景</label>
+                    <input type="text" id="contactChatBgUrl" placeholder="背景图片 URL">
+                    <input type="file" accept="image/*" onchange="uploadChatBackground(event)" style="margin-top: 10px;">
+                    <button class="btn-small" onclick="clearChatBackground()" style="margin-top: 10px;">
+                        清除背景
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>实时感知功能</label>
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                            <input type="radio" name="timeMode" value="same" checked onchange="toggleTimeMode()">
+                            <span>同地时间（同一时区）</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; margin-top: 8px;">
+                            <input type="radio" name="timeMode" value="different" onchange="toggleTimeMode()">
+                            <span>异地时间（不同时区）</span>
+                        </label>
+                    </div>
+                    
+                    <div id="sameTimeZoneSettings" style="margin-top: 10px;">
+                        <label>共同时区</label>
+                        <select id="sharedTimezone">
+                            <option value="Asia/Shanghai">中国标准时间 (UTC+8)</option>
+                            <option value="America/New_York">美国东部时间 (UTC-5/-4)</option>
+                            <option value="America/Los_Angeles">美国西部时间 (UTC-8/-7)</option>
+                            <option value="Europe/London">英国时间 (UTC+0/+1)</option>
+                            <option value="Europe/Paris">欧洲中部时间 (UTC+1/+2)</option>
+                            <option value="Asia/Tokyo">日本标准时间 (UTC+9)</option>
+                            <option value="Asia/Seoul">韩国标准时间 (UTC+9)</option>
+                            <option value="Australia/Sydney">澳大利亚东部时间 (UTC+10/+11)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="differentTimeZoneSettings" style="display: none; margin-top: 10px;">
+                        <label>用户所处时区</label>
+                        <select id="userTimezone" style="margin-bottom: 10px;">
+                            <option value="Asia/Shanghai">中国标准时间 (UTC+8)</option>
+                            <option value="America/New_York">美国东部时间 (UTC-5/-4)</option>
+                            <option value="America/Los_Angeles">美国西部时间 (UTC-8/-7)</option>
+                            <option value="Europe/London">英国时间 (UTC+0/+1)</option>
+                            <option value="Europe/Paris">欧洲中部时间 (UTC+1/+2)</option>
+                            <option value="Asia/Tokyo">日本标准时间 (UTC+9)</option>
+                            <option value="Asia/Seoul">韩国标准时间 (UTC+9)</option>
+                            <option value="Australia/Sydney">澳大利亚东部时间 (UTC+10/+11)</option>
+                        </select>
+                        
+                        <label>AI 角色所处时区</label>
+                        <select id="aiTimezone">
+                            <option value="Asia/Shanghai">中国标准时间 (UTC+8)</option>
+                            <option value="America/New_York">美国东部时间 (UTC-5/-4)</option>
+                            <option value="America/Los_Angeles">美国西部时间 (UTC-8/-7)</option>
+                            <option value="Europe/London">英国时间 (UTC+0/+1)</option>
+                            <option value="Europe/Paris">欧洲中部时间 (UTC+1/+2)</option>
+                            <option value="Asia/Tokyo">日本标准时间 (UTC+9)</option>
+                            <option value="Asia/Seoul">韩国标准时间 (UTC+9)</option>
+                            <option value="Australia/Sydney">澳大利亚东部时间 (UTC+10/+11)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="bilingualEnabled" onchange="toggleBilingualSettings()">
+                        <span>双语显示</span>
+                    </label>
+                    
+                    <div id="bilingualSettings" style="display: none; margin-top: 10px;">
+                        <label>语言组合</label>
+                        <select id="bilingualMode">
+                            <option value="zh-en">中英双语</option>
+                            <option value="zh-ja">中日双语</option>
+                            <option value="zh-ko">中韩双语</option>
+                            <option value="zh-de">中德双语</option>
+                        </select>
+                        <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d;">
+                            💡 AI 会用外语回复，点击气泡可查看中文翻译
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="ttsEnabled" onchange="toggleTtsSettings()">
+                        <span>启用语音合成 (TTS)</span>
+                    </label>
+                    <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d;">
+                        💡 需要先在设置中配置 MiniMax 并启用
+                    </div>
+                    
+                    <div id="ttsSettings" style="display: none; margin-top: 10px;">
+                        <label>语音 ID (音色)</label>
+                        <input type="text" id="ttsVoiceId" placeholder="例如：male-qn-qingse" style="margin-bottom: 10px;">
+                        <small style="display: block; color: #7f8c8d; margin-bottom: 10px;">
+                            常用音色：male-qn-qingse (青涩青年音), female-shaonv (少女音), male-qn-jingying (精英青年音)
+                        </small>
+                        
+                        <label>语音语言</label>
+                        <select id="ttsLanguage" style="margin-bottom: 10px;">
+                            <option value="zh">中文</option>
+                            <option value="en">英文</option>
+                            <option value="ja">日语</option>
+                            <option value="ko">韩语</option>
+                        </select>
+                        
+                        <label>语音速度</label>
+                        <input type="number" id="ttsSpeed" value="1.0" min="0.5" max="2.0" step="0.1" style="margin-bottom: 5px;">
+                        <small style="display: block; color: #7f8c8d;">
+                            范围：0.5 - 2.0，默认 1.0
+                        </small>
+                    </div>
+                </div>
+
+                <div class="bubble-preview" id="bubblePreview">
+                    <div class="preview-label">气泡预览：</div>
+                    <div class="chat-preview">
+                        <div class="message-bubble received">你好！</div>
+                        <div class="message-bubble sent">嗨，很高兴认识你</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天页面 -->
+    <div class="page" id="page-chat">
+        <div class="chat-header" style="padding: 10px 16px;">
+            <button class="back-btn" onclick="closePageToMain('page-chat')">‹</button>
+            
+            <!-- 中间头像和信息 -->
+            <div class="chat-header-center" style="gap: 4px;">
+                <img id="chatAvatar" src="" alt="头像" class="chat-header-avatar" style="width: 48px !important; height: 48px !important;">
+                <div id="chatName" class="chat-header-name">联系人</div>
+                <div id="chatStatus" class="chat-header-status">在线</div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <button class="chat-menu-btn" onclick="showChatMenu()">⋯</button>
+        </div>
+        
+        <!-- 6个功能图标横向一排，独立容器 -->
+        <div style="display: flex; justify-content: center; align-items: center; gap: 8px; padding: 6px 0; background: var(--chat-header-bg); border-bottom: 2px solid var(--chat-header-border);">
+            <button class="chat-icon-btn" onclick="openTokenAnalysis()" title="Token 分析" style="width: 32px !important; height: 32px !important;">
+                <img src="https://files.catbox.moe/vm8m1n.jpg" alt="分析" style="width: 18px !important; height: 18px !important;">
+            </button>
+            <button class="chat-icon-btn" onclick="openMemoryBank()" title="记忆库" style="width: 32px !important; height: 32px !important;">
+                <img src="https://files.catbox.moe/9136hf.jpg" alt="记忆" style="width: 18px !important; height: 18px !important;">
+            </button>
+            <button class="chat-icon-btn" onclick="showRegenerateMenu()" title="重新生成回复" style="width: 32px !important; height: 32px !important;">
+                <img id="regenerateIcon" src="https://files.catbox.moe/cbatt5.jpg" alt="重新生成" style="width: 18px !important; height: 18px !important;">
+            </button>
+            <button class="chat-icon-btn" onclick="openMessageFormatSettings()" title="消息格式设置" style="width: 32px !important; height: 32px !important;">
+                <img src="https://i.ibb.co/YFhP77Sz/format-icon.jpg" alt="格式设置" style="width: 18px !important; height: 18px !important;">
+            </button>
+            <button class="chat-icon-btn" onclick="toggleMessageEditMode()" title="消息编辑" style="width: 32px !important; height: 32px !important;">
+                <img id="messageEditIcon" src="https://i.ibb.co/YFhP77Sz/format-icon.jpg" alt="编辑" style="width: 18px !important; height: 18px !important;">
+            </button>
+            <button class="chat-icon-btn" onclick="openFavorites()" title="收藏消息" style="width: 32px !important; height: 32px !important;">
+                <img id="favoritesIcon" src="https://i.ibb.co/YFhP77Sz/format-icon.jpg" alt="收藏" style="width: 18px !important; height: 18px !important;">
+            </button>
+        </div>
+
+        <!-- 聊天菜单 -->
+        <div class="chat-menu" id="chatMenu">
+            <div class="chat-menu-item" onclick="editCurrentContact()">
+                <span>✏️</span>
+                <span>编辑联系人</span>
+            </div>
+            <div class="chat-menu-item" onclick="deleteCurrentContact()">
+                <span>🗑️</span>
+                <span>删除联系人</span>
+            </div>
+            <div class="chat-menu-item" onclick="clearChatHistory()">
+                <span>🧹</span>
+                <span>清空聊天记录</span>
+            </div>
+        </div>
+
+        <!-- 重新生成菜单 -->
+        <div class="chat-menu" id="regenerateMenu">
+            <div class="chat-menu-item" onclick="openRegenerateIconSettings()">
+                <span>🎨</span>
+                <span>自定义图标</span>
+            </div>
+            <div class="chat-menu-item" onclick="regenerateLastReply()">
+                <span>🔄</span>
+                <span>重新生成回复</span>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- 消息将动态生成 -->
+        </div>
+
+        <div class="chat-input-container">
+            <button class="chat-action-btn" onclick="showInputMenu()">+</button>
+            <button class="chat-action-btn" onclick="showStickerMenu()">😊</button>
+            <button class="chat-action-btn" onclick="showMessageTypeMenu()" title="语音消息">
+                <img id="voiceFunctionIcon" src="https://i.ibb.co/yFDN2pB/image.png" alt="语音功能" style="width: 20px; height: 20px; object-fit: cover;">
+            </button>
+            <input type="text" id="chatInput" placeholder="输入消息..." onkeypress="handleChatKeyPress(event)">
+            <button class="chat-send-btn" onclick="sendMessage()">发送</button>
+            <button class="chat-merge-send-btn" onclick="mergeSendMessages()" title="合并发送所有消息">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- 消息类型菜单 -->
+        <div class="message-type-menu" id="messageTypeMenu">
+            <div class="message-type-item" onclick="openMockVoiceDialog()">
+                <span>🎤</span>
+                <span>文字语音</span>
+            </div>
+            <div class="message-type-item" onclick="startVoiceRecognition()">
+                <span>🎙️</span>
+                <span>语音识别 (TTS)</span>
+            </div>
+        </div>
+        
+        <!-- 表情包菜单 -->
+        <div class="sticker-menu" id="stickerMenu">
+            <div class="sticker-menu-header">
+                <div class="sticker-categories" id="stickerCategories"></div>
+                <button class="sticker-manage-btn" onclick="openStickerManager()">⚙️</button>
+            </div>
+            <div class="sticker-grid" id="stickerGrid"></div>
+        </div>
+        
+        <!-- + 按钮底部面板 -->
+        <div class="bottom-sheet-overlay" id="bottomSheetOverlay" onclick="closeBottomSheet()"></div>
+        <div class="bottom-sheet" id="bottomSheet">
+            <div class="bottom-sheet-content">
+                <div class="bottom-sheet-grid">
+                    <div class="bottom-sheet-item" onclick="handleBottomSheetAction('video')">
+                        <div class="bottom-sheet-icon">📹</div>
+                        <div class="bottom-sheet-label">视频</div>
+                    </div>
+                    <div class="bottom-sheet-item" onclick="handleBottomSheetAction('call')">
+                        <div class="bottom-sheet-icon">📞</div>
+                        <div class="bottom-sheet-label">语音电话</div>
+                    </div>
+                    <div class="bottom-sheet-item" onclick="handleBottomSheetAction('image')">
+                        <div class="bottom-sheet-icon">🖼️</div>
+                        <div class="bottom-sheet-label">图片</div>
+                    </div>
+                    <div class="bottom-sheet-item" onclick="handleBottomSheetAction('location')">
+                        <div class="bottom-sheet-icon">📍</div>
+                        <div class="bottom-sheet-label">定位</div>
+                    </div>
+                    <div class="bottom-sheet-item" onclick="handleBottomSheetAction('manage')">
+                        <div class="bottom-sheet-icon">⚙️</div>
+                        <div class="bottom-sheet-label">管理</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频通话页面 -->
+    <div class="page" id="page-video-call">
+        <div class="video-call-header">
+            <button class="video-call-back-btn" onclick="endVideoCall()">‹</button>
+            <div class="video-call-duration" id="videoCallDuration">00:00</div>
+            <button class="video-call-regenerate-btn" onclick="regenerateLastVideoCallMessage()" title="重新生成最新回复">🔄</button>
+            <button class="video-call-settings-btn" onclick="openVideoCallSettings()">⚙️</button>
+            <button class="video-call-hangup-btn" onclick="confirmEndVideoCall()">📞</button>
+        </div>
+        
+        <div class="video-call-content">
+            <div class="video-call-character">
+                <img id="videoCallCharacterImage" src="" alt="CHAR">
+                <!-- 正在输入中指示器（在 CHAR 图片上方） -->
+                <div class="video-call-typing-indicator" id="videoCallTypingIndicator">
+                    <div class="typing-bubble">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-call-messages" id="videoCallMessages">
+                <!-- 视频通话消息将动态生成 -->
+            </div>
+        </div>
+        
+        <div class="video-call-input-container">
+            <input type="text" id="videoCallInput" placeholder="输入消息..." onkeypress="handleVideoCallKeyPress(event)">
+            <button class="video-call-send-btn" onclick="sendVideoCallMessage()">发送</button>
+        </div>
+    </div>
+
+    <!-- 语音通话页面 -->
+    <div class="page" id="page-voice-call">
+        <div class="voice-call-header">
+            <button class="voice-call-settings-btn" onclick="openVoiceCallSettingsNew()" title="通话设置">⚙️</button>
+            <div class="voice-call-contact-info">
+                <img id="voiceCallAvatar" src="" alt="头像" class="voice-call-avatar">
+                <div class="voice-call-name" id="voiceCallName">联系人</div>
+                <div class="voice-call-duration" id="voiceCallDuration">00:00</div>
+            </div>
+            <button class="voice-call-appearance-btn" onclick="openVoiceCallAppearanceNew()" title="外观设置">🎨</button>
+            <button class="voice-call-regenerate-btn" onclick="regenerateLastVoiceReply()" title="重新生成">🔄</button>
+        </div>
+
+        <!-- 声波可视化容器 -->
+        <div class="voice-call-visualizer">
+            <canvas id="voiceCallWaveform" width="800" height="200"></canvas>
+            <div class="voice-call-status" id="voiceCallStatus">等待中...</div>
+        </div>
+
+        <!-- 通话消息区域 -->
+        <div class="voice-call-messages" id="voiceCallMessages">
+            <!-- 消息气泡将动态生成 -->
+        </div>
+
+        <!-- 底部控制栏 -->
+        <div class="voice-call-controls">
+            <button class="voice-call-hangup-btn" onclick="endVoiceCall()" title="挂断">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.68-1.36-2.66-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/>
+                </svg>
+            </button>
+            <input type="text" id="voiceCallInput" placeholder="输入消息..." onkeypress="handleVoiceCallKeyPress(event)">
+            <button class="voice-call-mic-btn" onclick="startVoiceInput()" title="点击开始语音识别">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 语音识别状态提示 -->
+        <div class="voice-recognition-indicator" id="voiceRecognitionIndicator">
+            <div class="recognition-pulse"></div>
+            <span>识别中...</span>
+        </div>
+    </div>
+
+    <!-- 语音通话设置弹窗 -->
+    <div class="voice-call-settings-modal" id="voiceCallSettingsModal">
+        <div class="voice-call-settings-content pixel-container">
+            <div class="voice-call-settings-header pixel-header">
+                <h3 class="pixel-title">通话设置</h3>
+                <button class="pixel-btn-icon" onclick="closeVoiceCallSettings()">×</button>
+            </div>
+            <div class="voice-call-settings-body pixel-body">
+                <div class="pixel-item">
+                    <label class="pixel-label">通话背景</label>
+                    <input type="text" id="voiceCallBackground" class="pixel-input" placeholder="输入图片URL">
+                    <button class="pixel-btn-small" onclick="uploadVoiceCallBackground()" style="margin-top: 8px;">上传图片</button>
+                    <input type="file" id="voiceCallBackgroundFile" accept="image/*" style="display: none;" onchange="handleVoiceCallBackgroundUpload(event)">
+                </div>
+
+                <div class="pixel-item" style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 13px; color: #666;">
+                        💡 语音通话提示词管理已迁移到统一管理系统。<br>
+                        请前往"我"页面 → "AI提示词管理" → "语音通话提示词"进行设置。
+                    </p>
+                </div>
+
+                <div class="pixel-item">
+                    <label class="pixel-label" style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="voiceCallEnableMinimax" class="pixel-checkbox" checked>
+                        <span>启用 MiniMax 语音合成</span>
+                    </label>
+                    <small class="pixel-hint">关闭后将无法使用语音功能</small>
+                </div>
+
+                <div class="pixel-item">
+                    <label class="pixel-label" style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="voiceCallContinuousRead" class="pixel-checkbox">
+                        <span>启用连读功能</span>
+                    </label>
+                    <small class="pixel-hint">开启后AI回复会自动朗读，无需点击气泡</small>
+                </div>
+
+                <div class="pixel-item">
+                    <label class="pixel-label">读取聊天记录条数</label>
+                    <input type="number" id="voiceCallHistoryCount" class="pixel-input" value="10" min="0" max="50">
+                    <small class="pixel-hint">让AI知道通话前的聊天内容</small>
+                </div>
+
+                <div class="pixel-item">
+                    <label class="pixel-label">主动消息间隔（秒）</label>
+                    <input type="number" id="voiceCallActiveInterval" class="pixel-input" value="30" min="10" max="300">
+                    <small class="pixel-hint">用户多久不说话时AI主动发起话题</small>
+                </div>
+
+                <button class="pixel-btn" onclick="saveVoiceCallSettingsNew()">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 语音通话外观设置弹窗 -->
+    <div class="voice-call-appearance-modal" id="voiceCallAppearanceModal">
+        <div class="voice-call-appearance-content pixel-container">
+            <div class="voice-call-appearance-header pixel-header">
+                <h3 class="pixel-title">外观设置</h3>
+                <button class="pixel-btn-icon" onclick="closeVoiceCallAppearance()">×</button>
+            </div>
+            <div class="voice-call-appearance-body pixel-body">
+                <!-- 图标设置 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">图标设置</h4>
+                    
+                    <div class="pixel-item">
+                        <label class="pixel-label">返回按钮图标</label>
+                        <div class="icon-preview-row">
+                            <div class="icon-preview" id="currentVoiceBackIcon">←</div>
+                            <input type="text" id="voiceBackIconText" class="pixel-input" placeholder="输入文字或Emoji">
+                            <button class="pixel-btn-small" onclick="setVoiceBackIconText()">设置文字</button>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <input type="text" id="voiceHangupIconUrl" class="pixel-input" placeholder="或输入图片URL">
+                            <button class="pixel-btn-small" onclick="setVoiceHangupIconUrl()" style="margin-top: 4px;">设置图片</button>
+                            <button class="pixel-btn-small" onclick="uploadVoiceHangupIcon()" style="margin-top: 4px;">上传图片</button>
+                            <input type="file" id="voiceHangupIconFile" accept="image/*" style="display: none;" onchange="handleVoiceHangupIconUpload(event)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSS设置 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">自定义 CSS</h4>
+                    <div class="pixel-item">
+                        <textarea id="voiceCallCustomCSS" class="pixel-textarea" rows="20" placeholder="输入自定义CSS样式..."></textarea>
+                        <small class="pixel-hint">实时更新，修改后立即生效</small>
+                    </div>
+                    <div class="voice-call-appearance-preview">
+                        <div class="pixel-label">当前默认样式参考：</div>
+                        <pre id="voiceCallDefaultCSS" class="pixel-code-preview"></pre>
+                    </div>
+                </div>
+
+                <button class="pixel-btn" onclick="saveVoiceCallAppearanceNew()">保存外观</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 头像选择器弹窗 -->
+    <div class="avatar-selector-modal" id="avatarSelectorModal">
+        <div class="avatar-selector-content">
+            <div class="avatar-selector-header">
+                <h3>选择头像</h3>
+                <button class="close-modal-btn" onclick="closeAvatarSelector()">×</button>
+            </div>
+            <div class="avatars-grid-selector" id="avatarsSelectorGrid"></div>
+        </div>
+    </div>
+
+    <!-- 气泡样式自定义弹窗 -->
+    <div class="bubble-customizer-modal" id="bubbleCustomizerModal">
+        <div class="bubble-customizer-content">
+            <div class="bubble-customizer-header">
+                <h3>自定义气泡样式</h3>
+                <button class="close-modal-btn" onclick="closeBubbleCustomizer()">×</button>
+            </div>
+            <div class="bubble-customizer-body">
+                <div class="form-group">
+                    <label>方案名称</label>
+                    <input type="text" id="bubbleSchemeName" placeholder="输入方案名称">
+                </div>
+                <div class="form-group">
+                    <label>自定义 CSS</label>
+                    <textarea id="bubbleCustomCSS" rows="15" class="pixel-textarea code-editor"></textarea>
+                </div>
+                <div class="bubble-customizer-preview">
+                    <div class="preview-label">实时预览：</div>
+                    <div class="chat-preview" id="bubbleCustomPreview">
+                        <div class="message-bubble received">这是对方的消息</div>
+                        <div class="message-bubble sent">这是我的消息</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-primary" onclick="saveBubbleScheme()">保存方案</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <label>删除已有方案</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="bubbleSchemeToDelete" style="flex: 1;">
+                            <option value="">选择要删除的方案</option>
+                        </select>
+                        <button class="btn-cancel" onclick="deleteBubbleScheme()">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通话记录气泡样式自定义弹窗 -->
+    <div class="bubble-customizer-modal" id="callBubbleCustomizerModal">
+        <div class="bubble-customizer-content">
+            <div class="bubble-customizer-header">
+                <h3>自定义通话记录气泡样式</h3>
+                <button class="close-modal-btn" onclick="closeCallBubbleCustomizer()">×</button>
+            </div>
+            <div class="bubble-customizer-body">
+                <div class="form-group">
+                    <label>方案名称</label>
+                    <input type="text" id="callBubbleSchemeName" placeholder="输入方案名称，如：粉色通话气泡">
+                </div>
+                <div class="form-group">
+                    <label>自定义 CSS</label>
+                    <textarea id="callBubbleCustomCSS" rows="20" class="pixel-textarea code-editor" placeholder="输入CSS代码..."></textarea>
+                    <p style="font-size: 12px; color: #7f8c8d; margin-top: 8px;">
+                        💡 提示：可以自定义 .video-call-record-bubble 和 .voice-call-record-bubble 的样式
+                    </p>
+                </div>
+                <div class="bubble-customizer-preview">
+                    <div class="preview-label">实时预览：</div>
+                    <div class="chat-preview" id="callBubbleCustomPreview">
+                        <div class="message-bubble video-call-record-bubble received">
+                            <div class="video-call-record-header">📹 视频通话</div>
+                            <div class="video-call-record-duration">通话结束 04:32</div>
+                        </div>
+                        <div class="message-bubble voice-call-record-bubble received" style="margin-top: 12px;">
+                            <div class="voice-call-record-header">🎤 语音通话</div>
+                            <div class="voice-call-record-duration">通话结束 02:15</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-primary" onclick="saveCallBubbleScheme()">保存方案</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <label>删除已有方案</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="callBubbleSchemeToDelete" style="flex: 1;">
+                            <option value="">选择要删除的方案</option>
+                        </select>
+                        <button class="btn-cancel" onclick="deleteCallBubbleScheme()">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS 风格通知横幅 -->
+    <div class="notification-banner" id="notificationBanner">
+        <img class="notification-avatar" id="notificationAvatar" src="" alt="">
+        <div class="notification-content">
+            <div class="notification-title" id="notificationTitle">联系人</div>
+            <div class="notification-message" id="notificationMessage">新消息</div>
+        </div>
+    </div>
+
+    <!-- P2 我的信息 -->
+    <div class="page" id="page-info">
+        <div class="page-header">
+            <button class="back-btn" onclick="closePageToMain('page-info')">‹ 返回</button>
+            <h3>我的信息</h3>
+            <button class="save-btn" onclick="saveUserInfo()">保存</button>
+        </div>
+
+        <div class="page-content">
+            <!-- 当前方案名称 -->
+            <div class="current-scheme-info">
+                <span class="scheme-label">当前方案：</span>
+                <span class="scheme-name" id="currentSchemeName">初始人设</span>
+            </div>
+
+            <!-- 头像预览 -->
+            <div class="avatar-preview-section">
+                <img id="previewAvatar" src="" alt="头像预览" class="preview-avatar">
+                <button class="select-avatar-btn" onclick="openPage('page-avatars')">
+                    点击从头像库选择
+                </button>
+            </div>
+
+            <!-- 表单 -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label>姓名（真实）</label>
+                    <input type="text" id="realName" placeholder="输入你的真实姓名">
+                </div>
+
+                <div class="form-group">
+                    <label>网名</label>
+                    <input type="text" id="nickname" placeholder="输入你的网名">
+                </div>
+
+                <div class="form-group">
+                    <label>人设</label>
+                    <textarea id="bio" rows="3" class="pixel-textarea" placeholder="简短描述一下自己..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>人设标签</label>
+                    <div class="tags-container" id="tagsContainer"></div>
+                    <div class="tag-input-group">
+                        <input type="text" id="tagInput" placeholder="添加标签...">
+                        <button class="add-tag-btn" onclick="addTag()">+</button>
+                    </div>
+                </div>
+
+                <!-- 背景图设置 -->
+                <div class="form-group">
+                    <label>🖼️ 背景图设置</label>
+                    <div class="background-settings">
+                        <div class="bg-type-selector">
+                            <label>
+                                <input type="radio" name="bgType" value="myBg" checked onchange="updateBackgroundType()">
+                                我背景图
+                            </label>
+                            <label>
+                                <input type="radio" name="bgType" value="contactBg" onchange="updateBackgroundType()">
+                                联系人背景图
+                            </label>
+                            <label>
+                                <input type="radio" name="bgType" value="npcBg" onchange="updateBackgroundType()">
+                                NPC背景图
+                            </label>
+                        </div>
+                        
+                        <div class="bg-upload-section" style="margin-top: 10px;">
+                            <input type="text" id="bgImageUrl" placeholder="输入图片URL" style="width: 100%; padding: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-small" onclick="applyBackgroundUrl()" style="flex: 1;">应用URL</button>
+                                <button class="btn-small" onclick="uploadBackgroundImage()" style="flex: 1;">上传图片</button>
+                            </div>
+                            <input type="file" id="bgImageFile" accept="image/*" style="display: none;" onchange="handleBackgroundUpload(event)">
+                            
+                            <div class="bg-preview" id="bgPreview" style="margin-top: 10px; min-height: 100px; border: 2px dashed #ccc; border-radius: 8px; background-size: cover; background-position: center; background-repeat: repeat; display: flex; align-items: center; justify-content: center; color: #999;">
+                                背景图预览
+                            </div>
+                            
+                            <button class="btn-small" onclick="clearBackgroundImage()" style="width: 100%; margin-top: 8px;">清除背景图</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保存按钮组 -->
+            <div class="save-buttons-group">
+                <button class="save-scheme-btn" onclick="saveCurrentProfile()">
+                    💾 保存当前方案
+                </button>
+                <button class="save-as-btn" onclick="saveAsNewProfile()">
+                    ➕ 保存为新方案
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提示词管理页面 -->
+    <div class="page" id="page-prompt-manager">
+        <div class="page-header">
+            <button class="back-btn" onclick="closePageToMain('page-prompt-manager')">‹ 返回</button>
+            <h3>AI提示词管理</h3>
+            <button class="save-btn" onclick="savePromptChanges()">保存</button>
+        </div>
+
+        <div class="page-content">
+            <!-- 当前方案选择 -->
+            <div class="prompt-scheme-selector">
+                <label>当前方案：</label>
+                <select id="promptSchemeSelect" onchange="switchPromptSchemeUI()">
+                    <!-- 动态生成 -->
+                </select>
+                <button class="btn-small" onclick="createNewPromptScheme()">新建方案</button>
+                <button class="btn-small" onclick="deleteCurrentPromptScheme()">删除方案</button>
+            </div>
+
+            <!-- 提示词编辑区域 -->
+            <div class="prompt-editors">
+                <div class="prompt-editor-section">
+                    <h4>💬 人设提示词（普通聊天）</h4>
+                    <p class="prompt-desc">用于普通聊天时的基础人设，会与联系人的人设结合使用</p>
+                    <textarea id="promptPersonality" rows="4" class="pixel-textarea" placeholder="留空则使用联系人的人设..."></textarea>
+                </div>
+
+                <div class="prompt-editor-section">
+                    <h4>📹 视频通话提示词</h4>
+                    <p class="prompt-desc">视频通话时的特殊规则和格式要求</p>
+                    <textarea id="promptVideoCall" rows="8" class="pixel-textarea" placeholder="输入视频通话提示词..."></textarea>
+                    <button class="btn-small" onclick="resetPromptToDefault('videoCall')">恢复默认</button>
+                </div>
+
+                <div class="prompt-editor-section">
+                    <h4>📞 语音通话提示词</h4>
+                    <p class="prompt-desc">语音通话时的特殊规则和格式要求</p>
+                    <textarea id="promptVoiceCall" rows="8" class="pixel-textarea" placeholder="输入语音通话提示词..."></textarea>
+                    <button class="btn-small" onclick="resetPromptToDefault('voiceCall')">恢复默认</button>
+                </div>
+
+                <div class="prompt-editor-section">
+                    <h4>📝 总结提示词</h4>
+                    <p class="prompt-desc">用于总结对话内容的提示词</p>
+                    <textarea id="promptSummary" rows="4" class="pixel-textarea" placeholder="输入总结提示词..."></textarea>
+                    <button class="btn-small" onclick="resetPromptToDefault('summary')">恢复默认</button>
+                </div>
+
+                <div class="prompt-editor-section">
+                    <h4>📋 消息格式提示词</h4>
+                    <p class="prompt-desc">消息格式的特殊说明（如语音、图片、视频等格式）</p>
+                    <textarea id="promptMessageFormat" rows="6" class="pixel-textarea" placeholder="留空则使用默认格式说明..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 方案选择弹窗 -->
+    <div class="profile-selector-modal" id="profileSelectorModal">
+        <div class="profile-selector-content">
+            <div class="profile-selector-header">
+                <h3>切换人设方案</h3>
+                <button class="close-modal-btn" onclick="closeProfileSelector()">×</button>
+            </div>
+            <div class="profile-list" id="profileList"></div>
+        </div>
+    </div>
+
+    <!-- P3 我的头像库 -->
+    <div class="page" id="page-avatars">
+        <div class="page-header">
+            <button class="back-btn" onclick="closePageToMain('page-avatars')">‹ 返回</button>
+            <h3>我的头像库</h3>
+            <span></span>
+        </div>
+
+        <div class="page-content">
+            <!-- 头像网格 -->
+            <div class="avatars-grid" id="avatarsGrid"></div>
+
+            <!-- 上传按钮 -->
+            <div class="upload-section">
+                <button class="upload-btn" onclick="uploadFromUrl()">
+                    <span>🔗</span>
+                    <span>URL 上传</span>
+                </button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    <span>📁</span>
+                    <span>本地文件</span>
+                </button>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="uploadFromFile(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Token 分析弹窗 -->
+    <div class="analysis-modal" id="tokenAnalysisModal">
+        <div class="analysis-modal-content">
+            <div class="analysis-modal-header">
+                <h3>💬 Token 分析与总结</h3>
+                <button class="close-modal-btn" onclick="closeTokenAnalysis()">×</button>
+            </div>
+            <div class="analysis-modal-body">
+                <!-- Token 统计 -->
+                <div class="analysis-section">
+                    <h4>📊 Token 统计</h4>
+                    <div class="token-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">预计下次调用 Token：</span>
+                            <span class="stat-value" id="nextCallTokens">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">当前聊天条数：</span>
+                            <span class="stat-value" id="currentMessageCount">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>AI 可见上下文条数</label>
+                        <input type="number" id="contextWindowSize" value="10" min="1" max="100" placeholder="从最新消息往上数多少条">
+                        <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d;">
+                            💡 AI 只能看到最近的 N 条消息，更早的消息不会发送给 AI
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 总结设置 -->
+                <div class="analysis-section">
+                    <h4>📝 总结设置</h4>
+                    
+                    <div class="form-group" style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        <p style="margin: 0; font-size: 13px; color: #666;">
+                            💡 提示词管理已迁移到统一管理系统。<br>
+                            请前往"我"页面 → "AI提示词管理"进行设置。
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="autoSummaryEnabled" onchange="toggleAutoSummary()">
+                            <span>自动总结</span>
+                        </label>
+                        <div id="autoSummarySettings" style="display: none; margin-top: 10px;">
+                            <label>触发条数（每条包括用户和AI消息）</label>
+                            <input type="number" id="autoSummaryThreshold" value="20" min="5" max="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h5>手动总结</h5>
+                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                            <input type="number" id="summaryRangeStart" placeholder="起始" min="1" style="width: 80px;">
+                            <span>-</span>
+                            <input type="number" id="summaryRangeEnd" placeholder="结束" min="1" style="width: 80px;">
+                            <button class="btn-primary" onclick="manualSummary()">立即总结</button>
+                        </div>
+                        <div style="font-size: 12px; color: #7f8c8d;">
+                            💡 已标记 ♥ 的消息表示已被总结过
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>总结 API 方案</label>
+                        <select id="summaryApiScheme" onchange="loadSummaryScheme()">
+                            <option value="">使用默认配置</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>总结 API URL</label>
+                        <input type="text" id="summaryApiUrl" placeholder="https://api.example.com/v1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>总结 API Key</label>
+                        <input type="password" id="summaryApiKey" placeholder="sk-...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>总结模型</label>
+                        <div style="display: flex; gap: 10px;">
+                            <select id="summaryModelDisplay" style="flex: 1;">
+                                <option value="">选择或输入模型</option>
+                            </select>
+                            <button class="btn-small" onclick="fetchSummaryModels()">拉取模型</button>
+                        </div>
+                        <input type="text" id="summaryModel" placeholder="或手动输入模型名称" style="margin-top: 10px;">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn-primary" onclick="saveSummaryScheme()">保存为方案</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>自定义图标</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img id="tokenAnalysisIconPreview" src="https://files.catbox.moe/vm8m1n.jpg" alt="图标预览" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);">
+                            <input type="text" id="tokenAnalysisIconUrl" placeholder="图标 URL" style="flex: 1;">
+                            <input type="file" id="tokenAnalysisIconFile" accept="image/*" style="display: none;" onchange="uploadTokenAnalysisIcon(event)">
+                            <button class="btn-small" onclick="document.getElementById('tokenAnalysisIconFile').click()">上传</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 保存按钮 -->
+                <div style="padding: 20px; border-top: 1px solid rgba(0, 0, 0, 0.05); background: rgba(255, 255, 255, 0.5);">
+                    <button class="btn-primary" onclick="saveAllSummarySettings()" style="width: 100%;">保存所有设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 记忆库弹窗 -->
+    <div class="memory-modal" id="memoryBankModal">
+        <div class="memory-modal-content">
+            <div class="memory-modal-header">
+                <h3>🧠 结构化记忆 <span id="smTokenCount" style="font-size:13px;font-weight:normal;opacity:0.85;margin-left:12px;">Token: ~0</span></h3>
+                <button class="close-modal-btn" onclick="closeMemoryBank()">×</button>
+            </div>
+            <div class="memory-modal-body">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>自定义图标</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="memoryBankIconPreview" src="https://files.catbox.moe/9136hf.jpg" alt="图标预览" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(0,0,0,0.1);">
+                        <input type="text" id="memoryBankIconUrl" placeholder="图标 URL" style="flex: 1;">
+                        <input type="file" id="memoryBankIconFile" accept="image/*" style="display: none;" onchange="uploadMemoryBankIcon(event)">
+                        <button class="btn-small" onclick="document.getElementById('memoryBankIconFile').click()">上传</button>
+                        <button class="btn-small" onclick="saveMemoryBankIcon()">保存</button>
+                    </div>
+                </div>
+                <div id="memoryList" class="memory-list">
+                    <!-- 结构化记忆条目将动态生成 -->
+                </div>
+                <div class="memory-empty" id="memoryEmpty" style="display: none;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📝</div>
+                    <div>还没有记忆条目</div>
+                    <div style="font-size: 14px; color: #95a5a6; margin-top: 8px;">点击各类别的 + 按钮手动添加，或使用🤖总结自动提取</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重新生成图标设置弹窗 -->
+    <div class="icon-settings-modal" id="regenerateIconModal">
+        <div class="icon-settings-content">
+            <div class="icon-settings-header">
+                <h3>🎨 自定义重新生成图标</h3>
+                <button class="close-modal-btn" onclick="closeRegenerateIconSettings()">×</button>
+            </div>
+            <div class="icon-settings-body">
+                <div class="form-group">
+                    <label>图标预览</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img id="regenerateIconPreview" src="https://files.catbox.moe/cbatt5.jpg" alt="图标预览" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 2px solid rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标 URL</label>
+                    <input type="text" id="regenerateIconUrl" placeholder="输入图标 URL" value="https://files.catbox.moe/cbatt5.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label>或上传本地图片</label>
+                    <input type="file" id="regenerateIconFile" accept="image/*" style="display: none;" onchange="uploadRegenerateIcon(event)">
+                    <button class="btn-small" onclick="document.getElementById('regenerateIconFile').click()" style="width: 100%;">选择图片</button>
+                </div>
+            </div>
+            <div class="icon-settings-actions">
+                <button class="btn-secondary" onclick="closeRegenerateIconSettings()">取消</button>
+                <button class="btn-primary" onclick="saveRegenerateIcon()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 语音功能图标设置弹窗 -->
+    <div class="icon-settings-modal" id="voiceIconModal">
+        <div class="icon-settings-content">
+            <div class="icon-settings-header">
+                <h3>🎤 自定义语音功能图标</h3>
+                <button class="close-modal-btn" onclick="closeVoiceIconSettings()">×</button>
+            </div>
+            <div class="icon-settings-body">
+                <div class="form-group">
+                    <label>图标预览</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img id="voiceIconPreview" src="https://i.ibb.co/yFDN2pB/image.png" alt="图标预览" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 2px solid rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标 URL</label>
+                    <input type="text" id="voiceIconUrl" placeholder="输入图标 URL" value="https://i.ibb.co/yFDN2pB/image.png">
+                </div>
+                
+                <div class="form-group">
+                    <label>或上传本地图片</label>
+                    <input type="file" id="voiceIconFile" accept="image/*" style="display: none;" onchange="uploadVoiceIcon(event)">
+                    <button class="btn-small" onclick="document.getElementById('voiceIconFile').click()" style="width: 100%;">选择图片</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);">
+                    <label>快捷功能</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <button class="btn-small" onclick="openMockVoiceDialog(); closeVoiceIconSettings();">📝 文字语音</button>
+                        <button class="btn-small" onclick="startVoiceRecognition(); closeVoiceIconSettings();">🎙️ 语音识别</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icon-settings-actions">
+                <button class="btn-secondary" onclick="closeVoiceIconSettings()">取消</button>
+                <button class="btn-primary" onclick="saveVoiceIcon()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息编辑图标设置弹窗 -->
+    <div class="icon-settings-modal" id="messageEditIconModal">
+        <div class="icon-settings-content">
+            <div class="icon-settings-header">
+                <h3>✏️ 自定义消息编辑图标</h3>
+                <button class="close-modal-btn" onclick="closeMessageEditIconSettings()">×</button>
+            </div>
+            <div class="icon-settings-body">
+                <div class="form-group">
+                    <label>图标预览</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img id="messageEditIconPreview" src="https://i.ibb.co/YFhP77Sz/format-icon.jpg" alt="图标预览" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 2px solid rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标 URL</label>
+                    <input type="text" id="messageEditIconUrl" placeholder="输入图标 URL" value="https://i.ibb.co/YFhP77Sz/format-icon.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label>或上传本地图片</label>
+                    <input type="file" id="messageEditIconFile" accept="image/*" style="display: none;" onchange="uploadMessageEditIcon(event)">
+                    <button class="btn-small" onclick="document.getElementById('messageEditIconFile').click()" style="width: 100%;">选择图片</button>
+                </div>
+            </div>
+            <div class="icon-settings-actions">
+                <button class="btn-secondary" onclick="closeMessageEditIconSettings()">取消</button>
+                <button class="btn-primary" onclick="saveMessageEditIcon()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 收藏消息弹窗 -->
+    <div class="favorites-modal" id="favoritesModal">
+        <div class="favorites-content">
+            <div class="favorites-header">
+                <h3>⭐ 收藏的消息</h3>
+                <button class="close-modal-btn" onclick="closeFavorites()">×</button>
+            </div>
+            <div class="favorites-body">
+                <div id="favoritesList" class="favorites-list">
+                    <!-- 收藏列表将动态生成 -->
+                </div>
+                <div class="favorites-empty" id="favoritesEmpty" style="display: none;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⭐</div>
+                    <div>还没有收藏消息</div>
+                    <div style="font-size: 14px; color: #95a5a6; margin-top: 8px;">双击任意消息即可收藏</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+                <h3>🎤 自定义语音功能图标</h3>
+                <button class="close-modal-btn" onclick="closeVoiceIconSettings()">×</button>
+            </div>
+            <div class="icon-settings-body">
+                <div class="form-group">
+                    <label>图标预览</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <img id="voiceIconPreview" src="https://i.ibb.co/yFDN2pB/image.png" alt="图标预览" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 2px solid rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>图标 URL</label>
+                    <input type="text" id="voiceIconUrl" placeholder="输入图标 URL" value="https://i.ibb.co/yFDN2pB/image.png">
+                </div>
+                
+                <div class="form-group">
+                    <label>或上传本地图片</label>
+                    <input type="file" id="voiceIconFile" accept="image/*" style="display: none;" onchange="uploadVoiceIcon(event)">
+                    <button class="btn-small" onclick="document.getElementById('voiceIconFile').click()" style="width: 100%;">选择图片</button>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1);">
+                    <label>快捷功能</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <button class="btn-small" onclick="openMockVoiceDialog(); closeVoiceIconSettings();">📝 文字语音</button>
+                        <button class="btn-small" onclick="startVoiceRecognition(); closeVoiceIconSettings();">🎙️ 语音识别</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icon-settings-actions">
+                <button class="btn-secondary" onclick="closeVoiceIconSettings()">取消</button>
+                <button class="btn-primary" onclick="saveVoiceIcon()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表情包管理弹窗 -->
+    <div class="icon-settings-modal" id="stickerManagerModal">
+        <div class="icon-settings-content" style="max-width: 800px;">
+            <div class="icon-settings-header">
+                <h3>😊 表情包管理</h3>
+                <button class="close-modal-btn" onclick="closeStickerManager()">×</button>
+            </div>
+            <div class="icon-settings-body">
+                <!-- 分类管理 -->
+                <div class="form-group">
+                    <label>分类管理</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="newCategoryName" placeholder="新分类名称" style="flex: 1;">
+                        <button class="btn-small" onclick="addStickerCategory()">添加分类</button>
+                    </div>
+                    <div id="categoryList" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;"></div>
+                </div>
+                
+                <!-- 批量添加表情包 -->
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>批量添加表情包</label>
+                    <select id="stickerCategorySelect" style="width: 100%; margin-bottom: 10px;">
+                        <option value="">选择分类</option>
+                    </select>
+                    <textarea id="bulkStickerInput" class="pixel-textarea bulk-input" placeholder="每行一个表情包，格式：表情包名称|图片URL&#10;例如：&#10;开心|https://example.com/happy.png&#10;难过|https://example.com/sad.png" rows="6"></textarea>
+                    <button class="btn-small" onclick="addBulkStickers()" style="width: 100%; margin-top: 10px;">批量添加</button>
+                </div>
+                
+                <!-- 表情包列表 -->
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>已有表情包</label>
+                    <div id="stickerManagerList" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+            </div>
+            <div class="icon-settings-actions">
+                <button class="btn-primary" onclick="closeStickerManager()">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 文字语音对话框 -->
+    <div class="voice-dialog-modal" id="mockVoiceDialog">
+        <div class="voice-dialog-content">
+            <div class="voice-dialog-header">
+                <h3>🎤 文字语音</h3>
+                <button class="close-modal-btn" onclick="closeMockVoiceDialog()">×</button>
+            </div>
+            <div class="voice-dialog-body">
+                <div class="form-group">
+                    <label>语音内容</label>
+                    <textarea id="mockVoiceText" rows="4" class="pixel-textarea" placeholder="输入要说的话..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>语气</label>
+                    <input type="text" id="mockVoiceTone" placeholder="例如：开心、生气、平静..." value="平静">
+                </div>
+            </div>
+            <div class="voice-dialog-actions">
+                <button class="btn-secondary" onclick="closeMockVoiceDialog()">取消</button>
+                <button class="btn-primary" onclick="sendMockVoice()">发送语音</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 语音识别预览对话框 -->
+    <div class="voice-dialog-modal" id="voiceRecognitionDialog">
+        <div class="voice-dialog-content">
+            <div class="voice-dialog-header">
+                <h3>🎙️ 语音识别</h3>
+                <button class="close-modal-btn" onclick="closeVoiceRecognitionDialog()">×</button>
+            </div>
+            <div class="voice-dialog-body">
+                <div class="recognition-status" id="recognitionStatus">
+                    <div class="recognition-indicator"></div>
+                    <span>正在识别...</span>
+                </div>
+                <div class="form-group">
+                    <label>识别结果（可编辑）</label>
+                    <textarea id="recognizedText" rows="4" class="pixel-textarea recognition-result" placeholder="开始说话..."></textarea>
+                </div>
+            </div>
+            <div class="voice-dialog-actions">
+                <button class="btn-secondary" onclick="stopVoiceRecognition()">停止识别</button>
+                <button class="btn-primary" onclick="sendRecognizedVoice()">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息格式设置弹窗 -->
+    <div class="format-settings-modal" id="messageFormatModal">
+        <div class="format-settings-content">
+            <div class="format-settings-header">
+                <h3>⚙️ 消息格式设置</h3>
+                <button class="close-modal-btn" onclick="closeMessageFormatSettings()">×</button>
+            </div>
+            <div class="format-settings-body">
+                <div class="format-section">
+                    <h4>AI 消息格式说明</h4>
+                    <div style="margin-bottom: 15px; font-size: 13px; color: #7f8c8d;">
+                        💡 此说明会自动注入到 AI 的系统提示中，告诉 AI 如何发送不同格式的消息
+                    </div>
+                    
+                    <div class="form-group" style="background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                        <p style="margin: 0; font-size: 13px; color: #666;">
+                            💡 消息格式提示词管理已迁移到统一管理系统。<br>
+                            请前往"我"页面 → "AI提示词管理" → "消息格式提示词"进行设置。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="format-section">
+                    <h4>默认图片设置</h4>
+                    
+                    <div class="form-group">
+                        <label>图片消息默认图</label>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <img id="defaultImagePreview" src="https://files.catbox.moe/gd7ol9.jpg" alt="默认图" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <input type="text" id="defaultImageUrl" placeholder="图片 URL" style="flex: 1;" value="https://files.catbox.moe/gd7ol9.jpg">
+                        </div>
+                        <input type="file" id="defaultImageFile" accept="image/*" style="display: none;" onchange="uploadDefaultImage(event)">
+                        <button class="btn-small" onclick="document.getElementById('defaultImageFile').click()">上传图片</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>视频消息默认图</label>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <img id="defaultVideoPreview" src="https://i.ibb.co/prxBykPd/video-default.jpg" alt="默认图" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <input type="text" id="defaultVideoUrl" placeholder="图片 URL" style="flex: 1;" value="https://i.ibb.co/prxBykPd/video-default.jpg">
+                        </div>
+                        <input type="file" id="defaultVideoFile" accept="image/*" style="display: none;" onchange="uploadDefaultVideo(event)">
+                        <button class="btn-small" onclick="document.getElementById('defaultVideoFile').click()">上传图片</button>
+                    </div>
+                </div>
+                
+                <div class="format-section">
+                    <h4>AI 表情包设置</h4>
+                    <div style="margin-bottom: 15px; font-size: 13px; color: #7f8c8d;">
+                        💡 为 AI 添加专属表情包，AI 可以在对话中使用这些表情包
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>批量添加表情包</label>
+                        <textarea id="contactStickerInput" class="pixel-textarea bulk-input" placeholder="每行一个表情包，格式：表情包名称|图片URL&#10;例如：&#10;开心|https://example.com/happy.png&#10;难过|https://example.com/sad.png" rows="5"></textarea>
+                        <button class="btn-small" onclick="addContactStickers()" style="width: 100%; margin-top: 10px;">添加表情包</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>已添加的表情包</label>
+                        <div id="contactStickerList" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 200px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="format-settings-actions">
+                <button class="btn-primary" onclick="saveMessageFormatSettings()" style="width: 100%;">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频通话设置弹窗 -->
+    <div class="video-call-settings-modal pixel-modal" id="videoCallSettingsModal">
+        <div class="video-call-settings-content pixel-content">
+            <div class="video-call-settings-header pixel-header">
+                <h3>⚙️ 视频通话设置</h3>
+                <button class="close-modal-btn pixel-btn" onclick="closeVideoCallSettings()">×</button>
+            </div>
+            
+            <div class="video-call-settings-body pixel-body">
+                <!-- CHAR 形象图库 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">🎨 CHAR 形象图库</h4>
+                    <div class="pixel-item">
+                        <label class="pixel-label">添加形象图片</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="characterImageUrl" placeholder="输入图片 URL" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="addCharacterImage()">添加</button>
+                        </div>
+                        <input type="file" id="characterImageUpload" accept="image/*" onchange="uploadCharacterImage(event)" class="pixel-file-input">
+                    </div>
+                    <div class="character-image-gallery" id="characterImageGallery">
+                        <!-- 图片库将动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 气泡 CSS 编辑 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">🎨 气泡 CSS 编辑</h4>
+                    <div class="pixel-item">
+                        <label class="pixel-label">CSS 样式</label>
+                        <textarea id="videoBubbleCSS" placeholder="输入自定义 CSS 样式..." class="pixel-textarea code-editor"></textarea>
+                    </div>
+                    <div class="pixel-item">
+                        <label class="pixel-label">方案管理</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="cssSchemeNameInput" placeholder="方案名称" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="saveCSSScheme()">保存方案</button>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <select id="cssSchemesSelect" onchange="loadCSSScheme()" class="pixel-input" style="flex: 1;">
+                                <option value="">选择方案...</option>
+                            </select>
+                            <button class="pixel-btn-small" onclick="applySelectedCSSScheme()">应用</button>
+                        </div>
+                        <button class="pixel-btn-small" onclick="applyCSSToVideoBubbles()" style="margin-top: 8px; width: 100%;">应用当前编辑器样式</button>
+                    </div>
+                </div>
+                
+                <!-- 整体 UI CSS 编辑 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">🖼️ 整体 UI CSS 编辑</h4>
+                    <div class="pixel-item">
+                    <div class="pixel-item">
+                        <label class="pixel-label">UI 方案管理</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="uiCSSSchemeNameInput" placeholder="方案名称" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="saveUICSSScheme()">保存方案</button>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                            <select id="uiCSSSchemesSelect" onchange="loadUICSSScheme()" class="pixel-input" style="flex: 1;">
+                                <option value="">选择方案...</option>
+                            </select>
+                            <button class="pixel-btn-small" onclick="applySelectedUICSSScheme()">应用</button>
+                        </div>
+                        <button class="pixel-btn-small" onclick="applyVideoCallUICSS()" style="margin-top: 8px; width: 100%;">应用当前编辑器样式</button>
+                    </div>  <option value="">选择方案...</option>
+                        </select>
+                        <button class="pixel-btn-small" onclick="applyVideoCallUICSS()" style="margin-top: 8px; width: 100%;">应用 UI 样式</button>
+                    </div>
+                </div>
+                
+                <!-- 图标自定义 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">🎯 图标自定义</h4>
+                    
+                    <div class="pixel-item">
+                        <label class="pixel-label">返回按钮图标</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="backIconInput" placeholder="输入图标文本或 Emoji" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="updateVideoCallIcon('back')">更新</button>
+                        </div>
+                        <input type="file" id="backIconUpload" accept="image/*" onchange="uploadVideoCallIcon(event, 'back')" class="pixel-file-input">
+                        <p class="pixel-hint">当前：<span id="currentBackIcon">‹</span></p>
+                    </div>
+                    
+                    <div class="pixel-item">
+                        <label class="pixel-label">设置按钮图标</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="settingsIconInput" placeholder="输入图标文本或 Emoji" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="updateVideoCallIcon('settings')">更新</button>
+                        </div>
+                        <input type="file" id="settingsIconUpload" accept="image/*" onchange="uploadVideoCallIcon(event, 'settings')" class="pixel-file-input">
+                        <p class="pixel-hint">当前：<span id="currentSettingsIcon">⚙️</span></p>
+                    </div>
+                    
+                    <div class="pixel-item">
+                        <label class="pixel-label">挂断按钮图标</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="hangupIconInput" placeholder="输入图标文本或 Emoji" class="pixel-input">
+                            <button class="pixel-btn-small" onclick="updateVideoCallIcon('hangup')">更新</button>
+                        </div>
+                        <input type="file" id="hangupIconUpload" accept="image/*" onchange="uploadVideoCallIcon(event, 'hangup')" class="pixel-file-input">
+                        <p class="pixel-hint">当前：<span id="currentHangupIcon">📞</span></p>
+                    </div>
+                </div>
+                
+                <!-- MiniMax 语音设置 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">🎵 MiniMax 语音设置</h4>
+                    <div class="pixel-item">
+                        <label class="pixel-label">
+                            <input type="checkbox" id="enableVideoCallTTS" onchange="toggleVideoCallTTS()">
+                            启用 MiniMax 语音
+                        </label>
+                        <p class="pixel-hint">
+                            启用后，只读取 CHAR 回复中双引号 "" 内的文字进行语音合成。<br>
+                            所有括号和星号内的文字将保持沉默。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 提示词设置 -->
+                <div class="pixel-section">
+                    <h4 class="pixel-section-title">📝 提示词设置</h4>
+                    <div class="pixel-item" style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        <p style="margin: 0; font-size: 13px; color: #666;">
+                            💡 视频通话提示词管理已迁移到统一管理系统。<br>
+                            请前往"我"页面 → "AI提示词管理" → "视频通话提示词"进行设置。
+                        </p>
+                    </div>
+                    
+                    <div class="pixel-item">
+                        <label class="pixel-label">📚 读取普通聊天上下文条数</label>
+                        <input type="number" id="chatContextSize" min="0" max="20" value="5" class="pixel-input">
+                        <p class="pixel-hint">
+                            设置视频通话时读取多少条普通聊天记录作为上下文（0-20条）
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-call-settings-actions pixel-footer">
+                <button class="pixel-btn-primary" onclick="saveVideoCallSettings()">💾 保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频通话记录详情弹窗 -->
+    <div class="video-call-record-modal" id="videoCallRecordModal">
+        <div class="video-call-record-content">
+            <div class="video-call-record-modal-header">
+                <h3>通话记录</h3>
+                <button class="close-modal-btn" onclick="closeVideoCallRecordModal()">×</button>
+            </div>
+            <div class="video-call-record-modal-body" id="videoCallRecordModalBody">
+                <!-- 通话记录将动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系人管理弹窗 - 第一页：通话记录 -->
+    <div class="contact-management-modal pixel-modal" id="contactManagementModal">
+        <div class="contact-management-content pixel-content">
+            <div class="contact-management-header pixel-header">
+                <h3>📞 通话记录</h3>
+                <button class="close-modal-btn pixel-btn" onclick="closeContactManagement()">×</button>
+            </div>
+            
+            <div class="contact-management-body pixel-body">
+                <div class="video-history-list pixel-list" id="videoHistoryList">
+                    <!-- 通话记录将动态生成 -->
+                </div>
+            </div>
+            
+            <div class="contact-management-footer pixel-footer">
+                <button class="pixel-btn-primary" onclick="openIconManagementPage()">
+                    🎨 图标管理 →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系人管理弹窗 - 第二页：图标管理 -->
+    <div class="contact-management-modal pixel-modal" id="iconManagementModal">
+        <div class="contact-management-content pixel-content">
+            <div class="contact-management-header pixel-header">
+                <button class="back-btn pixel-btn" onclick="closeIconManagementPage()">←</button>
+                <h3>🎨 图标管理</h3>
+                <button class="close-modal-btn pixel-btn" onclick="closeIconManagementPage(); closeContactManagement();">×</button>
+            </div>
+            
+            <div class="contact-management-body pixel-body">
+                <div class="icon-section pixel-section">
+                    <h4 class="pixel-section-title">✨ 聊天页面顶部图标</h4>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">📊 Token 分析</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="tokenAnalysisIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="tokenAnalysisIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('tokenAnalysis')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'tokenAnalysis')" class="pixel-file-input">
+                    </div>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">🧠 记忆库</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="memoryBankIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="memoryBankIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('memoryBank')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'memoryBank')" class="pixel-file-input">
+                    </div>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">🔄 重新生成</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="regenerateIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="regenerateIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('regenerate')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'regenerate')" class="pixel-file-input">
+                    </div>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">✏️ 消息编辑</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="messageEditIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="messageEditIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('messageEdit')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'messageEdit')" class="pixel-file-input">
+                    </div>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">⭐ 收藏消息</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="favoritesIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="favoritesIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('favorites')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'favorites')" class="pixel-file-input">
+                    </div>
+                </div>
+                
+                <div class="icon-section pixel-section">
+                    <h4 class="pixel-section-title">🎤 聊天页面底部图标</h4>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">🎵 语音消息</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="voiceIconInput" placeholder="输入图标 URL" class="pixel-input">
+                            <img id="voiceIconPreviewMini" src="" class="pixel-preview">
+                            <button class="pixel-btn-small" onclick="updateChatIcon('voice')">✓</button>
+                        </div>
+                        <input type="file" accept="image/*" onchange="uploadChatIcon(event, 'voice')" class="pixel-file-input">
+                    </div>
+                    
+                    <div class="icon-item pixel-item">
+                        <label class="pixel-label">😊 表情包</label>
+                        <div class="pixel-input-group">
+                            <input type="text" id="stickerIconInput" placeholder="输入 Emoji 或 URL" class="pixel-input">
+                            <span id="stickerIconPreviewMini" class="pixel-emoji-preview">😊</span>
+                            <button class="pixel-btn-small" onclick="updateChatIcon('sticker')">✓</button>
+                        </div>
+                        <p class="pixel-hint">可以输入 Emoji 或图片 URL</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-management-footer pixel-footer">
+                <button class="pixel-btn-secondary" onclick="closeIconManagementPage()">← 返回</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPC管理弹窗 -->
+    <div class="npc-management-modal" id="npcManagementModal">
+        <div class="npc-management-content">
+            <div class="npc-management-header">
+                <h3 id="npcModalTitle">添加NPC</h3>
+                <button class="close-modal-btn" onclick="closeNPCManagement()">×</button>
+            </div>
+            
+            <div class="npc-management-body">
+                <input type="hidden" id="editingNPCContactId">
+                <input type="hidden" id="editingNPCId">
+                
+                <div class="form-group">
+                    <label>NPC名称 *</label>
+                    <input type="text" id="npcName" placeholder="输入NPC名称" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>性别</label>
+                    <select id="npcGender">
+                        <option value="">不设置</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>NPC头像</label>
+                    <div class="npc-avatar-preview" id="npcAvatarPreview">
+                        <div class="npc-avatar-display" id="npcAvatarDisplay">🤖</div>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+                        <button class="btn-small" onclick="openNPCAvatarSelector()" style="flex:1;">📷 从头像库选择</button>
+                        <input type="text" id="npcAvatarUrl" placeholder="或输入头像 URL" style="flex:2;">
+                        <button class="btn-small" onclick="updateNPCAvatarFromUrl()">应用</button>
+                    </div>
+                    <input type="file" id="npcAvatarUpload" accept="image/*" onchange="uploadNPCAvatar(event)" style="margin-top: 8px; font-size: 12px;">
+                </div>
+                
+                <div class="form-group">
+                    <label>绑定CHAR *</label>
+                    <select id="npcContactSelect">
+                        <!-- 联系人选项将动态生成 -->
+                    </select>
+                    <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                        只有该CHAR能看到并调用此NPC
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <label>与CHAR的关系</label>
+                    <input type="text" id="npcRelationLabel" placeholder="如：姐妹、兄弟、朋友、恋人、同事...">
+                </div>
+                
+                <div class="form-group">
+                    <label>CHAR是否知道此关系</label>
+                    <select id="npcRelationVisibility">
+                        <option value="known">🟢 CHAR可知（CHAR知道这段关系）</option>
+                        <option value="unknown">🔴 CHAR不知（CHAR不知道这段关系）</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>NPC人设（可选）</label>
+                    <textarea id="npcPersonality" rows="4" class="pixel-textarea" placeholder="描述这个NPC的性格、背景等..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeNPCManagement()">取消</button>
+                    <button class="btn-primary" onclick="saveNPC()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建分组弹窗 -->
+    <div class="npc-management-modal" id="createGroupModal">
+        <div class="npc-management-content">
+            <div class="npc-management-header">
+                <h3>创建分组</h3>
+                <button class="close-modal-btn" onclick="closeCreateGroup()">×</button>
+            </div>
+            
+            <div class="npc-management-body">
+                <div class="form-group">
+                    <label>分组名称 *</label>
+                    <input type="text" id="newGroupName" placeholder="输入分组名称（如：朋友、同事等）" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>世界观说明</label>
+                    <p style="font-size: 12px; color: #000000; line-height: 1.6;">
+                        同一分组内的CHAR处于同一世界观，可以互相看到动态和评论。<br>
+                        不同分组的CHAR处于不同世界观，互相不可见。
+                    </p>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeCreateGroup()">取消</button>
+                    <button class="btn-primary" onclick="saveNewGroup()">创建</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPC关系图弹窗 -->
+    <div class="npc-relations-modal" id="npcRelationsModal">
+        <div class="npc-relations-content">
+            <div class="npc-relations-header">
+                <h3>NPC关系图</h3>
+                <button class="close-modal-btn" onclick="closeNPCRelations()">×</button>
+            </div>
+            
+            <div class="npc-relations-body">
+                <div class="relations-info-box">
+                    <p>点击两个头像可以设定他们之间的关系</p>
+                    <p>🟢 绿色实线 = CHAR可知 · 🟣 紫色虚线 = CHAR不知</p>
+                    <p>同分组的其他CHAR也会显示在图中</p>
+                </div>
+                
+                <div class="relations-graph-container" id="relationsGraphContainer">
+                    <!-- 关系图将动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NPC头像库选择器弹窗 -->
+    <div class="avatar-selector-modal" id="npcAvatarSelectorModal">
+        <div class="avatar-selector-content">
+            <div class="avatar-selector-header">
+                <h3>选择NPC头像</h3>
+                <button class="close-modal-btn" onclick="closeNPCAvatarSelector()">×</button>
+            </div>
+            <div class="avatars-grid-selector" id="npcAvatarSelectorGrid"></div>
+        </div>
+    </div>
+
+    <!-- CSS主题管理弹窗 -->
+    <div class="npc-management-modal" id="cssThemeModal">
+        <div class="npc-management-content" style="max-width: 800px;">
+            <div class="npc-management-header">
+                <h3>CSS主题管理</h3>
+                <button class="close-modal-btn" onclick="closeCSSThemeManager()">×</button>
+            </div>
+            
+            <div class="npc-management-body">
+                <div class="form-group">
+                    <label>当前主题方案</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="cssThemeSelect" onchange="loadCSSTheme()" style="flex: 1;">
+                            <option value="default">默认主题（Y2K粉色像素风）</option>
+                            <!-- 自定义主题将动态生成 -->
+                        </select>
+                        <button class="btn-small" onclick="applySelectedCSSTheme()">应用</button>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <button class="btn-small" onclick="createNewCSSTheme()">新建主题</button>
+                        <button class="btn-small" onclick="deleteCSSTheme()">删除当前主题</button>
+                        <button class="btn-small" onclick="applyCSSThemeFromEditor()">应用编辑器样式</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>CSS代码编辑器</label>
+                    <textarea id="cssThemeEditor" rows="20" class="pixel-textarea code-editor"></textarea>
+                    <p style="font-size: 12px; color: #000000; margin-top: 8px;">
+                        编辑CSS代码以自定义消息app的全局样式。保存后将立即应用。
+                    </p>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeCSSThemeManager()">取消</button>
+                    <button class="btn-primary" onclick="saveCSSTheme()">保存并应用</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="prompt-manager-ui.js"></script>
+    <script src="travel-card.js"></script>
+    <script src="status-config.js"></script>
+    <script src="ai-auto-status.js"></script>
+    <script src="ai-status-integration.js"></script>
+    <script src="ai-status-ui.js"></script>
+    <script src="ai-status-init.js"></script>
+    <script src="vision-relay.js"></script>
+    <script src="message.js"></script>
+</body>
+</html>

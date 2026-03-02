@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>共读</title>
+<link rel="stylesheet" href="reading.css">
+</head>
+<body>
+
+<!-- 顶部导航栏 -->
+<div class="top-bar">
+  <button class="btn-back" onclick="location.href='index.html'">←</button>
+  <span class="top-title">共读</span>
+  <span class="top-spacer"></span>
+</div>
+
+<!-- 书架视图（默认） -->
+<div id="shelfView" class="view" style="display:none">
+  <div class="shelf-header">
+    <span class="shelf-title">📚 我的书架</span>
+    <div style="display:flex;gap:4px;">
+      <button class="btn-icon" onclick="showView('settings')">⚙️</button>
+      <button class="btn-icon" onclick="showView('upload')">＋</button>
+    </div>
+  </div>
+  <div id="bookGrid" class="book-grid"></div>
+  <div id="shelfEmpty" class="empty-state">还没有书籍，点击 ＋ 上传</div>
+</div>
+
+<!-- 阅读器视图 -->
+<div id="readerView" class="view" style="display:none">
+  <div class="reader-header">
+    <button class="btn-back" onclick="showView('shelf');renderShelf()">← 书架</button>
+    <span id="readerTitle" class="reader-book-title"></span>
+    <button class="btn-icon" onclick="showTableView()">📊</button>
+  </div>
+  <div class="reader-body">
+    <div class="dual-page">
+      <div id="leftPage" class="page-panel left-page"></div>
+      <div id="rightPage" class="page-panel right-page"></div>
+    </div>
+  </div>
+  <div class="reader-footer">
+    <button id="prevBtn" class="nav-btn" onclick="prevPage()">‹ 上一页</button>
+    <span id="pageInfo" class="page-info">1 / 1</span>
+    <button id="nextBtn" class="nav-btn" onclick="nextPage()">下一页 ›</button>
+  </div>
+  <!-- AI 小助手（可自定义图片） -->
+  <div id="aiMascot" class="ai-mascot" onclick="showAnalyzeModal()">
+    <div id="mascotImgWrap" class="mascot-img-wrap">
+      <img id="mascotImg" src="" alt="" class="mascot-img" draggable="false">
+      <span id="mascotFallback" class="mascot-fallback">🤖</span>
+    </div>
+    <div id="mascotBubble" class="mascot-bubble" style="display:none;">
+      <div class="mascot-bubble-spinner"></div>
+      <span>分析中…</span>
+    </div>
+  </div>
+</div>
+
+<!-- AI分析页码选择弹窗 -->
+<div id="analyzeModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#1a1a1a;border-radius:12px;padding:20px;width:90%;max-width:340px;">
+    <h3 style="color:#fff;margin:0 0 14px;font-size:16px;">🤖 AI 分析页码</h3>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+      <div style="flex:1;">
+        <label style="color:#aaa;font-size:12px;">起始页</label>
+        <input id="analyzeFrom" type="number" min="1" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0a0a0a;color:#fff;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <span style="color:#666;padding-top:18px;">→</span>
+      <div style="flex:1;">
+        <label style="color:#aaa;font-size:12px;">结束页</label>
+        <input id="analyzeTo" type="number" min="1" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0a0a0a;color:#fff;margin-top:4px;box-sizing:border-box;">
+      </div>
+    </div>
+    <p id="analyzePageHint" style="color:#666;font-size:12px;margin:0 0 12px;"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="closeAnalyzeModal()" style="padding:8px 16px;border-radius:6px;border:1px solid #333;background:none;color:#aaa;cursor:pointer;">取消</button>
+      <button onclick="runAnalyzeRange()" style="padding:8px 16px;border-radius:6px;border:none;background:#5856d6;color:#fff;cursor:pointer;">开始分析</button>
+    </div>
+  </div>
+</div>
+
+<!-- 表格视图 -->
+<div id="tableView" class="view" style="display:none">
+  <div class="table-header">
+    <button class="btn-back" onclick="showView('reader')">← 返回阅读</button>
+    <span class="table-title">📊 记忆表格</span>
+    <button class="btn-icon" onclick="showEditFields()">✏️</button>
+  </div>
+  <div id="tableContent" class="table-content"></div>
+  <div class="snapshot-section">
+    <div class="snapshot-title">🕐 历史快照</div>
+    <div id="snapshotList" class="snapshot-list"></div>
+  </div>
+</div>
+
+<!-- 编辑表格字段弹窗 -->
+<div id="editFieldsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#1a1a1a;border-radius:12px;padding:20px;width:90%;max-width:360px;">
+    <h3 style="color:#fff;margin:0 0 14px;font-size:16px;">✏️ 编辑表格字段</h3>
+    <p style="color:#888;font-size:12px;margin:0 0 10px;">修改后新的AI分析将使用新字段，已有数据不受影响。</p>
+    <div style="margin-bottom:12px;">
+      <label style="color:#aaa;font-size:13px;">字段（用逗号分隔）</label>
+      <input id="editFieldsInput" type="text" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0a0a0a;color:#fff;margin-top:4px;box-sizing:border-box;">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="closeEditFields()" style="padding:8px 16px;border-radius:6px;border:1px solid #333;background:none;color:#aaa;cursor:pointer;">取消</button>
+      <button onclick="saveEditFields()" style="padding:8px 16px;border-radius:6px;border:none;background:#5856d6;color:#fff;cursor:pointer;">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 设置视图 -->
+<div id="settingsView" class="view" style="display:none">
+  <div class="settings-header">
+    <button class="btn-back" onclick="showView('shelf');renderShelf()">← 书架</button>
+    <span class="settings-title">⚙️ 设置</span>
+  </div>
+  <div class="settings-body">
+
+    <!-- API 配置区 -->
+    <div class="settings-section">
+      <div class="settings-section-title">🔑 API 配置</div>
+      <div class="settings-field">
+        <label>API 地址</label>
+        <input id="readingApiUrl" type="text" placeholder="https://api.openai.com/v1">
+      </div>
+      <div class="settings-field">
+        <label>API Key</label>
+        <input id="readingApiKey" type="password" placeholder="sk-...">
+      </div>
+      <div class="settings-field">
+        <label>模型</label>
+        <div style="display:flex;gap:6px;">
+          <select id="readingModelSelect" style="flex:1;">
+            <option value="">-- 手动输入或拉取 --</option>
+          </select>
+          <button onclick="fetchModels()" id="fetchModelsBtn" class="settings-btn-sm">🔄 拉取</button>
+        </div>
+        <input id="readingModel" type="text" placeholder="或手动输入模型名" style="margin-top:6px;">
+      </div>
+      <p class="settings-hint">也会自动读取消息App中已配置的API方案。</p>
+      <button onclick="saveApiSettings()" class="settings-btn-primary" style="margin-top:8px;">💾 保存API配置</button>
+    </div>
+
+    <!-- AI 小助手形象 -->
+    <div class="settings-section">
+      <div class="settings-section-title">🐾 AI 小助手形象</div>
+      <div class="settings-field">
+        <label>上传图片（建议透明背景PNG）</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label class="settings-btn-sm" style="cursor:pointer;">
+            📁 选择图片
+            <input type="file" id="mascotFileInput" accept="image/*" onchange="uploadMascotImage(event)" style="display:none;">
+          </label>
+          <input id="mascotUrlInput" type="text" placeholder="或粘贴图片URL" style="flex:1;">
+          <button onclick="setMascotUrl()" class="settings-btn-sm">确定</button>
+        </div>
+      </div>
+      <div class="settings-field">
+        <label>大小：<span id="mascotSizeLabel">60</span>px</label>
+        <input id="mascotSizeRange" type="range" min="30" max="150" value="60" oninput="updateMascotSize(this.value)" style="width:100%;">
+      </div>
+      <div style="text-align:center;padding:10px;">
+        <img id="mascotPreview" src="" style="max-width:100px;max-height:100px;border-radius:8px;background:#222;">
+      </div>
+      <p class="settings-hint">这个小家伙会待在阅读器右下角，点击它就能让它帮你分析当前页面 🐕</p>
+    </div>
+
+    <!-- CSS 主题区 -->
+    <div class="settings-section">
+      <div class="settings-section-title">🎨 外观主题</div>
+      <div class="settings-field">
+        <label>当前方案</label>
+        <div style="display:flex;gap:6px;">
+          <select id="cssSchemeSelect" onchange="switchCssScheme()" style="flex:1;"></select>
+          <button onclick="deleteCssScheme()" class="settings-btn-sm" style="color:#ff6b6b;">🗑️</button>
+        </div>
+      </div>
+      <div class="settings-field">
+        <label>新建方案</label>
+        <div style="display:flex;gap:6px;">
+          <input id="newSchemeName" type="text" placeholder="方案名称" style="flex:1;">
+          <button onclick="createCssScheme()" class="settings-btn-sm">➕ 新建</button>
+        </div>
+      </div>
+      <div class="settings-field">
+        <label>CSS 编辑器 <span style="font-size:11px;color:#666;">（修改后点保存生效）</span></label>
+        <textarea id="cssEditor" rows="18" spellcheck="false" style="font-family:monospace;font-size:12px;line-height:1.5;tab-size:2;"></textarea>
+      </div>
+      <button onclick="saveCssScheme()" class="settings-btn-primary">💾 保存并应用主题</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- 上传视图 -->
+<div id="uploadView" class="view" style="display:none">
+  <div class="upload-header">
+    <button class="btn-back" onclick="showView('shelf')">← 书架</button>
+    <span class="upload-title">📤 上传书籍</span>
+  </div>
+  <div class="upload-body">
+    <div class="file-select">
+      <label class="file-label" for="fileInput">选择文件（PDF / TXT）</label>
+      <input type="file" id="fileInput" accept=".pdf,.txt" onchange="handleFileSelect(event)" style="display:none">
+      <div id="fileName" class="file-name">未选择文件</div>
+    </div>
+    <div id="typeSelect" class="type-select" style="display:none">
+      <div class="type-title">选择书籍类型</div>
+      <div class="type-cards">
+        <div class="type-card" onclick="selectBookType('novel')">
+          <div class="type-icon">📖</div>
+          <div class="type-name">小说</div>
+          <div class="type-desc">角色、情节、关系追踪</div>
+        </div>
+        <div class="type-card" onclick="selectBookType('academic')">
+          <div class="type-icon">📄</div>
+          <div class="type-name">学术论文</div>
+          <div class="type-desc">论点、方法、数据追踪</div>
+        </div>
+        <div class="type-card" onclick="selectBookType('lab')">
+          <div class="type-icon">🔬</div>
+          <div class="type-name">实验指南</div>
+          <div class="type-desc">实验、材料、步骤追踪</div>
+        </div>
+        <div class="type-card" onclick="showCustomType()">
+          <div class="type-icon">✏️</div>
+          <div class="type-name">自定义</div>
+          <div class="type-desc">自定义类型名和表格字段</div>
+        </div>
+      </div>
+      <div id="customTypeArea" style="display:none;margin-top:12px;">
+        <div style="margin-bottom:8px;">
+          <label style="color:#aaa;font-size:13px;">类型名称</label>
+          <input id="customTypeName" type="text" placeholder="例如：悬疑小说、言情小说…" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0a0a0a;color:#fff;margin-top:4px;box-sizing:border-box;">
+        </div>
+        <div style="margin-bottom:8px;">
+          <label style="color:#aaa;font-size:13px;">表格字段（用逗号分隔）</label>
+          <input id="customTypeFields" type="text" placeholder="例如：角色名,动机,线索,嫌疑人,诡计,真相" style="width:100%;padding:8px;border-radius:6px;border:1px solid #333;background:#0a0a0a;color:#fff;margin-top:4px;box-sizing:border-box;">
+        </div>
+        <button onclick="confirmCustomType()" style="padding:8px 16px;border-radius:6px;border:none;background:#5856d6;color:#fff;cursor:pointer;width:100%;">确认并上传</button>
+      </div>
+    </div>
+    <div id="uploadProgress" class="upload-progress" style="display:none">
+      <div class="progress-label" id="progressLabel">解析中...</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 模态框 -->
+<div id="modalOverlay" class="modal-overlay" style="display:none" onclick="closeModal()"></div>
+
+<!-- 加载指示器 -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">处理中...</div>
+</div>
+
+<!-- Toast通知 -->
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+<script src="reading.js"></script>
+</body>
+</html>

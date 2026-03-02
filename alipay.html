@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>支付宝</title>
+    <link rel="stylesheet" href="alipay.css">
+</head>
+<body>
+    <div class="alipay-container">
+        <!-- 顶部栏 -->
+        <div class="alipay-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">← 返回</button>
+            <h1>💳 支付宝</h1>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div class="points-display">
+                    <span class="points-icon">💰</span>
+                    <span class="points-value" id="totalPoints">0</span>
+                </div>
+                <button class="settings-btn" onclick="openCssSettings()">⚙️</button>
+            </div>
+        </div>
+
+        <!-- CHAR选择 -->
+        <div class="char-selector" id="charSelector">
+            <label>选择CHAR</label>
+            <select id="charSelect" onchange="onCharChange()">
+                <option value="">请选择...</option>
+            </select>
+        </div>
+
+        <!-- 任务风格设置 -->
+        <div class="task-style-section" id="taskStyleSection" style="display:none;">
+            <div class="section-title">🎨 任务风格</div>
+            <textarea id="taskStyleInput" rows="2" placeholder="如：甜蜜浪漫风、搞笑整蛊风、日常温馨风..."></textarea>
+        </div>
+
+        <!-- 今日任务卡 -->
+        <div class="task-card-section" id="taskCardSection" style="display:none;">
+            <div class="task-card-header">
+                <div class="task-date" id="taskDate"></div>
+                <div class="refresh-area">
+                    <button class="refresh-btn" id="refreshBtn" onclick="refreshTasks()">🔄 刷新任务</button>
+                    <span class="refresh-count" id="refreshCount">剩余3次</span>
+                </div>
+            </div>
+            <div class="task-list" id="taskList">
+                <div class="task-empty">点击刷新获取今日任务</div>
+            </div>
+            <div class="task-actions" id="taskActions" style="display:none;">
+                <button class="share-btn" onclick="shareToChat()">📤 分享到聊天</button>
+                <button class="verify-btn" onclick="openVerifyPanel()">✅ 提交验证</button>
+            </div>
+        </div>
+
+        <!-- 验证面板 -->
+        <div class="verify-panel" id="verifyPanel" style="display:none;">
+            <div class="section-title">📋 任务验证</div>
+            <p class="verify-hint">从聊天记录中选择消息作为完成证据，然后提交给支付宝验证</p>
+            <div class="verify-messages" id="verifyMessages"></div>
+            <div class="verify-actions">
+                <button class="verify-submit-btn" onclick="submitVerification()">📤 提交验证</button>
+                <button class="verify-cancel-btn" onclick="closeVerifyPanel()">取消</button>
+            </div>
+        </div>
+
+        <!-- CHAR今日动态 -->
+        <div class="char-work-section" id="charWorkSection" style="display:none;">
+            <div class="char-work-header">
+                <div class="section-title">🧑‍💼 CHAR 今日动态</div>
+                <div class="char-wallet">
+                    <span>💰 存款：</span>
+                    <span class="char-wallet-amount" id="charWalletAmount">0</span>
+                </div>
+            </div>
+            <div class="char-work-date" id="charWorkDate"></div>
+            <div class="char-work-list" id="charWorkList">
+                <div class="task-empty">加载中...</div>
+            </div>
+            <div class="char-work-summary" id="charWorkSummary"></div>
+            <div class="char-work-actions">
+                <button class="refresh-btn" id="charWorkRefreshBtn" onclick="refreshCharWork()">🔄 重新生成</button>
+                <span class="refresh-count" id="charWorkRefreshCount"></span>
+            </div>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history-section" id="historySection" style="display:none;">
+            <div class="section-title">📜 任务历史</div>
+            <div class="history-list" id="historyList"></div>
+        </div>
+    </div>
+
+    <!-- CSS设置弹窗 -->
+    <div class="css-settings-overlay" id="cssSettingsOverlay" style="display:none" onclick="if(event.target===this)closeCssSettings()">
+        <div class="css-settings-panel">
+            <div class="css-settings-header">
+                <h2>🎨 外观设置</h2>
+                <button class="css-settings-close" onclick="closeCssSettings()">✕</button>
+            </div>
+            <div class="css-scheme-bar" id="cssSchemeBar"></div>
+            <div class="css-scheme-actions" id="cssSchemeActions">
+                <button onclick="renameCssScheme()">✏️ 重命名</button>
+                <button class="danger" onclick="deleteCssScheme()">🗑️ 删除</button>
+            </div>
+            <div class="css-editor-area">
+                <textarea id="cssEditorTextarea" spellcheck="false"></textarea>
+            </div>
+            <div class="css-settings-footer">
+                <button class="btn-cancel" onclick="closeCssSettings()">取消</button>
+                <button class="btn-save" onclick="saveCssScheme()">💾 保存并应用</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="alipay.js"></script>
+</body>
+</html>

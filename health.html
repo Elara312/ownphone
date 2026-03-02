@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康管理</title>
+    <link rel="stylesheet" href="health.css">
+    <link rel="stylesheet" href="diary.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="health-container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="window.location.href='index.html'">← 返回</button>
+        
+        <!-- 设置按钮 (健康/计划页专用) -->
+        <button id="mainSettingsBtn" class="settings-btn-main" onclick="openHealthSettings()">⚙️</button>
+
+        <!-- 设置按钮 (日记页专用 - 修复ID冲突) -->
+        <button id="diarySettingsBtn" class="settings-btn-main diary-settings-btn" style="display: none;" onclick="diaryApp.openGridPreview()">⚙️</button>
+
+        <!-- 左侧导航栏 -->
+        <nav class="sidebar">
+            <div class="nav-item active" data-page="plan">计划</div>
+            <div class="nav-item" data-page="health">健康</div>
+            <div class="nav-item" data-page="diary">日记</div>
+            <div class="nav-item" data-page="mood">情侣空间</div>
+            <div class="nav-item" data-page="share">分享</div>
+        </nav>
+
+        <!-- 健康页面主要内容容器 -->
+        <div id="health-view-container" style="display: flex; flex: 1; overflow: hidden;">
+            <!-- 中间区域 -->
+            <div class="middle-section">
+            <!-- 头像区 -->
+            <div class="avatar-box">
+                <div class="avatar-circle" id="avatarCircle" onclick="changeAvatar()">
+                    <span id="avatarDisplay">🐻</span>
+                </div>
+            </div>
+
+            <!-- 统计看板 -->
+            <div class="stats-box">
+                <h3>数据看板</h3>
+                <div class="stats-month-nav">
+                    <button id="prevStatsMonth">◀</button>
+                    <span id="statsMonth">2026年2月</span>
+                    <button id="nextStatsMonth">▶</button>
+                </div>
+                <div id="statsContent"></div>
+            </div>
+
+            <!-- 本月活动 -->
+            <div class="activity-box">
+                <h3>本月活动</h3>
+                <div class="activity-month-nav">
+                    <button id="prevActivityMonth">◀</button>
+                    <span id="activityMonth">2026年2月</span>
+                    <button id="nextActivityMonth">▶</button>
+                </div>
+                <div id="activityList"></div>
+                <button class="add-btn" onclick="addActivity()">+ 添加</button>
+            </div>
+        </div>
+
+        <!-- 右侧主内容区 -->
+        <div class="main-content">
+            <!-- 习惯追踪器 -->
+            <div class="habit-tracker">
+                <div class="tracker-header">
+                    <div class="tracker-title">
+                        <span class="month-display" id="habitMonth">年月</span>
+                        <div class="month-nav">
+                            <button id="prevHabitMonth">◀</button>
+                            <button id="nextHabitMonth">▶</button>
+                        </div>
+                    </div>
+                    <button class="add-habit-btn" onclick="addHabit()">+</button>
+                </div>
+                
+                <div class="habit-content">
+                    <!-- 日期标注行 -->
+                    <div class="habit-days-header" id="habitDaysHeader"></div>
+                    
+                    <!-- 习惯列表 -->
+                    <div id="habitList" class="habit-list"></div>
+                </div>
+            </div>
+
+            <!-- 日历和新功能区域 -->
+            <div class="calendar-and-features">
+                <!-- 日历 -->
+                <div class="calendar-section">
+                    <h3>月历看板</h3>
+                    <div class="calendar-header">
+                        <button id="prevCalMonth">◀</button>
+                        <span id="calendarMonth">年月</span>
+                        <button id="nextCalMonth">▶</button>
+                    </div>
+                    <div class="weekdays">
+                        <span>mon</span>
+                        <span>tue</span>
+                        <span>wed</span>
+                        <span>thr</span>
+                        <span>fri</span>
+                        <span>sat</span>
+                        <span>sun</span>
+                    </div>
+                    <div id="calendarGrid" class="calendar-grid"></div>
+                </div>
+
+                <!-- 右侧功能区 -->
+                <div class="side-features">
+                    <!-- 记账板块 -->
+                    <div class="accounting-section">
+                        <div class="section-header">
+                            <h3>记账板块</h3>
+                            <div class="section-buttons">
+                                <button class="stats-btn" onclick="openAccountingStats()">📊</button>
+                                <button class="add-btn-small" onclick="openAccountingModal()">+</button>
+                            </div>
+                        </div>
+                        <div id="accountingList" class="accounting-list"></div>
+                    </div>
+
+                    <!-- 心情日历 -->
+                    <div class="mood-section">
+                        <div class="section-header">
+                            <h3>心情日历</h3>
+                            <div class="section-buttons">
+                                <button class="stats-btn" onclick="openMoodStats()">📈</button>
+                                <button class="settings-btn" onclick="openMoodSettings()">⚙️</button>
+                            </div>
+                        </div>
+                        <div class="mood-week-nav">
+                            <button id="prevMoodWeek">◀</button>
+                            <span id="moodWeekDisplay">2026年2月第1周</span>
+                            <button id="nextMoodWeek">▶</button>
+                        </div>
+                        <div class="mood-weekdays">
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                            <span>Sun</span>
+                        </div>
+                        <div id="moodGrid" class="mood-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日历弹窗 -->
+            <div class="calendar-modal" id="calendarModal">
+                <div class="calendar-modal-content">
+                    <div class="calendar-modal-header">
+                        <h3 id="modalDateTitle">日期</h3>
+                        <button class="modal-close" onclick="closeCalendarModal()">×</button>
+                    </div>
+                    <div class="calendar-modal-body">
+                        <button class="modal-option-btn" onclick="goToDiary()">
+                            <span class="option-icon">📝</span>
+                            <span class="option-text">记日记</span>
+                        </button>
+                        <button class="modal-option-btn" onclick="uploadCoverImage()">
+                            <span class="option-icon">🖼️</span>
+                            <span class="option-text">上传封面图</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 周计划 -->
+            <div class="todo-section">
+                <div class="week-header">
+                    <h3>周计划</h3>
+                    <div class="week-controls">
+                        <button id="prevWeek">◀</button>
+                        <span id="weekDisplay">2026年2月第1周</span>
+                        <button id="nextWeek">▶</button>
+                    </div>
+                </div>
+                <div id="weeklyTodo" class="weekly-grid"></div>
+            </div>
+
+            <!-- TODO弹窗 -->
+            <div class="todo-modal" id="todoModal">
+                <div class="todo-modal-content">
+                    <div class="todo-modal-header">
+                        <h3 id="todoModalTitle">添加任务</h3>
+                        <button class="modal-close" onclick="closeTodoModal()">×</button>
+                    </div>
+                    <div class="todo-modal-body">
+                        <div class="todo-input-group">
+                            <input type="text" id="todoInput" placeholder="输入任务内容...">
+                            <input type="color" id="todoColor" value="#f0f0f0" title="选择背景颜色">
+                            <button onclick="addTodoFromModal()">添加</button>
+                        </div>
+                        <div class="saved-colors">
+                            <div class="saved-colors-label">常用颜色：</div>
+                            <div id="savedColorsList" class="saved-colors-list"></div>
+                            <button class="save-color-btn" onclick="saveCurrentColor()">保存当前颜色</button>
+                        </div>
+                        <div class="todo-list-modal" id="todoListModal"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 记账弹窗 -->
+            <div class="accounting-modal" id="accountingModal">
+                <div class="accounting-modal-content">
+                    <div class="accounting-modal-header">
+                        <h3>记账</h3>
+                        <button class="modal-close" onclick="closeAccountingModal()">×</button>
+                    </div>
+                    <div class="accounting-modal-body">
+                        <div class="accounting-form">
+                            <div class="form-row">
+                                <label>类型:</label>
+                                <select id="accountingType">
+                                    <option value="expense">支出</option>
+                                    <option value="income">收入</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>金额:</label>
+                                <input type="number" id="accountingAmount" placeholder="0.00" step="0.01">
+                            </div>
+                            <div class="form-row">
+                                <label>分类:</label>
+                                <select id="accountingCategory">
+                                    <option value="">选择分类</option>
+                                </select>
+                                <button type="button" onclick="addNewCategory()">新增</button>
+                            </div>
+                            <div class="form-row">
+                                <label>备注:</label>
+                                <input type="text" id="accountingNote" placeholder="备注信息">
+                            </div>
+                            <div class="form-actions">
+                                <button onclick="addAccountingRecord()">添加记录</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 记账统计弹窗 -->
+            <div class="accounting-stats-modal" id="accountingStatsModal">
+                <div class="accounting-stats-content">
+                    <div class="accounting-modal-header">
+                        <h3>收支统计</h3>
+                        <button class="modal-close" onclick="closeAccountingStatsModal()">×</button>
+                    </div>
+                    <div class="stats-tabs">
+                        <button class="stats-tab active" onclick="showStatsTab('week')">本周</button>
+                        <button class="stats-tab" onclick="showStatsTab('month')">本月</button>
+                        <button class="stats-tab" onclick="showStatsTab('year')">本年</button>
+                    </div>
+                    <div id="accountingStatsContent" class="stats-content"></div>
+                </div>
+            </div>
+
+            <!-- 心情设置弹窗 -->
+            <div class="mood-settings-modal" id="moodSettingsModal">
+                <div class="mood-settings-content">
+                    <div class="mood-modal-header">
+                        <h3>心情设置</h3>
+                        <button class="modal-close" onclick="closeMoodSettingsModal()">×</button>
+                    </div>
+                    <div class="mood-settings-body">
+                        <div class="mood-schemes">
+                            <h4>心情方案</h4>
+                            <div id="moodSchemesList" class="schemes-list"></div>
+                            <button onclick="addNewMoodScheme()">+ 新增方案</button>
+                        </div>
+                        <div class="current-scheme-editor" id="currentSchemeEditor">
+                            <h4>编辑当前方案</h4>
+                            <div id="moodItemsList" class="mood-items-list"></div>
+                            <button onclick="addNewMoodItem()">+ 新增心情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 心情统计弹窗 -->
+            <div class="mood-stats-modal" id="moodStatsModal">
+                <div class="mood-stats-content">
+                    <div class="mood-modal-header">
+                        <h3>心情总览 - 2026年</h3>
+                        <button class="modal-close" onclick="closeMoodStatsModal()">×</button>
+                    </div>
+                    <div id="moodYearlyStats" class="yearly-mood-stats"></div>
+                </div>
+            </div>
+
+            <!-- 计划页面设置弹窗 -->
+            <div class="health-settings-modal" id="healthSettingsModal">
+                <div class="health-settings-content">
+                    <div class="health-settings-header">
+                        <h3>计划页面设置</h3>
+                        <button class="modal-close" onclick="closeHealthSettings()">×</button>
+                    </div>
+                    <div class="health-settings-body">
+                        <div class="settings-tabs">
+                            <button class="settings-tab active" onclick="showSettingsTab('css')">CSS样式</button>
+                            <button class="settings-tab" onclick="showSettingsTab('background')">背景设置</button>
+                            <button class="settings-tab" onclick="showSettingsTab('font')">字体管理</button>
+                        </div>
+                        
+                        <!-- CSS样式设置 -->
+                        <div id="cssSettingsTab" class="settings-tab-content active">
+                            <div class="css-schemes-section">
+                                <h4>计划页面CSS方案管理</h4>
+                                <p class="settings-desc">管理计划页面的CSS样式方案，不影响其他页面（健康、日记等）</p>
+                                <div id="cssSchemesList" class="css-schemes-list"></div>
+                                <div class="css-scheme-actions">
+                                    <button onclick="createNewCssScheme()">+ 新建方案</button>
+                                    <button onclick="resetToDefaultCss()">恢复默认</button>
+                                </div>
+                            </div>
+                            <div class="css-editor-section">
+                                <h4>计划页面CSS编辑器</h4>
+                                <p class="settings-desc">编辑计划页面的CSS代码，包含完整的默认样式和注释</p>
+                                <textarea id="cssEditor" class="css-editor" placeholder="在此编辑计划页面的CSS代码..."></textarea>
+                                <div class="css-editor-actions">
+                                    <button onclick="applyCssChanges()">应用更改</button>
+                                    <button onclick="saveCssScheme()">保存方案</button>
+                                    <button onclick="exportCssScheme()">导出</button>
+                                    <button onclick="importCssScheme()">导入</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 背景设置 -->
+                        <div id="backgroundSettingsTab" class="settings-tab-content">
+                            <div class="background-section">
+                                <h4>计划页面背景设置</h4>
+                                <p class="settings-desc">设置计划页面的背景图片，不影响其他页面</p>
+                                <div class="background-preview" id="backgroundPreview">
+                                    <div class="preview-text">计划页面背景预览</div>
+                                </div>
+                                <div class="background-controls">
+                                    <div class="form-row">
+                                        <label>背景图片URL:</label>
+                                        <input type="text" id="backgroundUrl" placeholder="输入图片URL">
+                                        <button onclick="applyBackground()">应用</button>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>背景模式:</label>
+                                        <select id="backgroundMode">
+                                            <option value="cover">覆盖</option>
+                                            <option value="contain">包含</option>
+                                            <option value="repeat">重复</option>
+                                            <option value="no-repeat">不重复</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>背景位置:</label>
+                                        <select id="backgroundPosition">
+                                            <option value="center">居中</option>
+                                            <option value="top">顶部</option>
+                                            <option value="bottom">底部</option>
+                                            <option value="left">左侧</option>
+                                            <option value="right">右侧</option>
+                                        </select>
+                                    </div>
+                                    <button onclick="removeBackground()">移除背景</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 字体管理 -->
+                        <div id="fontSettingsTab" class="settings-tab-content">
+                            <div class="font-section">
+                                <h4>计划页面字体设置</h4>
+                                <p class="settings-desc">设置计划页面的字体样式，不影响其他页面</p>
+                                <div class="font-preview" id="fontPreview">
+                                    <div class="preview-text">计划页面字体预览 - 健康管理应用 123 ABC</div>
+                                </div>
+                                <div class="font-controls">
+                                    <div class="form-row">
+                                        <label>字体族:</label>
+                                        <select id="fontFamily">
+                                            <option value="'Georgia', 'Times New Roman', serif">Georgia (默认)</option>
+                                            <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                                            <option value="'SimSun', serif">宋体</option>
+                                            <option value="'SimHei', sans-serif">黑体</option>
+                                            <option value="'Arial', sans-serif">Arial</option>
+                                            <option value="'Helvetica', sans-serif">Helvetica</option>
+                                            <option value="custom">自定义</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row" id="customFontRow" style="display: none;">
+                                        <label>自定义字体:</label>
+                                        <input type="text" id="customFont" placeholder="输入字体名称或CSS字体声明">
+                                    </div>
+                                    <div class="form-row">
+                                        <label>字体大小:</label>
+                                        <input type="range" id="fontSize" min="12" max="24" value="16">
+                                        <span id="fontSizeValue">16px</span>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>字体粗细:</label>
+                                        <select id="fontWeight">
+                                            <option value="normal">正常</option>
+                                            <option value="bold">粗体</option>
+                                            <option value="lighter">细体</option>
+                                            <option value="bolder">更粗</option>
+                                        </select>
+                                    </div>
+                                    <div class="font-actions">
+                                            <button onclick="applyFontSettings()">应用字体</button>
+                                            <button onclick="resetFontSettings()">重置字体</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- API Schemes for Couple Space -->
+                            <div id="apiSettingsTab" class="settings-tab-content" style="display:none;">
+                                <h4>情侣空间 API 方案</h4>
+                                <p class="settings-desc">在此为情侣空间页面添加或管理 API 方案（反代地址、API Key、模型）。保存后可在页面内选择并用于"生成"按钮。</p>
+                                <div class="form-row">
+                                    <label>现有方案：</label>
+                                    <div id="csApiSchemesList" style="display:flex;flex-direction:column;gap:6px;max-height:160px;overflow:auto;border:1px solid #eee;padding:8px;border-radius:4px;"></div>
+                                </div>
+                                <div style="margin-top:10px; border-top:1px dashed #ddd; padding-top:10px;">
+                                        <div class="form-row">
+                                            <label>方案名称</label>
+                                            <input type="text" id="csApiName" placeholder="例如：本地反代" />
+                                        </div>
+                                        <div class="form-row">
+                                            <label>API 地址 (例如 https://proxy.example.com)</label>
+                                            <input type="text" id="csApiUrl" placeholder="https://..." />
+                                        </div>
+                                        <div class="form-row">
+                                            <label>API Key</label>
+                                            <input type="text" id="csApiKey" placeholder="Bearer token 或 API Key" />
+                                        </div>
+                                        <div class="form-row" style="display:flex;gap:8px;align-items:center;">
+                                            <label style="min-width:60px;">模型</label>
+                                            <select id="csApiModelSelect" style="flex:1;min-width:180px;">
+                                                <option value="">-- 请选择模型 --</option>
+                                            </select>
+                                            <input type="text" id="csApiModel" placeholder="或手动输入模型名（可选）" style="flex:1;min-width:160px;display:none;" />
+                                            <button type="button" onclick="csFetchModels()" class="stats-btn" style="white-space:nowrap;">获取模型列表</button>
+                                        </div>
+                                    <div style="display:flex;gap:8px;margin-top:8px;">
+                                        <button onclick="csSaveApiScheme()" class="add-btn">保存方案</button>
+                                        <button onclick="csTestApiScheme()" class="stats-btn">测试连接</button>
+                                        <button onclick="csClearApiForm()" class="stats-btn">清空表单</button>
+                                    </div>
+                                    <div id="csApiMsg" style="margin-top:8px;color:#666;font-size:13px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div> <!-- End of health-view-container -->
+        
+        <!-- 日记板块容器 -->
+        <div id="diary-container" class="diary-container">
+            <!-- 左侧本子列表 -->
+            <div class="diary-sidebar">
+                <div class="diary-sidebar-header">
+                    <h3>我的手账本</h3>
+                    <button id="addBookBtn" class="diary-add-btn" title="新建手账本">+</button>
+                </div>
+                <div id="diaryBookList" class="diary-book-list"></div>
+            </div>
+
+            <!-- 右侧工作区 -->
+            <div class="diary-workspace">
+                <!-- 工具栏 -->
+                <div class="diary-toolbar">
+                    <div class="diary-toolbar-left">
+                        <div class="diary-tool-group">
+                            <button id="diaryUndoBtn" class="diary-tool-btn" title="撤销 (Ctrl+Z)">↩️</button>
+                            <button id="diaryRedoBtn" class="diary-tool-btn" title="重做 (Ctrl+Shift+Z)">↪️</button>
+                        </div>
+                        <div class="diary-tool-group">
+                            <button id="diaryAddTextBtn" class="diary-tool-btn" title="添加文本">T</button>
+                            <button id="diaryAddImageBtn" class="diary-tool-btn" title="添加图片 (URL)">🖼️</button>
+                            <button id="diaryDeleteBtn" class="diary-tool-btn" title="删除选中 (Del)">🗑️</button>
+                            <button id="diaryAddStickerBtn" class="diary-tool-btn" title="素材抽屉">✨</button>
+                        </div>
+                        <div class="diary-tool-group">
+                            <h3 id="diaryWorkspaceTitle" style="margin: 0; font-size: 16px; color: #5c4b4b;">未选择手账本</h3>
+                        </div>
+                    </div>
+                    <div class="diary-toolbar-right"></div>
+                </div>
+
+                <!-- 富文本浮动工具栏 -->
+                <div id="diaryTextToolbar" class="diary-text-toolbar">
+                    <button class="text-tool-btn" data-action="bold" title="加粗">B</button>
+                    <button class="text-tool-btn" data-action="italic" title="斜体">I</button>
+                    <button class="text-tool-btn" data-action="underline" title="下划线">U</button>
+                    <button class="text-tool-btn" data-action="linethrough" title="删除线">S</button>
+                    <div class="text-color-group">
+                        <div id="textColorPalette" class="text-color-palette"></div>
+                        <input type="color" id="textColorPicker" class="text-color-picker" title="文字颜色">
+                        <button id="addColorToPaletteBtn" class="text-tool-btn text-color-add" title="将当前颜色加入色板">+</button>
+                    </div>
+                    <select id="textFontSelect" class="text-tool-btn" style="width: 120px;" title="字体">
+                        <option value="Comic Neue">Comic Neue</option>
+                        <option value="Quicksand">Quicksand</option>
+                    </select>
+                    <select id="textSizeSelect" class="text-tool-btn" style="width: 50px;" title="字号">
+                        <option value="18">18</option>
+                        <option value="24">24</option>
+                        <option value="36">36</option>
+                        <option value="48">48</option>
+                        <option value="64">64</option>
+                    </select>
+                </div>
+
+                <!-- 图层控制悬浮菜单 -->
+                <div id="diaryLayerControls" class="diary-layer-controls">
+                    <button class="layer-btn" title="置顶" onclick="diaryApp.bringToFront()">🔝</button>
+                    <button class="layer-btn" title="上移一层" onclick="diaryApp.bringForward()">⬆️</button>
+                    <button class="layer-btn" title="下移一层" onclick="diaryApp.sendBackwards()">⬇️</button>
+                    <button class="layer-btn" title="置底" onclick="diaryApp.sendToBack()">底部</button>
+                </div>
+
+                <!-- 素材抽屉 -->
+                <div id="diaryAssetsDrawer" class="diary-assets-drawer">
+                    <div class="diary-assets-header">
+                        <button class="diary-assets-tab active" onclick="diaryApp.switchAssetTab('stickers')">贴纸</button>
+                        <button class="diary-assets-tab" onclick="diaryApp.switchAssetTab('backgrounds')">背景</button>
+                    </div>
+                    <div id="diaryAssetInputGroup" class="diary-assets-input-group">
+                        <input type="text" id="assetUrlInput" placeholder="输入图片 URL...">
+                        <button id="addAssetUrlBtn">添加</button>
+                    </div>
+                    <div id="diaryBgSettings" class="diary-bg-settings" style="display: none;">
+                        <div class="diary-bg-controls">
+                            <div class="bg-control-row">
+                                <label><input type="radio" name="bgMode" value="cover" checked onchange="diaryApp.updateBackgroundMode('cover')"> 覆盖</label>
+                                <label><input type="radio" name="bgMode" value="contain" onchange="diaryApp.updateBackgroundMode('contain')"> 包含</label>
+                                <label><input type="radio" name="bgMode" value="repeat" onchange="diaryApp.updateBackgroundMode('repeat')"> 平铺</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="diaryAssetsContent" class="diary-assets-content"></div>
+                </div>
+
+                <!-- 网格预览 Modal -->
+                <div id="diaryGridModal" class="diary-grid-modal">
+                    <div class="diary-grid-modal-content">
+                        <div class="diary-grid-header">
+                            <h3>手账预览</h3>
+                            <button class="modal-close" onclick="diaryApp.closeGridPreview()">×</button>
+                        </div>
+                        <div id="diaryGridContent" class="diary-grid-content"></div>
+                    </div>
+                </div>
+
+                <!-- 画布视口 -->
+                <div class="diary-viewport">
+                     <div id="diaryCanvasContainer" class="diary-canvas-container">
+                         <div class="diary-empty-state">
+                             <div class="diary-empty-icon">📖</div>
+                             <div class="diary-empty-text">请在左侧选择一个手账本</div>
+                         </div>
+                     </div>
+                </div>
+
+                <!-- 翻页控制 -->
+                <div class="diary-pagination">
+                    <button id="diaryPrevPageBtn" class="diary-page-btn">◀ 上一页</button>
+                    <span id="diaryPageIndicator" class="diary-page-indicator">第 1 页</span>
+                    <button id="diaryNextPageBtn" class="diary-page-btn">下一页 ▶</button>
+                    <button id="diaryAddPageBtn" class="diary-page-btn" title="新增一页" style="margin-left: 10px;">➕</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="couple-space-container" class="couple-space-container">
+            <div class="couple-space-dashboard">
+                <div class="couple-space-header">
+                    <div class="couple-avatar-strip" id="coupleAvatarStrip"></div>
+                    <div class="couple-space-actions">
+                        <div class="couple-active-name" id="coupleActiveName">未选择角色</div>
+                        <button id="coupleMemoryButton" class="add-btn">记忆库</button>
+                        <button id="coupleRefreshButton" class="add-btn">生成</button>
+                        <button id="coupleSettingsButton" class="stats-btn">设置</button>
+                    </div>
+                </div>
+                
+                <div class="couple-sections-grid">
+                    <div class="couple-card" data-module="sleep">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">睡眠</div>
+                            <button class="couple-card-refresh" data-module="sleep">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleSleepBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="bowel">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">排便</div>
+                            <button class="couple-card-refresh" data-module="bowel">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleBowelBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="exercise">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">运动与步数</div>
+                            <button class="couple-card-refresh" data-module="exercise">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleExerciseBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="meals">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">饮食与记账</div>
+                            <button class="couple-card-refresh" data-module="meals">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleMealsBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="finance">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">消费记录</div>
+                            <button class="couple-card-refresh" data-module="finance">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleFinanceBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="diary">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">日记</div>
+                            <button class="couple-card-refresh" data-module="diary">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleDiaryBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="mood">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">心情面板</div>
+                            <button class="couple-card-refresh" data-module="mood">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleMoodBody"></div>
+                    </div>
+                    <div class="couple-card" data-module="summary">
+                        <div class="couple-card-header">
+                            <div class="couple-card-title">情侣空间记忆预览</div>
+                            <button class="couple-card-refresh" data-module="summary">生成</button>
+                        </div>
+                        <div class="couple-card-body" id="coupleSummaryBody"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="coupleSettingsModal" class="couple-modal">
+            <div class="couple-modal-content">
+                <div class="couple-modal-header">
+                    <div class="couple-modal-title" id="coupleSettingsTitle">情侣空间设置</div>
+                    <button class="couple-modal-close" id="coupleSettingsClose">×</button>
+                </div>
+                <div class="couple-modal-body">
+                    <div class="couple-settings-header" style="font-weight: bold; font-size: 13px; margin-bottom: 10px;">时间段与模块设置</div>
+                    <div class="couple-settings-row">
+                        <label>早晨 (Morning)</label>
+                        <input type="time" id="csBlockMorningTime" style="width: 80px;">
+                        <input type="text" id="csBlockMorningModules" placeholder="sleep, bowel..." style="flex:1; margin-left:5px;">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label>中午 (Noon)</label>
+                        <input type="time" id="csBlockNoonTime" style="width: 80px;">
+                        <input type="text" id="csBlockNoonModules" placeholder="meals_lunch..." style="flex:1; margin-left:5px;">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label>傍晚 (Evening)</label>
+                        <input type="time" id="csBlockEveningTime" style="width: 80px;">
+                        <input type="text" id="csBlockEveningModules" placeholder="meals_dinner..." style="flex:1; margin-left:5px;">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label>夜间 (Night)</label>
+                        <input type="time" id="csBlockNightTime" style="width: 80px;">
+                        <input type="text" id="csBlockNightModules" placeholder="finance, mood..." style="flex:1; margin-left:5px;">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csBackfillDays">自动补齐天数</label>
+                        <input type="number" id="csBackfillDays" min="0" max="7">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csInjectDaily">注入日总结条数</label>
+                        <input type="number" id="csInjectDaily" min="0" max="10">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csInjectWeekly">注入周总结条数</label>
+                        <input type="number" id="csInjectWeekly" min="0" max="10">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csInjectMonthly">注入月总结条数</label>
+                        <input type="number" id="csInjectMonthly" min="0" max="10">
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csInjectYearly">注入年总结条数</label>
+                        <input type="number" id="csInjectYearly" min="0" max="10">
+                    </div>
+                    <div class="couple-settings-header" style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; font-size: 13px;">财务设定</div>
+                    <div class="couple-settings-row">
+                        <label for="csIncomePattern">收入模式</label>
+                        <select id="csIncomePattern">
+                            <option value="stable">固定月薪</option>
+                            <option value="unstable">不稳定/接单</option>
+                        </select>
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csIncomeLevel">收入水平</label>
+                        <select id="csIncomeLevel">
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                    </div>
+                    <div class="couple-settings-row">
+                        <label for="csSpendingStyle">消费风格</label>
+                        <select id="csSpendingStyle">
+                            <option value="frugal">节俭</option>
+                            <option value="moderate">适中</option>
+                            <option value="lavish">大手大脚</option>
+                        </select>
+                    </div>
+                    <!-- CSS 样式自定义 -->
+                    <div class="couple-settings-header" style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; font-size: 13px;">🎨 情侣空间 CSS 样式</div>
+                    <div class="couple-settings-row" style="flex-direction: column; align-items: stretch;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <label style="font-size: 13px; white-space: nowrap;">当前方案：</label>
+                            <select id="csCssSchemeSelect" style="flex: 1; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--card-border); background: var(--background-color); color: var(--text-color); font-size: 12px;"></select>
+                        </div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                            <button onclick="CoupleSpaceUI.openCssEditor()" style="padding: 4px 10px; border: none; border-radius: 4px; background: var(--btn-primary-bg, #4a90d9); color: white; cursor: pointer; font-size: 12px;">编辑CSS</button>
+                            <button onclick="CoupleSpaceUI.createCssScheme()" style="padding: 4px 10px; border: none; border-radius: 4px; background: var(--btn-primary-bg, #4a90d9); color: white; cursor: pointer; font-size: 12px;">+ 新建方案</button>
+                            <button onclick="CoupleSpaceUI.deleteCssScheme()" style="padding: 4px 10px; border: none; border-radius: 4px; background: #ff6b6b; color: white; cursor: pointer; font-size: 12px;">删除方案</button>
+                            <button onclick="CoupleSpaceUI.resetCssToDefault()" style="padding: 4px 10px; border: none; border-radius: 4px; background: #999; color: white; cursor: pointer; font-size: 12px;">恢复默认</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+                        <button id="coupleClearData" style="background: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">🗑️ 清空该角色数据</button>
+                    </div>
+                </div>
+                <div class="couple-modal-footer">
+                    <button id="coupleSettingsSave" class="add-btn">保存设置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 情侣空间自定义CSS注入点 -->
+        <style id="coupleSpaceCustomCss"></style>
+
+        <!-- CSS编辑器弹窗 -->
+        <div id="coupleCssEditorModal" class="couple-modal">
+            <div class="couple-modal-content" style="max-width: 700px; height: 85vh; display: flex; flex-direction: column;">
+                <div class="couple-modal-header">
+                    <div class="couple-modal-title">情侣空间 CSS 编辑器</div>
+                    <button class="couple-modal-close" onclick="document.getElementById('coupleCssEditorModal').style.display='none'">×</button>
+                </div>
+                <div class="couple-modal-body" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                    <p style="font-size: 12px; color: var(--muted-color); margin-bottom: 8px;">编辑情侣空间页面的CSS样式。修改后点击"应用"即时预览，点击"保存"持久化到当前方案。</p>
+                    <textarea id="coupleCssEditorTextarea" style="flex: 1; width: 100%; padding: 12px; border: 2px solid var(--card-border, #ddd); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4; resize: none; background: var(--background-color, #fff); color: var(--text-color, #333); box-sizing: border-box;"></textarea>
+                    <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                        <button onclick="CoupleSpaceUI.applyCssFromEditor()" style="padding: 6px 14px; border: none; border-radius: 6px; background: var(--btn-primary-bg, #4a90d9); color: white; cursor: pointer; font-size: 12px;">应用预览</button>
+                        <button onclick="CoupleSpaceUI.saveCssFromEditor()" style="padding: 6px 14px; border: none; border-radius: 6px; background: #27ae60; color: white; cursor: pointer; font-size: 12px;">保存到方案</button>
+                        <button onclick="CoupleSpaceUI.exportCss()" style="padding: 6px 14px; border: none; border-radius: 6px; background: #8e44ad; color: white; cursor: pointer; font-size: 12px;">导出</button>
+                        <button onclick="CoupleSpaceUI.importCss()" style="padding: 6px 14px; border: none; border-radius: 6px; background: #e67e22; color: white; cursor: pointer; font-size: 12px;">导入</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="coupleDetailsModal" class="couple-modal">
+            <div class="couple-modal-content">
+                <div class="couple-modal-header">
+                    <div class="couple-modal-title" id="coupleDetailsTitle">详情</div>
+                    <button class="couple-modal-close" id="coupleDetailsClose">×</button>
+                </div>
+                <div class="couple-modal-body" id="coupleDetailsBody"></div>
+            </div>
+        </div>
+
+        <div id="coupleMemoryModal" class="couple-modal">
+            <div class="couple-modal-content" style="max-width: 600px; height: 80vh; display: flex; flex-direction: column;">
+                <div class="couple-modal-header">
+                    <div class="couple-modal-title">情侣记忆库</div>
+                    <button class="couple-modal-close" id="coupleMemoryClose">×</button>
+                </div>
+                <div class="couple-modal-body" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+                    <div class="memory-tabs" style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                        <button class="memory-tab active" data-tab="daily">日总结</button>
+                        <button class="memory-tab" data-tab="weekly">周总结</button>
+                        <button class="memory-tab" data-tab="monthly">月总结</button>
+                        <button class="memory-tab" data-tab="yearly">年总结</button>
+                    </div>
+                    <div id="coupleMemoryList" style="flex: 1; overflow-y: auto;"></div>
+                </div>
+                <div class="couple-modal-footer">
+                    <button id="coupleMemoryUpgrade" class="add-btn">生成上级总结</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分享页面容器 -->
+        <div id="share-container" class="share-container" style="display: none; flex: 1; overflow-y: auto; padding: 20px; flex-direction: column; gap: 20px;">
+            <div class="share-section">
+                <h3>📊 生成健康报告</h3>
+                <div class="share-period-selector">
+                    <button class="period-btn active" data-period="daily" onclick="selectReportPeriod('daily')">日报</button>
+                    <button class="period-btn" data-period="weekly" onclick="selectReportPeriod('weekly')">周报</button>
+                    <button class="period-btn" data-period="monthly" onclick="selectReportPeriod('monthly')">月报</button>
+                </div>
+                <button class="share-action-btn" onclick="generateReport()">生成报告</button>
+            </div>
+            <div class="share-section" id="reportPreviewSection" style="display: none;">
+                <h3>📋 报告预览</h3>
+                <pre class="report-preview" id="reportPreviewText"></pre>
+                <div class="share-btn-group">
+                    <button class="share-action-btn" onclick="generateReport()">重新生成</button>
+                    <button class="share-action-btn primary" onclick="showSendReportDialog()">发送到聊天</button>
+                </div>
+            </div>
+            <div class="share-section">
+                <h3>📖 日记分享</h3>
+                <p class="share-desc">选择一页日记，通过识图中转API转换为文字描述后分享给CHAR</p>
+                <div class="diary-thumbnails" id="diaryThumbnails"></div>
+                <div id="diaryVisionResult" style="display: none;">
+                    <h4>识图结果预览：</h4>
+                    <pre class="report-preview" id="diaryVisionText"></pre>
+                    <button class="share-action-btn primary" onclick="showSendDiaryDialog()">发送到聊天</button>
+                </div>
+            </div>
+            <div class="share-modal" id="shareCharModal" style="display: none;">
+                <div class="share-modal-content">
+                    <div class="share-modal-header">
+                        <h3>选择CHAR</h3>
+                        <button class="modal-close" onclick="closeShareCharModal()">×</button>
+                    </div>
+                    <div class="share-char-list" id="shareCharList"></div>
+                    <div class="share-modal-footer">
+                        <button class="share-action-btn primary" onclick="confirmSendToChar()">发送</button>
+                    </div>
+                </div>
+            </div>
+            <div class="share-toast" id="shareToast" style="display: none;"></div>
+        </div>
+
+    </div> <!-- End of health-container -->
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="diary-core.js"></script>
+    <script src="couple-space.js"></script>
+    <script src="vision-relay.js"></script>
+    <script src="health.js"></script>
+</body>
+</html>

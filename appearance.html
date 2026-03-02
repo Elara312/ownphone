@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>外观设置</title>
+    <link rel="stylesheet" href="app-page.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">← 返回</button>
+            <h1>🎨 外观设置</h1>
+        </div>
+
+        <div class="app-content">
+            <!-- 壁纸设置 -->
+            <div class="settings-section">
+                <h2>壁纸设置</h2>
+                <div class="form-group">
+                    <label>壁纸 URL</label>
+                    <input type="text" id="wallpaperUrl" placeholder="https://example.com/image.jpg">
+                    <button class="btn-primary" onclick="setWallpaperFromUrl()">应用</button>
+                </div>
+                <div class="form-group">
+                    <label>上传本地图片</label>
+                    <input type="file" id="wallpaperFile" accept="image/*" onchange="setWallpaperFromFile(event)">
+                </div>
+                <div class="form-group">
+                    <label>显示模式</label>
+                    <select id="wallpaperMode" onchange="setWallpaperMode(this.value)">
+                        <option value="cover">填满（cover）</option>
+                        <option value="contain">完整显示（contain）</option>
+                        <option value="auto">原始尺寸（auto）</option>
+                        <option value="repeat">平铺（repeat）</option>
+                    </select>
+                </div>
+                <button class="btn-secondary" onclick="resetWallpaper()">恢复默认壁纸</button>
+            </div>
+
+            <!-- 图标自定义 -->
+            <div class="settings-section">
+                <h2>图标自定义</h2>
+                <div id="iconCustomList"></div>
+            </div>
+
+            <!-- 字体设置 -->
+            <div class="settings-section">
+                <h2>字体设置</h2>
+                
+                <div class="form-group">
+                    <label>字体方案管理</label>
+                    <select id="fontSchemeSelect" onchange="switchFontScheme()">
+                        <option value="">系统默认字体</option>
+                    </select>
+                    <button class="btn-small" onclick="deleteFontScheme()">删除方案</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>字体 URL（保存为新方案）</label>
+                    <input type="text" id="fontUrl" placeholder="https://example.com/font.woff2">
+                    <button class="btn-primary" onclick="setFontFromUrl()">保存并应用</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>上传字体文件（保存为新方案）</label>
+                    <input type="file" id="fontFile" accept=".ttf,.woff,.woff2" onchange="setFontFromFile(event)">
+                </div>
+                
+                <div class="form-group">
+                    <label>系统预装字体</label>
+                    <select id="systemFont" onchange="setSystemFont()">
+                        <option value="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">系统默认</option>
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Helvetica', sans-serif">Helvetica</option>
+                        <option value="'Times New Roman', serif">Times New Roman</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                        <option value="'SimHei', sans-serif">黑体</option>
+                    </select>
+                </div>
+                
+                <div class="font-preview">
+                    <p>字体预览 Font Preview 1234567890</p>
+                </div>
+            </div>
+
+            <!-- 小组件管理 -->
+            <div class="settings-section">
+                <h2>小组件管理</h2>
+                <div class="widget-list">
+                    <div class="widget-item">
+                        <span>🕐 时钟小组件</span>
+                        <button class="btn-small" onclick="addWidget('clock')">添加</button>
+                    </div>
+                    <div class="widget-item">
+                        <span>✅ 待办清单</span>
+                        <button class="btn-small" onclick="addWidget('todo')">添加</button>
+                    </div>
+                    <div class="widget-item">
+                        <span>📅 日历</span>
+                        <button class="btn-small" onclick="addWidget('calendar')">添加</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 小组件自定义样式 -->
+            <div class="settings-section">
+                <h2>小组件自定义样式</h2>
+                <div class="form-group">
+                    <label>选择小组件类型</label>
+                    <select id="widgetTypeSelect" onchange="loadWidgetStyles()">
+                        <option value="clock">🕐 时钟小组件</option>
+                        <option value="todo">✅ 待办清单</option>
+                        <option value="calendar">📅 日历</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>当前方案</label>
+                    <select id="widgetSchemeSelect" onchange="switchWidgetScheme()">
+                        <option value="default">默认样式</option>
+                    </select>
+                    <button class="btn-small" onclick="deleteWidgetScheme()">删除方案</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>自定义 CSS</label>
+                    <textarea id="widgetCustomCSS" rows="15" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>保存为新方案</label>
+                    <input type="text" id="newSchemeName" placeholder="输入方案名称">
+                    <button class="btn-primary" onclick="saveWidgetScheme()">保存方案</button>
+                </div>
+                
+                <button class="btn-primary" onclick="applyWidgetStyle()">应用样式</button>
+                <button class="btn-secondary" onclick="resetWidgetStyle()">恢复默认</button>
+                
+                <div class="widget-preview" id="widgetPreview" style="margin-top: 20px; padding: 20px; background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%); border-radius: 12px;">
+                    <div style="font-size: 12px; color: white; margin-bottom: 10px;">预览效果：</div>
+                    <div id="widgetPreviewContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="appearance.js"></script>
+</body>
+</html>

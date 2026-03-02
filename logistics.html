@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>物流</title>
+    <link rel="stylesheet" href="logistics.css">
+</head>
+<body>
+    <div class="logi-app">
+        <header class="logi-header">
+            <button class="logi-back" onclick="window.location.href='index.html'">‹</button>
+            <h1>📦 物流中心</h1>
+            <select id="charSelect" class="logi-char-picker" onchange="onCharChange()">
+                <option value="">全部CHAR</option>
+            </select>
+        </header>
+
+        <!-- 状态筛选 -->
+        <nav class="logi-filters">
+            <button class="logi-filter active" data-status="all" onclick="filterOrders('all',this)">全部</button>
+            <button class="logi-filter" data-status="pending_accept" onclick="filterOrders('pending_accept',this)">待确认</button>
+            <button class="logi-filter" data-status="ordered" onclick="filterOrders('ordered',this)">待发货</button>
+            <button class="logi-filter" data-status="shipping" onclick="filterOrders('shipping',this)">配送中</button>
+            <button class="logi-filter" data-status="pending_receive" onclick="filterOrders('pending_receive',this)">待签收</button>
+            <button class="logi-filter" data-status="received" onclick="filterOrders('received',this)">已签收</button>
+            <button class="logi-filter" data-status="returned" onclick="filterOrders('returned',this)">已退货</button>
+            <button class="logi-filter" data-status="rejected" onclick="filterOrders('rejected',this)">已拒收</button>
+        </nav>
+
+        <!-- 订单列表 -->
+        <main class="logi-content">
+            <div class="order-list" id="orderList">
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <p>暂无订单</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 订单详情弹窗 -->
+    <div class="modal-overlay" id="orderDetailModal" style="display:none">
+        <div class="modal-card detail-modal">
+            <div class="modal-header">
+                <span>订单详情</span>
+                <button class="modal-close" onclick="closeDetail()">✕</button>
+            </div>
+            <div class="modal-body" id="orderDetailBody"></div>
+            <div class="modal-actions" id="orderDetailActions"></div>
+        </div>
+    </div>
+
+    <!-- 评价弹窗 -->
+    <div class="modal-overlay" id="reviewModal" style="display:none">
+        <div class="modal-card">
+            <div class="modal-header">写评价</div>
+            <div class="modal-body">
+                <div class="star-rating" id="starRating">
+                    <span class="star" data-v="1" onclick="setStar(1)">☆</span>
+                    <span class="star" data-v="2" onclick="setStar(2)">☆</span>
+                    <span class="star" data-v="3" onclick="setStar(3)">☆</span>
+                    <span class="star" data-v="4" onclick="setStar(4)">☆</span>
+                    <span class="star" data-v="5" onclick="setStar(5)">☆</span>
+                </div>
+                <textarea id="reviewText" rows="3" placeholder="说说你的感受..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeReview()">取消</button>
+                <button class="modal-btn confirm" onclick="submitReview()">提交评价</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="logistics.js"></script>
+</body>
+</html>

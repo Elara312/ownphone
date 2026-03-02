@@ -1,0 +1,3479 @@
+/* CSS变量定义 - 完整的自定义变量系统 */
+:root {
+    /* 主要颜色变量 */
+    --primary-color: #c9a87c;
+    --secondary-color: #e8dcc8;
+    --background-color: #f5f1e8;
+    --text-color: #5a4a3a;
+    --card-color: #ffffff;
+    
+    /* 扩展颜色变量 */
+    --accent-color: #d4c4a8;
+    --muted-color: #8b7355;
+    --success-color: #7fb069;
+    --warning-color: #ff6b6b;
+    --info-color: #4682b4;
+    --light-bg: #fdfbf7;
+    --hover-bg: #f5ede0;
+    --border-light: #e8dcc8;
+    --border-dark: #d4c4a8;
+    
+    /* 按钮颜色 */
+    --btn-primary-bg: var(--primary-color);
+    --btn-primary-hover: #b89968;
+    --btn-secondary-bg: var(--accent-color);
+    --btn-secondary-hover: #c09460;
+    --btn-danger-bg: #d4a574;
+    --btn-danger-hover: #c09460;
+    
+    /* 输入框颜色 */
+    --input-bg: var(--card-color);
+    --input-border: var(--border-light);
+    --input-focus-border: var(--primary-color);
+    --input-placeholder: #a89580;
+    
+    /* 模态框颜色 */
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    --modal-bg: var(--card-color);
+    --modal-border: var(--border-light);
+    --modal-shadow: rgba(0, 0, 0, 0.2);
+    
+    /* 卡片颜色 */
+    --card-border: var(--secondary-color);
+    --card-hover-border: var(--primary-color);
+    --card-shadow: rgba(0, 0, 0, calc(var(--shadow-intensity, 0.5) * 0.2));
+    --card-hover-shadow: rgba(169, 124, 82, calc(var(--shadow-intensity, 0.5) * 0.3));
+    
+    /* 导航颜色 */
+    --nav-bg: var(--card-color);
+    --nav-border: var(--border-light);
+    --nav-text: var(--muted-color);
+    --nav-hover-bg: var(--light-bg);
+    --nav-active-bg: var(--hover-bg);
+    --nav-active-text: var(--text-color);
+    
+    /* 日历颜色 */
+    --calendar-bg: var(--light-bg);
+    --calendar-border: var(--border-light);
+    --calendar-day-bg: var(--light-bg);
+    --calendar-day-border: var(--border-light);
+    --calendar-day-hover-bg: var(--hover-bg);
+    --calendar-day-hover-border: var(--primary-color);
+    --calendar-today-bg: var(--hover-bg);
+    --calendar-today-border: var(--primary-color);
+    --calendar-header-bg: var(--hover-bg);
+    --calendar-header-text: var(--muted-color);
+    --calendar-nav-btn-bg: var(--secondary-color);
+    --calendar-nav-btn-hover: var(--accent-color);
+    --calendar-nav-btn-text: var(--text-color);
+    --calendar-title-text: var(--text-color);
+    
+    /* 表单元素颜色 */
+    --form-bg: var(--light-bg);
+    --form-border: var(--border-light);
+    --form-label-text: var(--text-color);
+    --time-input-bg: var(--card-color);
+    --time-input-border: var(--border-light);
+    --time-input-focus: var(--primary-color);
+    --time-input-text: var(--text-color);
+    --time-input-placeholder: var(--input-placeholder);
+    
+    /* 卡片标题和分隔线 */
+    --card-title-border: var(--border-light);
+    --card-title-text: var(--text-color);
+    
+    /* 状态指示器颜色 */
+    --status-dot-bg: var(--primary-color);
+    --status-dot-border: var(--primary-color);
+    
+    /* 睡眠记录特殊颜色 */
+    --sleep-duration-text: #6b9b6b;
+    --sleep-recorded-bg: var(--primary-color);
+    --sleep-recorded-text: white;
+    --sleep-recorded-border: #a67c52;
+    --sleep-recorded-hover: var(--btn-primary-hover);
+    
+    /* 生理期颜色 */
+    --menstrual-color: #ff6b6b;
+    --follicular-color: #4ecdc4;
+    --ovulation-color: #45b7d1;
+    --luteal-color: #f9ca24;
+    --safe-color: #6c5ce7;
+    
+    /* 运动记录颜色 */
+    --exercise-day-border: var(--border-light);
+    --exercise-day-hover-border: var(--primary-color);
+    --exercise-day-hover-bg: var(--hover-bg);
+    --exercise-day-today-border: var(--primary-color);
+    --exercise-day-today-bg: var(--hover-bg);
+    --exercise-day-has-bg: #eef7ee;
+    --exercise-day-has-border: #a8c9a8;
+    --exercise-label-text: var(--muted-color);
+    --exercise-steps-text: var(--text-color);
+    --exercise-status-bg: var(--hover-bg);
+    --exercise-status-text: var(--muted-color);
+    --exercise-status-exercised-text: #6b9b6b;
+    --exercise-status-exercised-bg: #d4f0d4;
+    --exercise-total-text: var(--text-color);
+    --exercise-total-highlight: var(--primary-color);
+    
+    /* 排便记录颜色 */
+    --bowel-record-bg: #f0e6d2;
+    --bowel-record-border: var(--primary-color);
+    --bowel-record-hover-bg: var(--secondary-color);
+    
+    /* 通用文本颜色 */
+    --section-title-text: var(--text-color);
+    --label-text: var(--text-color);
+    --input-text: var(--text-color);
+    --preview-text: var(--text-color);
+    --option-hover-bg: var(--hover-bg);
+    --option-hover-border: var(--primary-color);
+    --option-selected-bg: var(--hover-bg);
+    --option-selected-border: #a67c52;
+    
+    /* 各板块导航按钮颜色 */
+    --skincare-nav-btn-bg: var(--secondary-color);
+    --skincare-nav-btn-hover: var(--accent-color);
+    --period-nav-btn-bg: var(--secondary-color);
+    --period-nav-btn-hover: var(--accent-color);
+    --bowel-nav-btn-bg: var(--secondary-color);
+    --bowel-nav-btn-hover: var(--accent-color);
+    --meal-nav-btn-bg: var(--secondary-color);
+    --meal-nav-btn-hover: var(--accent-color);
+    
+    /* 餐饮分析按钮颜色 */
+    --meal-analysis-btn-bg: var(--primary-color);
+    --meal-analysis-btn-hover: var(--btn-primary-hover);
+    --meal-analysis-modal-bg: var(--card-color);
+    --meal-analysis-header-text: var(--text-color);
+    
+    /* 运动记录卡片颜色 */
+    --exercise-card-bg: var(--light-bg);
+    --exercise-card-border: var(--border-light);
+    
+    /* 特殊记录颜色 */
+    --sleep-record-bg: #e8f5e8;
+    --sleep-record-border: #a8c9a8;
+    --sleep-record-hover-bg: #d4f0d4;
+    --period-record-shadow: rgba(0, 0, 0, 0.3);
+    
+    /* 餐饮票据颜色 */
+    --meal-ticket-shadow: rgba(212, 196, 168, 0.2);
+    --meal-ticket-hover-shadow: rgba(212, 196, 168, 0.3);
+    --meal-item-bg: rgba(255, 255, 255, 0.7);
+    --meal-item-hover-bg: rgba(255, 255, 255, 0.9);
+    
+    /* 布局变量 */
+    --border-radius: 16px;
+    --shadow-intensity: 0.5;
+    --animation-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
+    transition: background-color var(--animation-speed), color var(--animation-speed);
+}
+
+/* 主容器 - 全屏布局，与健康app完全一致 */
+.health-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* 返回按钮 - 与健康app完全一致 */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--nav-bg);
+    border: 2px solid var(--border-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    z-index: 100;
+    transition: all 0.3s;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.back-btn:hover {
+    background: var(--card-color);
+    box-shadow: 0 2px 8px var(--modal-shadow);
+}
+
+/* 左侧导航栏 - 与健康app完全一致 */
+.sidebar {
+    width: 55px;
+    background: var(--nav-bg);
+    border-right: 2px solid var(--nav-border);
+    display: flex;
+    flex-direction: column;
+    padding: 80px 0 20px;
+    gap: 2px;
+}
+.nav-item {
+    padding: 14px 8px;
+    text-align: center;
+    color: var(--nav-text);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 13px;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    letter-spacing: 2px;
+    border-left: 3px solid transparent;
+    white-space: nowrap;
+}
+
+.nav-item:hover {
+    background: var(--nav-hover-bg);
+    border-left-color: var(--primary-color);
+}
+
+.nav-item.active {
+    background: var(--nav-active-bg);
+    color: var(--nav-active-text);
+    border-left-color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* 主内容区 */
+.main-content {
+    flex: 1;
+    padding: 80px 30px 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 健康记录网格 */
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 调整最小列宽 */
+    gap: 10px;
+}
+
+/* 健康卡片通用样式 */
+.health-card {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: 0 2px 10px var(--card-shadow);
+    border: 2px solid var(--card-border);
+    position: relative;
+    transition: all var(--animation-speed);
+}
+
+.health-card:hover {
+    border-color: var(--card-hover-border);
+    box-shadow: 0 4px 12px var(--card-hover-shadow);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--card-title-border);
+}
+
+.card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--card-title-text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--status-dot-bg);
+    border: 2px solid var(--status-dot-border);
+}
+/* 睡眠记录卡片 - 调整为合适尺寸 */
+.sleep-card {
+    grid-column: span 1;
+    min-height: 320px;
+}
+
+.time-input-section {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: var(--form-bg);
+    border-radius: 10px;
+    border: 1px solid var(--form-border);
+}
+
+.time-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.time-input-row:last-of-type {
+    margin-bottom: 0;
+}
+
+.time-input-row label {
+    min-width: 70px;
+    font-size: 13px;
+    color: var(--form-label-text);
+    font-weight: 500;
+}
+
+.time-input {
+    width: 45px;
+    padding: 6px;
+    border: 2px solid var(--time-input-border);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--time-input-text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.time-input:focus {
+    border-color: var(--time-input-focus);
+    outline: none;
+}
+
+.time-input::placeholder {
+    color: var(--time-input-placeholder);
+}
+
+.save-sleep-btn {
+    width: 100%;
+    padding: 8px;
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+    margin-top: 8px;
+}
+
+.save-sleep-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.sleep-calendar-section {
+    margin-top: 12px;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.calendar-nav button {
+    background: var(--calendar-nav-btn-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--calendar-nav-btn-text);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.calendar-nav button:hover {
+    background: var(--calendar-nav-btn-hover);
+}
+
+#sleepCalendarMonth {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--calendar-title-text);
+    min-width: 140px;
+    text-align: center;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-top: 10px;
+}
+
+.weekday-header {
+    padding: 6px 2px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--calendar-header-text);
+    background: var(--calendar-header-bg);
+    border-radius: 3px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid var(--calendar-day-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--calendar-day-bg);
+    border-radius: 4px;
+    color: var(--text-color);
+    padding: 1px;
+    min-height: 30px;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.calendar-day:not(.empty):hover {
+    background-color: var(--calendar-day-hover-bg);
+    border-color: var(--calendar-day-hover-border);
+}
+
+.calendar-day.today {
+    border-color: var(--calendar-today-border);
+    background-color: var(--calendar-today-bg);
+    font-weight: bold;
+}
+
+.calendar-day.has-sleep-record {
+    background-color: var(--sleep-record-bg);
+    border-color: var(--sleep-record-border);
+}
+
+.calendar-day.has-sleep-record:hover {
+    background-color: var(--sleep-record-hover-bg);
+}
+
+.day-number {
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.sleep-duration {
+    font-size: 9px;
+    color: var(--sleep-duration-text);
+    font-weight: bold;
+    margin-top: 1px;
+    text-align: center;
+    line-height: 1;
+}
+
+.calendar-day.recorded {
+    background-color: var(--sleep-recorded-bg);
+    color: var(--sleep-recorded-text);
+    border-color: var(--sleep-recorded-border);
+}
+
+.calendar-day.recorded:hover {
+    background-color: var(--sleep-recorded-hover);
+}
+/* 护肤记录卡片 */
+.skincare-card {
+    grid-column: span 2;
+    min-height: 400px;
+}
+
+.skincare-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.skincare-nav button {
+    background: var(--skincare-nav-btn-bg);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.skincare-nav button:hover {
+    background: var(--skincare-nav-btn-hover);
+}
+
+#skincareCalendarMonth {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 160px;
+    text-align: center;
+}
+
+.skincare-content {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.skincare-section {
+    flex: 1;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.section-title h4 {
+    font-size: 14px;
+    color: var(--section-title-text);
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.add-type-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.add-type-btn:hover {
+    background: var(--btn-primary-hover);
+}
+/* 生理期记录卡片 */
+.period-card {
+    grid-column: span 1;
+    min-height: 200px;
+}
+
+.period-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.period-nav button {
+    background: var(--period-nav-btn-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.period-nav button:hover {
+    background: var(--period-nav-btn-hover);
+}
+
+#periodCalendarMonth {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 120px;
+    text-align: center;
+}
+
+.period-settings-btn {
+    background: var(--btn-primary-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.period-settings-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.period-calendar-section {
+    margin-top: 10px;
+}
+
+.period-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 8px;
+    background: var(--light-bg);
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: var(--text-color);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+}
+
+.menstrual-color {
+    background-color: var(--menstrual-color);
+}
+
+.follicular-color {
+    background-color: var(--follicular-color);
+}
+
+.ovulation-color {
+    background-color: var(--ovulation-color);
+}
+
+.luteal-color {
+    background-color: var(--luteal-color);
+}
+
+.safe-color {
+    background-color: var(--safe-color);
+}
+/* 生理期日历样式 */
+.calendar-day.menstrual {
+    background-color: var(--menstrual-color, #ff6b6b);
+    color: white;
+}
+
+.calendar-day.follicular {
+    background-color: var(--follicular-color, #4ecdc4);
+    color: white;
+}
+
+.calendar-day.ovulation {
+    background-color: var(--ovulation-color, #45b7d1);
+    color: white;
+}
+
+.calendar-day.luteal {
+    background-color: var(--luteal-color, #f9ca24);
+    color: white;
+}
+
+.calendar-day.safe {
+    background-color: var(--safe-color, #6c5ce7);
+    color: white;
+}
+
+.calendar-day.predicted {
+    opacity: 0.6;
+    border: 2px dashed #999;
+}
+
+/* 运动记录卡片 */
+.exercise-card {
+    grid-column: span 1;
+    min-height: 150px;
+    max-width: 100%;
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.exercise-nav button {
+    background: var(--exercise-nav-btn-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.exercise-nav button:hover {
+    background: var(--exercise-nav-btn-hover);
+}
+
+#exerciseWeekTitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 100px;
+    text-align: center;
+}
+
+.exercise-week-grid {
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    height: 120px;
+    flex: 1;
+}
+
+.week-row {
+    display: contents;
+}
+
+/* 优化运动记录格子的视觉效果 */
+.exercise-day {
+    background: var(--exercise-card-bg);
+    border: 2px solid var(--exercise-card-border); /* 加粗边框 */
+    border-radius: 8px; /* 增加圆角感 */
+    padding: 8px;
+    min-height: 100px; /* 给足够的垂直空间 */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.exercise-day:hover {
+    border-color: var(--exercise-day-hover-border);
+    background: var(--exercise-day-hover-bg);
+    transform: translateY(-2px); /* 灵动的反馈感 */
+}
+
+.exercise-day.today {
+    border-color: var(--exercise-day-today-border);
+    background: var(--exercise-day-today-bg);
+}
+
+.exercise-day.has-exercise {
+    background: var(--exercise-day-has-bg); /* 换一个更清爽的绿色 */
+    border-color: var(--exercise-day-has-border);
+}
+.day-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--exercise-label-text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.day-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 步数文字放大，增加易读性 */
+.steps-display {
+    font-size: 13px; /* 进一步放大 */
+    color: var(--exercise-steps-text);
+    font-weight: bold;
+    margin: 3px 0;
+}
+
+/* 运动状态的标签化 */
+.exercise-status {
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: var(--exercise-status-bg);
+    color: var(--exercise-status-text);
+}
+
+.exercise-status.exercised {
+    color: var(--exercise-status-exercised-text);
+    background: var(--exercise-status-exercised-bg); /* 运动了就给个小背景标签 */
+    font-weight: bold;
+}
+
+/* 总结栏的美化 */
+.exercise-summary {
+    background: linear-gradient(135deg, var(--hover-bg) 0%, var(--secondary-color) 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    min-height: 100px;
+}
+
+.summary-title {
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--exercise-total-text);
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.summary-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.total-steps, .total-exercises {
+    font-size: 9px;
+    color: var(--exercise-total-text);
+    text-align: center;
+    line-height: 1.3;
+}
+
+.total-steps span, .total-exercises span {
+    font-weight: bold;
+    color: var(--exercise-total-highlight);
+}
+
+/* 排便记录卡片 */
+.bowel-card {
+    grid-column: span 1;
+}
+
+.bowel-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.bowel-nav button {
+    background: var(--bowel-nav-btn-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.bowel-nav button:hover {
+    background: var(--bowel-nav-btn-hover);
+}
+
+#bowelCalendarMonth {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 120px;
+    text-align: center;
+}
+
+.bowel-settings-btn {
+    background: var(--btn-primary-bg);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.bowel-settings-btn:hover {
+    background: var(--btn-primary-hover);
+}
+
+.bowel-calendar-section {
+    margin-top: 10px;
+}
+
+.calendar-day.has-bowel-record {
+    background-color: var(--bowel-record-bg);
+    border-color: var(--bowel-record-border);
+    position: relative;
+}
+
+.calendar-day.has-bowel-record:hover {
+    background-color: var(--bowel-record-hover-bg);
+}
+
+.bowel-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+/* 排便设置弹窗 */
+.bowel-settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.bowel-settings-modal.active {
+    display: flex;
+}
+
+.bowel-settings-content {
+    background: var(--card-color);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.bowel-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.bowel-settings-header h3 {
+    font-size: 18px;
+    color: var(--text-color);
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.bowel-icon-section h4 {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.icon-input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--light-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+}
+
+.icon-input-section label {
+    font-size: 14px;
+    color: var(--text-color);
+    min-width: 80px;
+}
+
+.icon-input-section input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 2px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-color);
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.icon-input-section button {
+    padding: 6px 12px;
+    background: var(--btn-primary-bg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.icon-input-section button:hover {
+    background: var(--btn-primary-hover);
+}
+
+.icon-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--hover-bg);
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+}
+
+.icon-preview span:first-child {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+#bowelIconPreview {
+    font-size: 20px;
+    padding: 5px;
+    background: var(--card-color);
+    border-radius: 4px;
+    border: 1px solid var(--accent-color);
+    min-width: 30px;
+    text-align: center;
+}
+
+.preset-icons h5 {
+    font-size: 12px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.icon-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.icon-option {
+    font-size: 18px;
+    padding: 8px;
+    background: var(--light-bg);
+    border: 2px solid var(--border-light);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 36px;
+    text-align: center;
+}
+
+.icon-option:hover {
+    background: var(--option-hover-bg);
+    border-color: var(--option-hover-border);
+    transform: scale(1.1);
+}
+
+.icon-option.selected {
+    background: var(--option-selected-bg);
+    border-color: var(--option-selected-border);
+}
+
+.bowel-settings-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.bowel-settings-actions button {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.bowel-settings-actions button:first-child {
+    background: var(--btn-primary-bg);
+    color: white;
+}
+
+.bowel-settings-actions button:first-child:hover {
+    background: var(--btn-primary-hover);
+}
+
+.bowel-settings-actions button:last-child {
+    background: var(--btn-danger-bg);
+    color: white;
+}
+
+.bowel-settings-actions button:last-child:hover {
+    background: var(--btn-danger-hover);
+}
+
+/* 餐饮记录卡片 */
+.meal-card {
+    grid-column: span 3; /* 进一步拉长板块，占3列 */
+    min-height: 280px;
+}
+
+.meal-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.meal-nav button {
+    background: var(--meal-nav-btn-bg);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.meal-nav button:hover {
+    background: var(--meal-nav-btn-hover);
+}
+
+#mealDateTitle {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+    min-width: 180px;
+    text-align: center;
+}
+
+.meal-analysis-btn {
+    background: var(--meal-analysis-btn-bg);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meal-analysis-btn:hover {
+    background: var(--meal-analysis-btn-hover);
+    transform: scale(1.05);
+}
+
+.meal-tickets-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    padding: 5px;
+    min-width: 100%; /* 确保容器占满宽度 */
+}
+
+/* 小票样式 - 可爱风格 */
+.meal-ticket {
+    flex: 1;
+    min-width: 160px; /* 减小最小宽度 */
+    max-width: 220px; /* 添加最大宽度限制 */
+    background: linear-gradient(145deg, var(--light-bg) 0%, #f9f6f0 100%);
+    border: 2px dashed var(--accent-color);
+    border-radius: 12px;
+    padding: 12px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px var(--meal-ticket-shadow);
+}
+
+.meal-ticket:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--meal-ticket-hover-shadow);
+    border-color: var(--primary-color);
+}
+
+/* 小票顶部撕边效果 */
+.meal-ticket::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 10px;
+    right: 10px;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 8px,
+        var(--accent-color) 8px,
+        var(--accent-color) 16px
+    );
+    border-radius: 4px 4px 0 0;
+}
+
+.ticket-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dotted var(--accent-color);
+}
+
+.meal-icon {
+    font-size: 16px;
+}
+
+.meal-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.ticket-content {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.meal-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-color);
+    background: var(--card-color);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: all 0.3s;
+}
+
+.meal-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(201, 168, 124, 0.2);
+}
+
+.meal-input::placeholder {
+    color: #a89580;
+    font-style: italic;
+}
+
+.add-meal-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c9a87c 0%, #b89968 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(201, 168, 124, 0.3);
+}
+
+.add-meal-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(201, 168, 124, 0.4);
+}
+
+.meal-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.meal-image-item {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--border-light);
+    transition: all 0.3s;
+}
+
+.meal-image-item:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.meal-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.meal-rating {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #f9ca24;
+    color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* 不同餐次的主题色 */
+.breakfast-ticket {
+    border-color: #ffd93d;
+    background: linear-gradient(145deg, #fffbf0 0%, #fff8e7 100%);
+}
+
+.breakfast-ticket::before {
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 8px,
+        #ffd93d 8px,
+        #ffd93d 16px
+    );
+}
+
+.lunch-ticket {
+    border-color: #ff6b6b;
+    background: linear-gradient(145deg, #fff5f5 0%, #ffefef 100%);
+}
+
+.lunch-ticket::before {
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 8px,
+        #ff6b6b 8px,
+        #ff6b6b 16px
+    );
+}
+
+.dinner-ticket {
+    border-color: #4ecdc4;
+    background: linear-gradient(145deg, #f0fffe 0%, #e6fffe 100%);
+}
+
+.dinner-ticket::before {
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 8px,
+        #4ecdc4 8px,
+        #4ecdc4 16px
+    );
+}
+
+.other-ticket {
+    border-color: #a8e6cf;
+    background: linear-gradient(145deg, #f8fffe 0%, #f0fff8 100%);
+}
+
+.other-ticket::before {
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 8px,
+        #a8e6cf 8px,
+        #a8e6cf 16px
+    );
+}
+
+.add-other-item-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    margin-left: auto;
+}
+
+.add-other-item-btn:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #88d8a3 0%, #66c587 100%);
+}
+
+.other-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.other-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: var(--meal-item-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.other-item:hover {
+    background: var(--meal-item-hover-bg);
+    border-color: var(--primary-color);
+}
+
+.other-item-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 11px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    outline: none;
+    padding: 2px;
+}
+
+.other-item-input::placeholder {
+    color: #a89580;
+    font-style: italic;
+}
+
+.other-item-detail-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #c9a87c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.other-item-detail-btn:hover {
+    background: #b89968;
+    transform: scale(1.1);
+}
+
+.other-item-remove-btn {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #d4a574;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.other-item-remove-btn:hover {
+    background: #c09460;
+    transform: scale(1.1);
+}
+
+.other-items-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.other-items-container::-webkit-scrollbar-track {
+    background: #f5ede0;
+    border-radius: 2px;
+}
+
+.other-items-container::-webkit-scrollbar-thumb {
+    background: #d4c4a8;
+    border-radius: 2px;
+}
+
+.other-items-container::-webkit-scrollbar-thumb:hover {
+    background: #c9a87c;
+}
+
+/* 餐饮详情弹窗 */
+.meal-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.meal-detail-modal.active {
+    display: flex;
+}
+
+.meal-detail-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.meal-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.meal-detail-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.meal-detail-date {
+    text-align: center;
+    font-size: 16px;
+    color: #8b7355;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 10px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.meal-detail-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.meal-detail-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.meal-detail-form label {
+    font-size: 14px;
+    color: #5a4a3a;
+    font-weight: 500;
+}
+
+.meal-detail-form textarea {
+    padding: 10px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.meal-detail-form input[type="url"] {
+    padding: 10px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.meal-detail-form textarea:focus,
+.meal-detail-form input:focus {
+    border-color: #c9a87c;
+    outline: none;
+}
+
+.form-group > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.form-group button {
+    padding: 8px 16px;
+    background: #c9a87c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.form-group button:hover {
+    background: #b89968;
+}
+
+.image-preview {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f5ede0;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.rating-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+}
+
+.star {
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    opacity: 0.3;
+}
+
+.star:hover,
+.star.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.meal-detail-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.save-meal-detail-btn,
+.clear-meal-detail-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.save-meal-detail-btn {
+    background: #c9a87c;
+    color: white;
+}
+
+.save-meal-detail-btn:hover {
+    background: #b89968;
+}
+
+.clear-meal-detail-btn {
+    background: #d4a574;
+    color: white;
+}
+
+.clear-meal-detail-btn:hover {
+    background: #c09460;
+}
+
+/* 餐饮分析弹窗 */
+.meal-analysis-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.meal-analysis-modal.active {
+    display: flex;
+}
+
+.meal-analysis-content {
+    background: var(--meal-analysis-modal-bg);
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--modal-shadow);
+    border: 2px solid var(--modal-border);
+}
+
+.meal-analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--modal-border);
+}
+
+.meal-analysis-header h3 {
+    font-size: 20px;
+    color: var(--meal-analysis-header-text);
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.analysis-date-range {
+    text-align: center;
+    font-size: 16px;
+    color: #8b7355;
+    margin-bottom: 25px;
+    font-weight: 500;
+    padding: 12px;
+    background: linear-gradient(135deg, #fdfbf7 0%, #f5ede0 100%);
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.analysis-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #fdfbf7;
+    border-radius: 12px;
+    border: 1px solid #e8dcc8;
+}
+
+.analysis-section h4 {
+    font-size: 16px;
+    color: #5a4a3a;
+    margin-bottom: 15px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dish-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dish-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: #fff;
+    border: 2px solid #e8dcc8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dish-item:hover {
+    border-color: #c9a87c;
+    background: #f5ede0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(201, 168, 124, 0.2);
+}
+
+.dish-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.dish-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #5a4a3a;
+}
+
+.dish-meta {
+    font-size: 12px;
+    color: #8b7355;
+    display: flex;
+    gap: 15px;
+}
+
+.dish-rating-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #f9ca24;
+}
+
+.dish-frequency-display {
+    font-size: 12px;
+    color: #6b9b6b;
+}
+
+.dish-info-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.dish-has-image {
+    font-size: 12px;
+    color: #45b7d1;
+}
+
+.no-data {
+    text-align: center;
+    color: #a89580;
+    font-style: italic;
+    padding: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+    border: 2px solid #e8dcc8;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #8b7355;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #c9a87c;
+}
+
+/* 菜品详情查看弹窗 */
+.dish-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.dish-detail-modal.active {
+    display: flex;
+}
+
+.dish-detail-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.dish-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.dish-detail-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.dish-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.dish-detail-body .dish-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5a4a3a;
+    margin-bottom: 8px;
+}
+
+.dish-detail-body .dish-rating {
+    font-size: 14px;
+    color: #f9ca24;
+    margin-bottom: 5px;
+}
+
+.dish-detail-body .dish-frequency {
+    font-size: 14px;
+    color: #6b9b6b;
+}
+
+.dish-image-section,
+.dish-review-section,
+.dish-records-section {
+    margin-bottom: 20px;
+}
+
+.dish-image-section h4,
+.dish-review-section h4,
+.dish-records-section h4 {
+    font-size: 14px;
+    color: #5a4a3a;
+    margin-bottom: 10px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.dish-image-container {
+    text-align: center;
+    padding: 10px;
+    background: #f5ede0;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.dish-image-container img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.dish-review-content {
+    padding: 12px;
+    background: #f5ede0;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+    font-size: 14px;
+    color: #5a4a3a;
+    line-height: 1.5;
+}
+
+.dish-records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dish-record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f5ede0;
+    border-radius: 6px;
+    border: 1px solid #e8dcc8;
+    font-size: 12px;
+    color: #5a4a3a;
+}
+
+.record-date {
+    font-weight: 500;
+}
+
+.record-meal-type {
+    color: #8b7355;
+    font-style: italic;
+}
+/* 睡眠编辑弹窗 */
+.sleep-edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.sleep-edit-modal.active {
+    display: flex;
+}
+
+.sleep-edit-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.sleep-edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.sleep-edit-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #a89580;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: #5a4a3a;
+}
+
+.sleep-edit-date {
+    text-align: center;
+    font-size: 16px;
+    color: #8b7355;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 10px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.sleep-edit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.delete-sleep-btn {
+    width: 100%;
+    padding: 8px;
+    background: #d4a574;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.delete-sleep-btn:hover {
+    background: #c09460;
+}
+/* 护肤类型管理弹窗 */
+.skincare-type-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.skincare-type-modal.active {
+    display: flex;
+}
+
+.skincare-type-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.skincare-type-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.skincare-type-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.type-list {
+    margin-bottom: 20px;
+}
+
+.type-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #fdfbf7;
+    border: 1px solid #e8dcc8;
+    border-radius: 8px;
+}
+
+.type-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.type-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.type-name {
+    font-size: 14px;
+    color: #5a4a3a;
+}
+
+.type-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-type-btn, .delete-type-btn {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.edit-type-btn {
+    background: #c9a87c;
+    color: white;
+}
+
+.edit-type-btn:hover {
+    background: #b89968;
+}
+
+.delete-type-btn {
+    background: #d4a574;
+    color: white;
+}
+
+.delete-type-btn:hover {
+    background: #c09460;
+}
+.add-type-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.add-type-section input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.add-type-section input[type="color"] {
+    width: 40px;
+    height: 36px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-type-section button {
+    padding: 8px 16px;
+    background: #c9a87c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.add-type-section button:hover {
+    background: #b89968;
+}
+
+.color-palette h4 {
+    font-size: 14px;
+    color: #5a4a3a;
+    margin-bottom: 10px;
+}
+
+.palette-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.palette-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    border: 2px solid #e8dcc8;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.palette-color:hover {
+    border-color: #c9a87c;
+    transform: scale(1.1);
+}
+
+/* 护肤记录选择弹窗 */
+.skincare-select-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.skincare-select-modal.active {
+    display: flex;
+}
+
+.skincare-select-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.skincare-select-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.skincare-select-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.select-date {
+    text-align: center;
+    font-size: 16px;
+    color: #8b7355;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 10px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.type-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #fdfbf7;
+    border: 2px solid #e8dcc8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.type-option:hover {
+    background: #f5ede0;
+    border-color: #c9a87c;
+}
+
+.type-option.selected {
+    background: #f5ede0;
+    border-color: #a67c52;
+}
+
+.clear-record-btn {
+    width: 100%;
+    padding: 8px;
+    background: #d4a574;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.clear-record-btn:hover {
+    background: #c09460;
+}
+
+.calendar-day.has-record {
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.calendar-day.has-record .day-number {
+    font-weight: bold;
+}
+/* 生理期设置弹窗 */
+.period-settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.period-settings-modal.active {
+    display: flex;
+}
+
+.period-settings-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.period-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.period-settings-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.period-colors-section h4 {
+    font-size: 14px;
+    color: #5a4a3a;
+    margin-bottom: 15px;
+}
+
+.period-color-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.period-color-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: #fdfbf7;
+    border-radius: 6px;
+    border: 1px solid #e8dcc8;
+}
+
+.period-color-item label {
+    min-width: 60px;
+    font-size: 14px;
+    color: #5a4a3a;
+}
+
+.period-color-item input[type="color"] {
+    width: 40px;
+    height: 30px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.period-settings-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.period-settings-actions button {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.period-settings-actions button:first-child {
+    background: #c9a87c;
+    color: white;
+}
+
+.period-settings-actions button:first-child:hover {
+    background: #b89968;
+}
+
+.period-settings-actions button:last-child {
+    background: #d4a574;
+    color: white;
+}
+
+.period-settings-actions button:last-child:hover {
+    background: #c09460;
+}
+
+/* 生理期选择弹窗 */
+.period-select-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.period-select-modal.active {
+    display: flex;
+}
+
+.period-select-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.period-select-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.period-select-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.period-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.manual-selection {
+    margin: 15px 0;
+    padding: 15px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.manual-selection h4 {
+    font-size: 14px;
+    color: #5a4a3a;
+    margin-bottom: 10px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.phase-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.phase-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: all 0.3s;
+    color: white;
+    font-weight: 500;
+}
+
+.menstrual-btn {
+    background: #ff6b6b;
+}
+
+.menstrual-btn:hover {
+    background: #ff5252;
+}
+
+.follicular-btn {
+    background: #4ecdc4;
+}
+
+.follicular-btn:hover {
+    background: #26d0ce;
+}
+
+.ovulation-btn {
+    background: #45b7d1;
+}
+
+.ovulation-btn:hover {
+    background: #3498db;
+}
+
+.luteal-btn {
+    background: #f9ca24;
+    color: #5a4a3a;
+}
+
+.luteal-btn:hover {
+    background: #f39c12;
+}
+
+.safe-btn {
+    background: #6c5ce7;
+}
+
+.safe-btn:hover {
+    background: #5b4cdb;
+}
+
+.period-action-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.start-btn {
+    background: #ff6b6b;
+    color: white;
+}
+
+.start-btn:hover {
+    background: #ff5252;
+}
+
+.end-btn {
+    background: #4ecdc4;
+    color: white;
+}
+
+.end-btn:hover {
+    background: #26d0ce;
+}
+
+.clear-btn {
+    background: #d4a574;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #c09460;
+}
+/* 运动记录弹窗 */
+.exercise-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.exercise-modal.active {
+    display: flex;
+}
+
+.exercise-modal-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.exercise-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.exercise-modal-header h3 {
+    font-size: 18px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.exercise-date {
+    text-align: center;
+    font-size: 16px;
+    color: #8b7355;
+    margin-bottom: 20px;
+    font-weight: 500;
+    padding: 10px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.exercise-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #5a4a3a;
+    font-weight: 500;
+}
+
+.form-group input[type="number"] {
+    padding: 10px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.form-group input[type="number"]:focus {
+    border-color: #c9a87c;
+    outline: none;
+}
+
+.exercise-toggle {
+    display: flex;
+    gap: 15px;
+}
+
+.toggle-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #5a4a3a;
+}
+
+.toggle-option input[type="radio"] {
+    margin: 0;
+}
+
+.form-group textarea {
+    padding: 10px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group textarea:focus {
+    border-color: #c9a87c;
+    outline: none;
+}
+
+.exercise-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.save-exercise-btn, .clear-exercise-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.save-exercise-btn {
+    background: #c9a87c;
+    color: white;
+}
+
+.save-exercise-btn:hover {
+    background: #b89968;
+}
+
+.clear-exercise-btn {
+    background: #d4a574;
+    color: white;
+}
+
+.clear-exercise-btn:hover {
+    background: #c09460;
+}
+/* 设置按钮 */
+.settings-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #d4c4a8;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #5a4a3a;
+    z-index: 100;
+    transition: all 0.3s;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.settings-btn:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: rotate(45deg);
+}
+
+/* 页面设置弹窗 */
+.page-settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.page-settings-modal.active {
+    display: flex;
+}
+
+.page-settings-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    border: 2px solid #e8dcc8;
+}
+
+.page-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e8dcc8;
+}
+
+.page-settings-header h3 {
+    font-size: 20px;
+    color: #5a4a3a;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fdfbf7;
+    border-radius: 12px;
+    border: 1px solid #e8dcc8;
+}
+
+.settings-section h4 {
+    font-size: 16px;
+    color: #5a4a3a;
+    margin-bottom: 15px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-section h5 {
+    font-size: 14px;
+    color: #5a4a3a;
+    margin-bottom: 10px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+/* 表单组件样式 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #5a4a3a;
+    font-weight: 500;
+}
+
+.form-group input[type="url"],
+.form-group input[type="text"],
+.form-group select {
+    padding: 10px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #c9a87c;
+    outline: none;
+}
+
+.form-group input[type="range"] {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.form-group button {
+    padding: 8px 16px;
+    background: #c9a87c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+    align-self: flex-start;
+}
+
+.form-group button:hover {
+    background: #b89968;
+}
+
+/* 背景设置 */
+.background-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.background-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.background-actions button {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.background-actions button:first-child {
+    background: #c9a87c;
+    color: white;
+}
+
+.background-actions button:first-child:hover {
+    background: #b89968;
+}
+
+.background-actions button:last-child {
+    background: #d4a574;
+    color: white;
+}
+
+.background-actions button:last-child:hover {
+    background: #c09460;
+}
+
+/* CSS自定义设置 */
+.css-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.css-scheme-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.css-scheme-selector label {
+    font-size: 14px;
+    color: #5a4a3a;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.css-scheme-selector select {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.css-scheme-selector button {
+    padding: 8px 16px;
+    background: #d4a574;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.css-scheme-selector button:hover {
+    background: #c09460;
+}
+
+.css-editor-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.css-editor-section label {
+    font-size: 14px;
+    color: #5a4a3a;
+    font-weight: 500;
+}
+
+#cssEditor {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 8px;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #2d3748;
+    background: #f7fafc;
+    resize: vertical;
+    min-height: 300px;
+}
+
+#cssEditor:focus {
+    border-color: #c9a87c;
+    outline: none;
+    background: #ffffff;
+}
+
+.css-editor-help {
+    margin-top: 5px;
+}
+
+.css-editor-help small {
+    font-size: 12px;
+    color: #8b7355;
+    font-style: italic;
+    line-height: 1.3;
+}
+
+.css-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.css-actions button {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+}
+
+.css-actions button:nth-child(1) {
+    background: #c9a87c;
+    color: white;
+}
+
+.css-actions button:nth-child(1):hover {
+    background: #b89968;
+}
+
+.css-actions button:nth-child(2) {
+    background: #d4a574;
+    color: white;
+}
+
+.css-actions button:nth-child(2):hover {
+    background: #c09460;
+}
+
+/* CSS方案管理 */
+.css-scheme-management {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.css-scheme-save {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.css-scheme-save input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #e8dcc8;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #5a4a3a;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.css-scheme-save input:focus {
+    border-color: #c9a87c;
+    outline: none;
+}
+
+.css-scheme-save button {
+    padding: 8px 16px;
+    background: #45b7d1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.css-scheme-save button:hover {
+    background: #3498db;
+}
+
+.css-scheme-info {
+    padding: 12px;
+    background: #f5ede0;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.css-scheme-info small {
+    font-size: 12px;
+    color: #8b7355;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.css-scheme-info small {
+    font-size: 12px;
+    color: #8b7355;
+    line-height: 1.4;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* 高级设置 */
+.advanced-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #5a4a3a;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* 导入导出 */
+.import-export {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.export-section,
+.import-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    background: #f5ede0;
+    border-radius: 8px;
+    border: 1px solid #e8dcc8;
+}
+
+.export-section button,
+.import-section button {
+    padding: 10px 16px;
+    background: #c9a87c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    transition: background 0.3s;
+    align-self: flex-start;
+}
+
+.export-section button:hover,
+.import-section button:hover {
+    background: #b89968;
+}
+
+.export-section small,
+.import-section small {
+    font-size: 12px;
+    color: #8b7355;
+    font-style: italic;
+}
+
+/* 范围输入值显示 */
+#backgroundOpacityValue,
+#borderRadiusValue,
+#shadowIntensityValue {
+    font-size: 12px;
+    color: #8b7355;
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .settings-btn {
+        top: 15px;
+        right: 15px;
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+    
+    .page-settings-content {
+        width: 95%;
+        padding: 20px;
+        max-height: 95vh;
+    }
+    
+    .color-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .theme-actions {
+        flex-direction: column;
+    }
+    
+    .theme-management-actions {
+        flex-direction: column;
+    }
+    
+    .background-actions {
+        flex-direction: column;
+    }
+}
+@media (max-width: 768px) {
+    .health-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: 60px;
+        flex-direction: row;
+        padding: 0 20px;
+        justify-content: space-around;
+        align-items: center;
+    }
+    
+    .nav-item {
+        writing-mode: horizontal-tb;
+        text-orientation: mixed;
+        white-space: normal;
+        padding: 10px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .nav-item:hover {
+        border-left-color: transparent;
+        border-bottom-color: #c9a87c;
+    }
+    
+    .nav-item.active {
+        border-left-color: transparent;
+        border-bottom-color: #a67c52;
+    }
+    
+    .main-content {
+        padding: 20px 15px;
+    }
+    
+    .health-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .health-card {
+        padding: 15px;
+    }
+    
+    .skincare-card {
+        grid-column: span 1;
+    }
+    
+    .meal-card {
+        grid-column: span 1;
+    }
+    
+    .meal-tickets-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .meal-ticket {
+        min-width: auto;
+        max-width: none;
+    }
+    
+    .dots-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    
+    .dot {
+        width: 15px;
+        height: 15px;
+    }
+    
+    .period-buttons {
+        flex-direction: column;
+    }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1200px) {
+    .meal-card {
+        grid-column: span 2; /* 在大屏幕上适当调整 */
+    }
+    
+    .meal-ticket {
+        min-width: 180px;
+        max-width: 250px;
+    }
+}
+
+/* 滚动条样式 - 与健康app一致 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f5ede0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d4c4a8;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c9a87c;
+}

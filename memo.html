@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>备忘录 / 世界书</title>
+    <link rel="stylesheet" href="app-page.css">
+</head>
+<body class="app-page">
+    <div class="app-container">
+        <div class="app-header">
+            <button class="back-btn" onclick="window.location.href='index.html'">‹ 返回</button>
+            <h1>备忘录 / 世界书</h1>
+        </div>
+
+        <div class="app-content">
+            <div class="settings-section">
+                <h2>世界书管理</h2>
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                    <label style="margin-bottom: 0; white-space: nowrap;">当前世界书</label>
+                    <select id="worldBookSelect" onchange="switchWorldBookUI()" style="flex: 1;">
+                    </select>
+                    <button class="btn-small" onclick="createWorldBook()">新建</button>
+                    <button class="btn-small" onclick="deleteCurrentWorldBook()">删除</button>
+                    <button class="btn-small" onclick="saveWorldBookChanges()">保存</button>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 8px;">
+                    每本世界书是一组设定条目，可以在消息 App 中被多个 CHAR 共享引用。
+                </p>
+            </div>
+
+            <div class="settings-section">
+                <h2>条目列表</h2>
+                <div class="prompt-editors" id="worldBookEntries">
+                </div>
+
+                <button class="btn-primary" onclick="addWorldBookEntry()">➕ 新增条目</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="memo.js"></script>
+</body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>健康记录 - 健康管理</title>
+    <link rel="stylesheet" href="health-page.css">
+</head>
+<body>
+    <div class="health-container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="goBack()">← 返回</button>
+        
+        <!-- 设置按钮 -->
+        <button class="settings-btn" onclick="openSettingsModal()">⚙️</button>
+
+        <!-- 左侧导航栏 -->
+        <nav class="sidebar">
+            <div class="nav-item" data-page="plan" onclick="navigateToPage('plan')">计划</div>
+            <div class="nav-item active" data-page="health">健康</div>
+            <div class="nav-item" data-page="diary" onclick="navigateToPage('diary')">日记</div>
+            <div class="nav-item" data-page="mood" onclick="navigateToPage('mood')">情侣空间</div>
+            <div class="nav-item" data-page="share" onclick="navigateToPage('share')">分享</div>
+        </nav>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 健康记录网格 -->
+            <div class="health-grid">
+            <!-- 今日睡眠记录 -->
+            <div class="health-card sleep-card">
+                <div class="card-header">
+                    <h3>今日睡眠记录</h3>
+                    <span class="status-dot"></span>
+                </div>
+                <div class="time-input-section">
+                    <div class="time-input-row">
+                        <label>入睡时间：</label>
+                        <input type="number" id="sleepHour" min="0" max="23" placeholder="23" class="time-input">
+                        <span>H</span>
+                        <input type="number" id="sleepMinute" min="0" max="59" placeholder="30" class="time-input">
+                        <span>M</span>
+                    </div>
+                    <div class="time-input-row">
+                        <label>起床时间：</label>
+                        <input type="number" id="wakeHour" min="0" max="23" placeholder="7" class="time-input">
+                        <span>H</span>
+                        <input type="number" id="wakeMinute" min="0" max="59" placeholder="0" class="time-input">
+                        <span>M</span>
+                    </div>
+                    <button class="save-sleep-btn" onclick="saveSleepRecord()">保存睡眠记录</button>
+                </div>
+                <div class="sleep-calendar-section">
+                    <div class="calendar-nav">
+                        <button onclick="changeSleepMonth(-1)">◀</button>
+                        <span id="sleepCalendarMonth">2026年2月睡眠记录</span>
+                        <button onclick="changeSleepMonth(1)">▶</button>
+                    </div>
+                    <div class="calendar-grid" id="sleepCalendar"></div>
+                </div>
+            </div>
+
+            <!-- 护肤记录 -->
+            <div class="health-card skincare-card">
+                <div class="card-header">
+                    <div class="skincare-nav">
+                        <button onclick="changeSkincareMonth(-1)">◀</button>
+                        <span id="skincareCalendarMonth">2026年2月护肤记录</span>
+                        <button onclick="changeSkincareMonth(1)">▶</button>
+                    </div>
+                </div>
+                <div class="skincare-content">
+                    <!-- 左半部分：护肤记录 -->
+                    <div class="skincare-section">
+                        <div class="section-title">
+                            <h4>护肤记录</h4>
+                            <button class="add-type-btn" onclick="openSkincareTypeModal()">+</button>
+                        </div>
+                        <div class="calendar-grid" id="skincareCalendar"></div>
+                    </div>
+                    
+                    <!-- 右半部分：皮肤状态 -->
+                    <div class="skincare-section">
+                        <div class="section-title">
+                            <h4>皮肤状态</h4>
+                            <button class="add-type-btn" onclick="openSkinStatusTypeModal()">+</button>
+                        </div>
+                        <div class="calendar-grid" id="skinStatusCalendar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生理期记录 -->
+            <div class="health-card period-card">
+                <div class="card-header">
+                    <div class="period-nav">
+                        <button onclick="changePeriodMonth(-1)">◀</button>
+                        <span id="periodCalendarMonth">2026年2月生理期记录</span>
+                        <button onclick="changePeriodMonth(1)">▶</button>
+                    </div>
+                    <button class="period-settings-btn" onclick="openPeriodSettingsModal()">⚙️</button>
+                </div>
+                <div class="period-calendar-section">
+                    <div class="calendar-grid" id="periodCalendar"></div>
+                </div>
+                <div class="period-legend">
+                    <div class="legend-item">
+                        <div class="legend-color menstrual-color"></div>
+                        <span>月经期</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color follicular-color"></div>
+                        <span>卵泡期</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color ovulation-color"></div>
+                        <span>排卵期</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color luteal-color"></div>
+                        <span>黄体期</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color safe-color"></div>
+                        <span>安全期</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 今日运动记录 -->
+            <div class="health-card exercise-card">
+                <div class="card-header">
+                    <div class="exercise-nav">
+                        <button onclick="changeExerciseWeek(-1)">◀</button>
+                        <span id="exerciseWeekTitle">2026年2月第1周运动记录</span>
+                        <button onclick="changeExerciseWeek(1)">▶</button>
+                    </div>
+                </div>
+                <div class="exercise-week-grid">
+                    <!-- 第一排：周一到周四 -->
+                    <div class="week-row">
+                        <div class="exercise-day" data-day="1" ondblclick="openExerciseModal('monday')">
+                            <div class="day-label">周一</div>
+                            <div class="day-content" id="monday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-day" data-day="2" ondblclick="openExerciseModal('tuesday')">
+                            <div class="day-label">周二</div>
+                            <div class="day-content" id="tuesday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-day" data-day="3" ondblclick="openExerciseModal('wednesday')">
+                            <div class="day-label">周三</div>
+                            <div class="day-content" id="wednesday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-day" data-day="4" ondblclick="openExerciseModal('thursday')">
+                            <div class="day-label">周四</div>
+                            <div class="day-content" id="thursday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 第二排：周五到周日 + 总结 -->
+                    <div class="week-row">
+                        <div class="exercise-day" data-day="5" ondblclick="openExerciseModal('friday')">
+                            <div class="day-label">周五</div>
+                            <div class="day-content" id="friday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-day" data-day="6" ondblclick="openExerciseModal('saturday')">
+                            <div class="day-label">周六</div>
+                            <div class="day-content" id="saturday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-day" data-day="0" ondblclick="openExerciseModal('sunday')">
+                            <div class="day-label">周日</div>
+                            <div class="day-content" id="sunday-content">
+                                <div class="steps-display">0步</div>
+                                <div class="exercise-status">未运动</div>
+                            </div>
+                        </div>
+                        <div class="exercise-summary">
+                            <div class="summary-title">本周总结</div>
+                            <div class="summary-content">
+                                <div class="total-steps">本周步数：<span id="weekTotalSteps">0</span></div>
+                                <div class="total-exercises">运动次数：<span id="weekTotalExercises">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 排便记录 -->
+            <div class="health-card bowel-card">
+                <div class="card-header">
+                    <div class="bowel-nav">
+                        <button onclick="changeBowelMonth(-1)">◀</button>
+                        <span id="bowelCalendarMonth">2026年2月排便记录</span>
+                        <button onclick="changeBowelMonth(1)">▶</button>
+                    </div>
+                    <button class="bowel-settings-btn" onclick="openBowelSettingsModal()">⚙️</button>
+                </div>
+                <div class="bowel-calendar-section">
+                    <div class="calendar-grid" id="bowelCalendar"></div>
+                </div>
+            </div>
+
+            <!-- 餐饮记录 -->
+            <div class="health-card meal-card">
+                <div class="card-header">
+                    <div class="meal-nav">
+                        <button onclick="changeMealDate(-1)">◀</button>
+                        <span id="mealDateTitle">2026年2月26日餐饮记录</span>
+                        <button onclick="changeMealDate(1)">▶</button>
+                    </div>
+                    <button class="meal-analysis-btn" onclick="openMealAnalysisModal()">📊</button>
+                </div>
+                <div class="meal-tickets-container">
+                    <!-- 早餐小票 -->
+                    <div class="meal-ticket breakfast-ticket">
+                        <div class="ticket-header">
+                            <span class="meal-icon">🌅</span>
+                            <span class="meal-title">早餐</span>
+                        </div>
+                        <div class="ticket-content">
+                            <input type="text" id="breakfastInput" placeholder="今天早餐吃了什么？" class="meal-input">
+                            <button class="add-meal-btn" onclick="openMealDetailModal('breakfast')">+</button>
+                        </div>
+                        <div class="meal-images" id="breakfastImages"></div>
+                    </div>
+                    
+                    <!-- 午餐小票 -->
+                    <div class="meal-ticket lunch-ticket">
+                        <div class="ticket-header">
+                            <span class="meal-icon">☀️</span>
+                            <span class="meal-title">午餐</span>
+                        </div>
+                        <div class="ticket-content">
+                            <input type="text" id="lunchInput" placeholder="今天午餐吃了什么？" class="meal-input">
+                            <button class="add-meal-btn" onclick="openMealDetailModal('lunch')">+</button>
+                        </div>
+                        <div class="meal-images" id="lunchImages"></div>
+                    </div>
+                    
+                    <!-- 晚餐小票 -->
+                    <div class="meal-ticket dinner-ticket">
+                        <div class="ticket-header">
+                            <span class="meal-icon">🌙</span>
+                            <span class="meal-title">晚餐</span>
+                        </div>
+                        <div class="ticket-content">
+                            <input type="text" id="dinnerInput" placeholder="今天晚餐吃了什么？" class="meal-input">
+                            <button class="add-meal-btn" onclick="openMealDetailModal('dinner')">+</button>
+                        </div>
+                        <div class="meal-images" id="dinnerImages"></div>
+                    </div>
+                    
+                    <!-- 其他小票 -->
+                    <div class="meal-ticket other-ticket">
+                        <div class="ticket-header">
+                            <span class="meal-icon">🍎</span>
+                            <span class="meal-title">其他</span>
+                            <button class="add-other-item-btn" onclick="addOtherMealItem()">+</button>
+                        </div>
+                        <div class="other-items-container" id="otherItemsContainer">
+                            <!-- 动态添加的其他餐饮条目 -->
+                        </div>
+                        <div class="meal-images" id="otherImages"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 睡眠时间编辑弹窗 -->
+    <div class="sleep-edit-modal" id="sleepEditModal">
+        <div class="sleep-edit-content">
+            <div class="sleep-edit-header">
+                <h3 id="sleepEditTitle">编辑睡眠记录</h3>
+                <button class="modal-close" onclick="closeSleepEditModal()">×</button>
+            </div>
+            <div class="sleep-edit-body">
+                <div class="sleep-edit-date" id="sleepEditDate"></div>
+                <div class="time-input-section">
+                    <div class="time-input-row">
+                        <label>入睡时间：</label>
+                        <input type="number" id="editSleepHour" min="0" max="23" placeholder="23" class="time-input">
+                        <span>H</span>
+                        <input type="number" id="editSleepMinute" min="0" max="59" placeholder="30" class="time-input">
+                        <span>M</span>
+                    </div>
+                    <div class="time-input-row">
+                        <label>起床时间：</label>
+                        <input type="number" id="editWakeHour" min="0" max="23" placeholder="7" class="time-input">
+                        <span>H</span>
+                        <input type="number" id="editWakeMinute" min="0" max="59" placeholder="0" class="time-input">
+                        <span>M</span>
+                    </div>
+                </div>
+                <div class="sleep-edit-actions">
+                    <button class="save-sleep-btn" onclick="saveEditedSleepRecord()">保存记录</button>
+                    <button class="delete-sleep-btn" onclick="deleteSelectedSleepRecord()" id="deleteSleepBtn" style="display: none;">删除记录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 护肤类型管理弹窗 -->
+    <div class="skincare-type-modal" id="skincareTypeModal">
+        <div class="skincare-type-content">
+            <div class="skincare-type-header">
+                <h3>管理护肤类型</h3>
+                <button class="modal-close" onclick="closeSkincareTypeModal()">×</button>
+            </div>
+            <div class="skincare-type-body">
+                <div class="type-list" id="skincareTypeList"></div>
+                <div class="add-type-section">
+                    <input type="text" id="newSkincareTypeName" placeholder="输入护肤类型名称">
+                    <input type="color" id="newSkincareTypeColor" value="#c9a87c">
+                    <button onclick="addSkincareType()">添加类型</button>
+                </div>
+                <div class="color-palette">
+                    <h4>常用颜色</h4>
+                    <div class="palette-colors" id="skincarePalette"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 皮肤状态类型管理弹窗 -->
+    <div class="skincare-type-modal" id="skinStatusTypeModal">
+        <div class="skincare-type-content">
+            <div class="skincare-type-header">
+                <h3>管理皮肤状态类型</h3>
+                <button class="modal-close" onclick="closeSkinStatusTypeModal()">×</button>
+            </div>
+            <div class="skincare-type-body">
+                <div class="type-list" id="skinStatusTypeList"></div>
+                <div class="add-type-section">
+                    <input type="text" id="newSkinStatusTypeName" placeholder="输入皮肤状态名称">
+                    <input type="color" id="newSkinStatusTypeColor" value="#c9a87c">
+                    <button onclick="addSkinStatusType()">添加类型</button>
+                </div>
+                <div class="color-palette">
+                    <h4>常用颜色</h4>
+                    <div class="palette-colors" id="skinStatusPalette"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 护肤记录选择弹窗 -->
+    <div class="skincare-select-modal" id="skincareSelectModal">
+        <div class="skincare-select-content">
+            <div class="skincare-select-header">
+                <h3 id="skincareSelectTitle">选择护肤类型</h3>
+                <button class="modal-close" onclick="closeSkincareSelectModal()">×</button>
+            </div>
+            <div class="skincare-select-body">
+                <div class="select-date" id="skincareSelectDate"></div>
+                <div class="type-options" id="skincareTypeOptions"></div>
+                <button class="clear-record-btn" onclick="clearSkincareRecord()" id="clearSkincareBtn" style="display: none;">清除记录</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生理期设置弹窗 -->
+    <div class="period-settings-modal" id="periodSettingsModal">
+        <div class="period-settings-content">
+            <div class="period-settings-header">
+                <h3>生理期设置</h3>
+                <button class="modal-close" onclick="closePeriodSettingsModal()">×</button>
+            </div>
+            <div class="period-settings-body">
+                <div class="period-colors-section">
+                    <h4>时期颜色设置</h4>
+                    <div class="period-color-list">
+                        <div class="period-color-item">
+                            <label>月经期：</label>
+                            <input type="color" id="menstrualColor" value="#ff6b6b">
+                        </div>
+                        <div class="period-color-item">
+                            <label>卵泡期：</label>
+                            <input type="color" id="follicularColor" value="#4ecdc4">
+                        </div>
+                        <div class="period-color-item">
+                            <label>排卵期：</label>
+                            <input type="color" id="ovulationColor" value="#45b7d1">
+                        </div>
+                        <div class="period-color-item">
+                            <label>黄体期：</label>
+                            <input type="color" id="lutealColor" value="#f9ca24">
+                        </div>
+                        <div class="period-color-item">
+                            <label>安全期：</label>
+                            <input type="color" id="safeColor" value="#6c5ce7">
+                        </div>
+                    </div>
+                </div>
+                <div class="color-palette">
+                    <h4>常用颜色</h4>
+                    <div class="palette-colors" id="periodPalette"></div>
+                </div>
+                <div class="period-settings-actions">
+                    <button onclick="savePeriodSettings()">保存设置</button>
+                    <button onclick="resetPeriodColors()">重置颜色</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 生理期记录选择弹窗 -->
+    <div class="period-select-modal" id="periodSelectModal">
+        <div class="period-select-content">
+            <div class="period-select-header">
+                <h3 id="periodSelectTitle">生理期记录</h3>
+                <button class="modal-close" onclick="closePeriodSelectModal()">×</button>
+            </div>
+            <div class="period-select-body">
+                <div class="select-date" id="periodSelectDate"></div>
+                <div class="period-actions">
+                    <button class="period-action-btn start-btn" onclick="startPeriod()">开始月经</button>
+                    <button class="period-action-btn end-btn" onclick="endPeriod()">结束月经</button>
+                    <div class="manual-selection">
+                        <h4>手动选择阶段：</h4>
+                        <div class="phase-options">
+                            <button class="phase-btn menstrual-btn" onclick="setPeriodPhase('menstrual')">月经期</button>
+                            <button class="phase-btn follicular-btn" onclick="setPeriodPhase('follicular')">卵泡期</button>
+                            <button class="phase-btn ovulation-btn" onclick="setPeriodPhase('ovulation')">排卵期</button>
+                            <button class="phase-btn luteal-btn" onclick="setPeriodPhase('luteal')">黄体期</button>
+                            <button class="phase-btn safe-btn" onclick="setPeriodPhase('safe')">安全期</button>
+                        </div>
+                    </div>
+                    <button class="period-action-btn clear-btn" onclick="clearPeriodRecord()" id="clearPeriodBtn" style="display: none;">清除记录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 运动记录弹窗 -->
+    <div class="exercise-modal" id="exerciseModal">
+        <div class="exercise-modal-content">
+            <div class="exercise-modal-header">
+                <h3 id="exerciseModalTitle">运动记录</h3>
+                <button class="modal-close" onclick="closeExerciseModal()">×</button>
+            </div>
+            <div class="exercise-modal-body">
+                <div class="exercise-date" id="exerciseModalDate"></div>
+                
+                <div class="exercise-form">
+                    <div class="form-group">
+                        <label>步数：</label>
+                        <input type="number" id="exerciseSteps" min="0" placeholder="输入步数">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>是否运动：</label>
+                        <div class="exercise-toggle">
+                            <label class="toggle-option">
+                                <input type="radio" name="hasExercise" value="no" checked onchange="toggleExerciseInput()">
+                                <span>否</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="hasExercise" value="yes" onchange="toggleExerciseInput()">
+                                <span>是</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="exerciseNotesGroup" style="display: none;">
+                        <label>运动备注：</label>
+                        <textarea id="exerciseNotes" placeholder="请输入运动类型、时长等备注信息..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="exercise-modal-actions">
+                    <button class="save-exercise-btn" onclick="saveExerciseRecord()">保存记录</button>
+                    <button class="clear-exercise-btn" onclick="clearExerciseRecord()" id="clearExerciseBtn" style="display: none;">清除记录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 餐饮分析弹窗 -->
+    <div class="meal-analysis-modal" id="mealAnalysisModal">
+        <div class="meal-analysis-content">
+            <div class="meal-analysis-header">
+                <h3>📊 本月餐饮分析报告</h3>
+                <button class="modal-close" onclick="closeMealAnalysisModal()">×</button>
+            </div>
+            <div class="meal-analysis-body">
+                <div class="analysis-date-range" id="analysisDateRange"></div>
+                
+                <!-- 最常吃的菜品 -->
+                <div class="analysis-section">
+                    <h4>🔥 本月最常吃的菜品</h4>
+                    <div class="dish-list" id="mostFrequentDishes">
+                        <div class="no-data">暂无数据</div>
+                    </div>
+                </div>
+                
+                <!-- 评分最高的菜品 -->
+                <div class="analysis-section">
+                    <h4>⭐ 本月评分最高的菜品</h4>
+                    <div class="dish-list" id="highestRatedDishes">
+                        <div class="no-data">暂无数据</div>
+                    </div>
+                </div>
+                
+                <!-- 评分最低的菜品 -->
+                <div class="analysis-section">
+                    <h4>⚠️ 本月评分最低的菜品</h4>
+                    <div class="dish-list" id="lowestRatedDishes">
+                        <div class="no-data">暂无数据</div>
+                    </div>
+                </div>
+                
+                <!-- 统计信息 -->
+                <div class="analysis-section">
+                    <h4>📈 本月统计</h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">记录天数</span>
+                            <span class="stat-value" id="recordDays">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">总菜品数</span>
+                            <span class="stat-value" id="totalDishes">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">平均评分</span>
+                            <span class="stat-value" id="averageRating">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">有图片记录</span>
+                            <span class="stat-value" id="withImages">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 菜品详情查看弹窗 -->
+    <div class="dish-detail-modal" id="dishDetailModal">
+        <div class="dish-detail-content">
+            <div class="dish-detail-header">
+                <h3 id="dishDetailTitle">菜品详情</h3>
+                <button class="modal-close" onclick="closeDishDetailModal()">×</button>
+            </div>
+            <div class="dish-detail-body">
+                <div class="dish-info">
+                    <div class="dish-name" id="dishDetailName"></div>
+                    <div class="dish-rating" id="dishDetailRating"></div>
+                    <div class="dish-frequency" id="dishDetailFrequency"></div>
+                </div>
+                
+                <div class="dish-image-section" id="dishImageSection" style="display: none;">
+                    <h4>📸 菜品图片</h4>
+                    <div class="dish-image-container">
+                        <img id="dishDetailImage" src="" alt="菜品图片">
+                    </div>
+                </div>
+                
+                <div class="dish-review-section" id="dishReviewSection" style="display: none;">
+                    <h4>💭 评价备注</h4>
+                    <div class="dish-review-content" id="dishDetailReview"></div>
+                </div>
+                
+                <div class="dish-records-section">
+                    <h4>📅 食用记录</h4>
+                    <div class="dish-records-list" id="dishRecordsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 餐饮详情弹窗 -->
+    <div class="meal-detail-modal" id="mealDetailModal">
+        <div class="meal-detail-content">
+            <div class="meal-detail-header">
+                <h3 id="mealDetailTitle">添加餐饮详情</h3>
+                <button class="modal-close" onclick="closeMealDetailModal()">×</button>
+            </div>
+            <div class="meal-detail-body">
+                <div class="meal-detail-date" id="mealDetailDate"></div>
+                
+                <div class="meal-detail-form">
+                    <div class="form-group">
+                        <label>食物描述：</label>
+                        <textarea id="mealDescription" placeholder="详细描述今天吃了什么..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>食物图片URL：</label>
+                        <input type="url" id="mealImageUrl" placeholder="输入食物图片链接">
+                        <button onclick="previewMealImage()">预览</button>
+                    </div>
+                    
+                    <div class="image-preview" id="mealImagePreview" style="display: none;">
+                        <img id="previewImg" src="" alt="食物预览">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>评价：</label>
+                        <div class="rating-section">
+                            <div class="star-rating">
+                                <span class="star" data-rating="1">⭐</span>
+                                <span class="star" data-rating="2">⭐</span>
+                                <span class="star" data-rating="3">⭐</span>
+                                <span class="star" data-rating="4">⭐</span>
+                                <span class="star" data-rating="5">⭐</span>
+                            </div>
+                            <textarea id="mealReview" placeholder="对这餐的评价..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="meal-detail-actions">
+                    <button class="save-meal-detail-btn" onclick="saveMealDetail()">保存详情</button>
+                    <button class="clear-meal-detail-btn" onclick="clearMealDetail()" id="clearMealDetailBtn" style="display: none;">清除记录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 排便设置弹窗 -->
+    <div class="bowel-settings-modal" id="bowelSettingsModal">
+        <div class="bowel-settings-content">
+            <div class="bowel-settings-header">
+                <h3>排便记录设置</h3>
+                <button class="modal-close" onclick="closeBowelSettingsModal()">×</button>
+            </div>
+            <div class="bowel-settings-body">
+                <div class="bowel-icon-section">
+                    <h4>排便图标设置</h4>
+                    <div class="icon-input-section">
+                        <label>自定义图标：</label>
+                        <input type="text" id="bowelIconInput" placeholder="输入emoji或图标" value="💩">
+                        <button onclick="previewBowelIcon()">预览</button>
+                    </div>
+                    <div class="icon-preview">
+                        <span>预览：</span>
+                        <span id="bowelIconPreview">💩</span>
+                    </div>
+                    <div class="preset-icons">
+                        <h5>常用图标：</h5>
+                        <div class="icon-options">
+                            <span class="icon-option" onclick="selectBowelIcon('💩')">💩</span>
+                            <span class="icon-option" onclick="selectBowelIcon('🚽')">🚽</span>
+                            <span class="icon-option" onclick="selectBowelIcon('✅')">✅</span>
+                            <span class="icon-option" onclick="selectBowelIcon('🟢')">🟢</span>
+                            <span class="icon-option" onclick="selectBowelIcon('●')">●</span>
+                            <span class="icon-option" onclick="selectBowelIcon('■')">■</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bowel-settings-actions">
+                    <button onclick="saveBowelSettings()">保存设置</button>
+                    <button onclick="resetBowelIcon()">重置图标</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面设置弹窗 -->
+    <div class="page-settings-modal" id="pageSettingsModal">
+        <div class="page-settings-content">
+            <div class="page-settings-header">
+                <h3>⚙️ 页面设置</h3>
+                <button class="modal-close" onclick="closeSettingsModal()">×</button>
+            </div>
+            <div class="page-settings-body">
+                <!-- 背景设置 -->
+                <div class="settings-section">
+                    <h4>🖼️ 背景设置</h4>
+                    <div class="background-settings">
+                        <div class="form-group">
+                            <label>背景图片URL：</label>
+                            <input type="url" id="backgroundUrlInput" placeholder="输入背景图片链接">
+                            <button onclick="previewBackground()">预览</button>
+                        </div>
+                        <div class="form-group">
+                            <label>背景模式：</label>
+                            <select id="backgroundModeSelect">
+                                <option value="cover">覆盖 (Cover)</option>
+                                <option value="contain">包含 (Contain)</option>
+                                <option value="repeat">重复 (Repeat)</option>
+                                <option value="no-repeat">不重复 (No-repeat)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>背景透明度：</label>
+                            <input type="range" id="backgroundOpacityRange" min="0" max="100" value="100">
+                            <span id="backgroundOpacityValue">100%</span>
+                        </div>
+                        <div class="background-actions">
+                            <button onclick="applyBackground()">应用背景</button>
+                            <button onclick="removeBackground()">移除背景</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSS自定义设置 -->
+                <div class="settings-section">
+                    <h4>🎨 CSS自定义美化</h4>
+                    <div class="css-settings">
+                        <div class="css-scheme-selector">
+                            <label>选择方案：</label>
+                            <select id="cssSchemeSelect" onchange="switchCSSScheme()">
+                                <option value="default">默认样式</option>
+                            </select>
+                            <button onclick="deleteCSSScheme()">删除方案</button>
+                        </div>
+                        
+                        <!-- CSS编辑器 -->
+                        <div class="css-editor-section">
+                            <label>自定义CSS代码：</label>
+                            <textarea id="cssEditor" rows="20" placeholder="在这里编写CSS代码..."></textarea>
+                            <div class="css-editor-help">
+                                <small>💡 提示：可以使用CSS变量如 --primary-color, --card-color 等来自定义颜色和样式</small>
+                            </div>
+                        </div>
+                        
+                        <div class="css-actions">
+                            <button onclick="applyCurrentCSS()">应用CSS</button>
+                            <button onclick="resetCSS()">重置默认</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSS方案管理 -->
+                <div class="settings-section">
+                    <h4>📚 CSS方案管理</h4>
+                    <div class="css-scheme-management">
+                        <div class="css-scheme-save">
+                            <input type="text" id="newSchemeNameInput" placeholder="输入方案名称">
+                            <button onclick="saveCSSScheme()">保存为新方案</button>
+                        </div>
+                        <div class="css-scheme-info">
+                            <small>💾 内置方案：默认样式、春日清新、夏日活力、秋日温暖、冬日雅致、深色模式</small>
+                            <br>
+                            <small>✏️ 可以基于内置方案修改后保存为自定义方案</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 导入导出 -->
+                <div class="settings-section">
+                    <h4>💾 导入导出</h4>
+                    <div class="import-export">
+                        <div class="export-section">
+                            <button onclick="exportSettings()">导出设置</button>
+                            <small>导出当前所有设置为JSON文件</small>
+                        </div>
+                        <div class="import-section">
+                            <input type="file" id="importFileInput" accept=".json" onchange="importSettings()" style="display: none;">
+                            <button onclick="document.getElementById('importFileInput').click()">导入设置</button>
+                            <small>从JSON文件导入设置</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="health-page-fixed.js"></script>
+</body>
+</html>

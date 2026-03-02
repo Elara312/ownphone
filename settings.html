@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>设置</title>
+    <link rel="stylesheet" href="app-page.css">
+    <style>
+        .settings-container {
+            display: flex;
+            height: 100vh;
+            background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .settings-sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+        }
+        
+        .settings-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+        }
+        
+        .sidebar-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background: rgba(102, 126, 234, 0.15);
+            border-left-color: #667eea;
+        }
+        
+        .sidebar-item-icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+        
+        .settings-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(40px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .settings-panel.active {
+            display: block;
+        }
+        
+        .settings-panel h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .scheme-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .scheme-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .scheme-item.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .scheme-item-info {
+            flex: 1;
+        }
+        
+        .scheme-item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        
+        .scheme-item-model {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+        
+        .scheme-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .settings-container {
+                flex-direction: column;
+            }
+            
+            .settings-sidebar {
+                width: 100%;
+                display: flex;
+                overflow-x: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .sidebar-item {
+                white-space: nowrap;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .sidebar-item.active {
+                border-left: none;
+                border-bottom-color: #667eea;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <!-- 左侧边栏 -->
+        <div class="settings-sidebar">
+            <div class="sidebar-item active" onclick="showPanel('api')">
+                <span class="sidebar-item-icon">🔌</span>
+                <span>API 配置</span>
+            </div>
+            <div class="sidebar-item" onclick="showPanel('minimax')">
+                <span class="sidebar-item-icon">🤖</span>
+                <span>MiniMax 配置</span>
+            </div>
+            <div class="sidebar-item" onclick="showPanel('nai')">
+                <span class="sidebar-item-icon">🎨</span>
+                <span>NAI 生图配置</span>
+            </div>
+            <div class="sidebar-item" onclick="showPanel('vision')">
+                <span class="sidebar-item-icon">👁️</span>
+                <span>识图中转API</span>
+            </div>
+            <div class="sidebar-item" onclick="showPanel('backup')">
+                <span class="sidebar-item-icon">💾</span>
+                <span>数据备份</span>
+            </div>
+            <div class="sidebar-item" onclick="window.location.href='index.html'">
+                <span class="sidebar-item-icon">🏠</span>
+                <span>返回桌面</span>
+            </div>
+        </div>
+
+        <!-- 右侧主内容 -->
+        <div class="settings-main">
+            <!-- API 配置面板 -->
+            <div class="settings-panel active" id="panel-api">
+                <h2>API 配置</h2>
+                
+                <div class="form-group">
+                    <label>方案名称</label>
+                    <input type="text" id="schemeName" placeholder="例如：GPT-4 方案">
+                </div>
+                
+                <div class="form-group">
+                    <label>反代地址</label>
+                    <input type="text" id="apiUrl" placeholder="https://api.example.com/v1">
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="apiKey" placeholder="sk-...">
+                </div>
+
+                <button class="btn-primary" onclick="fetchModels()">获取模型列表</button>
+                
+                <div class="form-group" id="modelSelectGroup" style="display: none; margin-top: 20px;">
+                    <label>选择模型</label>
+                    <select id="modelSelect"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>温度 (Temperature)</label>
+                    <input type="number" id="apiTemperature" min="0" max="2" step="0.1" value="0.8">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        数值越低越稳重，越高越有创造力，推荐 0.5 ～ 1.0
+                    </small>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button class="btn-primary" onclick="saveApiScheme()">保存为新方案</button>
+                    <button class="btn-secondary" onclick="setAsDefault()">设为默认配置</button>
+                </div>
+                
+                <div class="scheme-list" id="schemeList"></div>
+            </div>
+
+            <!-- MiniMax 配置面板 -->
+            <div class="settings-panel" id="panel-minimax">
+                <h2>MiniMax 配置</h2>
+                
+                <div class="form-group" style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; border: 2px solid #3498db;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="minimaxEnabled" checked style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="font-weight: bold; font-size: 16px;">✅ 启用 MiniMax 功能</span>
+                    </label>
+                    <small style="color: #2c3e50; display: block; margin-top: 8px; margin-left: 30px;">
+                        ⚠️ 必须勾选此项才能使用 TTS 语音合成功能
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>域名选择</label>
+                    <select id="minimaxRegion" onchange="toggleCustomProxy()">
+                        <option value="cn">国内主域名 (api.minimax.chat)</option>
+                        <option value="cn-bj">国内备用 - 北京 (api-bj.minimaxi.com)</option>
+                        <option value="global">海外域名 (api.minimaxi.com)</option>
+                        <option value="custom">自定义代理地址（解决 CORS 问题）</option>
+                    </select>
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        如果遇到 CORS 错误，请选择"自定义代理地址"
+                    </small>
+                </div>
+                
+                <div class="form-group" id="customProxyGroup" style="display: none;">
+                    <label>自定义代理地址</label>
+                    <input type="text" id="minimaxCustomProxy" placeholder="https://your-proxy.com">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        填入你的代理服务地址（如 Cloudflare Workers、Vercel、One API 等）<br>
+                        代理服务需要转发请求到 MiniMax API 并添加 CORS 头
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="minimaxApiKey" placeholder="输入 MiniMax API Key">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        可在 MiniMax 控制台的"接口密钥"页面获取
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>TTS 模型</label>
+                    <select id="minimaxModelSelect">
+                        <option value="speech-2.8-hd">speech-2.8-hd - 最新 HD 模型，精准还原真实语气细节，全面提升音色相似度</option>
+                        <option value="speech-2.8-turbo">speech-2.8-turbo - 最新 Turbo 模型，精准还原真实语气细节，全面提升音色相似度</option>
+                        <option value="speech-2.6-hd">speech-2.6-hd - HD 模型，韵律表现出色，极致音质与韵律表现，生成更快更自然</option>
+                        <option value="speech-2.6-turbo">speech-2.6-turbo - Turbo 模型，音质优异，超低时延，响应更灵敏</option>
+                        <option value="speech-02-hd">speech-02-hd - 出色的韵律、稳定性和复刻相似度，音质表现突出</option>
+                        <option value="speech-02-turbo">speech-02-turbo - 出色的韵律和稳定性，小语种能力加强，性能表现出色</option>
+                        <option value="speech-01-turbo">speech-01-turbo - 经典 Turbo 模型</option>
+                    </select>
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        推荐使用最新的 2.8 系列模型以获得最佳效果
+                    </small>
+                </div>
+                
+                <button class="btn-primary" onclick="testMinimaxConnection()" style="margin-top: 10px;">测试连接（可选）</button>
+                
+                <div style="margin-top: 30px;">
+                    <button class="btn-primary" onclick="saveMinimaxSettings()">保存设置</button>
+                </div>
+                
+                <div id="minimaxStatus" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; display: none;">
+                    <h4 style="margin-bottom: 10px;">当前配置</h4>
+                    <p id="minimaxStatusText"></p>
+                    <small style="color: #7f8c8d; display: block; margin-top: 8px;">
+                        💡 提示: 即使测试连接失败（CORS 限制），配置正确的话实际使用时应该可以正常工作
+                    </small>
+                </div>
+            </div>
+
+            <!-- NAI 生图配置面板 -->
+            <div class="settings-panel" id="panel-nai">
+                <h2>NovelAI 生图配置</h2>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="naiEnabled" checked>
+                        <span>启用 NovelAI 生图功能</span>
+                    </label>
+                    <small style="color: #7f8c8d;">关闭后将无法使用 NAI 生图功能</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>模型</label>
+                    <select id="naiModel">
+                        <option value="nai-diffusion-3">NAI Diffusion 3</option>
+                        <option value="nai-diffusion-2">NAI Diffusion 2</option>
+                        <option value="nai-diffusion">NAI Diffusion</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="naiApiKey" placeholder="输入 NovelAI API Key">
+                </div>
+                
+                <button class="btn-secondary" onclick="toggleNaiAdvanced()">高级设置</button>
+                
+                <div id="naiAdvancedSettings" style="display: none; margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px; font-size: 18px;">高级设置</h3>
+                    
+                    <div class="form-group">
+                        <label>图像尺寸 (宽x高)</label>
+                        <select id="naiImageSize">
+                            <option value="1024x1024">方图 (1024x1024)</option>
+                            <option value="832x1216">竖图 (832x1216)</option>
+                            <option value="1216x832">横图 (1216x832)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>采样步数 (Steps)</label>
+                        <input type="number" id="naiSteps" value="28" min="1" max="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>提示词引导系数 (CFG Scale)</label>
+                        <input type="number" id="naiCfgScale" value="5" min="1" max="20" step="0.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>采样器 (Sampler)</label>
+                        <select id="naiSampler">
+                            <option value="k_euler_ancestral">Euler Ancestral</option>
+                            <option value="k_euler">Euler</option>
+                            <option value="k_lms">LMS</option>
+                            <option value="k_dpmpp_2m">DPM++ 2M</option>
+                            <option value="k_dpmpp_sde">DPM++ SDE</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>随机种子 (Seed)</label>
+                        <input type="number" id="naiSeed" value="-1" placeholder="-1 表示随机">
+                        <small style="color: #7f8c8d;">-1 表示随机，固定数值可复现结果</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>去噪强度预设 (UC Preset)</label>
+                        <select id="naiUcPreset">
+                            <option value="Preset 1 - Light">Preset 1 - Light</option>
+                            <option value="Preset 2 - Medium">Preset 2 - Medium</option>
+                            <option value="Preset 3 - Heavy">Preset 3 - Heavy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>质量标签</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="checkbox" id="naiQualityToggle" checked>
+                                启用质量标签
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>SMEA (降噪优化)</label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="naismea" checked>
+                            启用SMEA模式
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>SMEA DYN (动态优化)</label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="naismea_dyn">
+                            启用动态优化
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>禁止词汇 (Undesired Content)</label>
+                        <textarea id="naiUndesiredContent" rows="3" placeholder="输入不想要的内容，用逗号分隔">low quality, jpeg artifacts, blurry</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>禁止词汇强度 (UC Strength)</label>
+                        <input type="number" id="naiUcStrength" value="1" min="0" max="2" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>默认正面提示词</label>
+                        <textarea id="naiDefaultPrompt" rows="4" placeholder="例如：masterpiece, best quality, high resolution">((full body shot:1.6)), (solo character:1.5), dynamic pose, boy, {{nanjou}}, handsome, asian, korean, detailed face, detailed eyes, detailed hair, detailed hands, detailed fingers, detailed clothes, detailed background</textarea>
+                        <small style="color: #7f8c8d;">这些标签会自动添加到所有生图请求中</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>默认负面提示词</label>
+                        <textarea id="naiDefaultNegative" rows="4" placeholder="例如：nsfw, lowres, bad anatomy">lowres, bad quality, normal quality, jpeg artifacts, signature, watermark, username, blurry</textarea>
+                        <small style="color: #7f8c8d;">这些标签会自动添加到负面提示词中</small>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button class="btn-primary" onclick="saveNaiSettings()">保存配置</button>
+                    <button class="btn-secondary" onclick="testNaiConnection()">测试连接</button>
+                </div>
+                
+                <div id="naiStatus" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; display: none;">
+                    <h4 style="margin-bottom: 10px;">配置状态</h4>
+                    <p id="naiStatusText"></p>
+                </div>
+            </div>
+
+            <!-- 识图中转API配置面板 -->
+            <div class="settings-panel" id="panel-vision">
+                <h2>识图中转API配置</h2>
+                <p style="color: #7f8c8d; margin-bottom: 20px;">
+                    全局识图中转服务，用于将图片转换为文字描述。配置后可在分享功能（日记识图）、聊天页面（图片发送）等场景中使用。
+                    识图API独立运行，不存储上下文记忆，每次调用独立处理。
+                </p>
+                
+                <div class="form-group">
+                    <label>API 地址</label>
+                    <input type="text" id="visionApiUrl" placeholder="https://api.openai.com/v1">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        需要支持 vision 功能的 API 端点（如 OpenAI、中转站等）
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="visionApiKey" placeholder="sk-...">
+                </div>
+                
+                <div class="form-group">
+                    <label>模型名称</label>
+                    <input type="text" id="visionModel" placeholder="gpt-4o" value="gpt-4o">
+                    <small style="color: #7f8c8d; display: block; margin-top: 5px;">
+                        需要支持图片输入的模型，如 gpt-4o、gpt-4-vision-preview 等
+                    </small>
+                </div>
+                
+                <div style="margin-top: 30px; display: flex; gap: 10px;">
+                    <button class="btn-primary" onclick="saveVisionRelayConfig()">保存配置</button>
+                    <button class="btn-secondary" onclick="testVisionRelayConnection()">测试连接</button>
+                </div>
+                
+                <div id="visionStatus" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 12px; display: none;">
+                    <h4 style="margin-bottom: 10px;">配置状态</h4>
+                    <p id="visionStatusText"></p>
+                </div>
+            </div>
+
+            <!-- 数据备份面板 -->
+            <div class="settings-panel" id="panel-backup">
+                <h2>数据备份</h2>
+                
+                <div class="form-group">
+                    <p style="color: #7f8c8d; margin-bottom: 20px;">
+                        导出功能将备份所有数据，包括：API 配置、外观设置、联系人数据、聊天历史、人设方案等。
+                    </p>
+                    <button class="btn-secondary" onclick="exportAllData()">📤 导出所有配置</button>
+                    <button class="btn-secondary" onclick="document.getElementById('importFile').click()">📥 导入配置</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>

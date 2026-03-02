@@ -1,0 +1,508 @@
+/* ==================== CHAR的世界微博 - Ins风暗色主题 ==================== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0a0a0a; color: #e5e5e5; min-height: 100vh;
+  overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+/* 世界观切换栏 */
+.world-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; gap: 8px; padding: 10px 16px; background: #0a0a0a;
+  border-bottom: 1px solid #1a1a1a; overflow-x: auto; white-space: nowrap;
+}
+.world-bar::-webkit-scrollbar { display: none; }
+.world-chip {
+  padding: 6px 14px; border-radius: 20px; border: 1px solid #333;
+  background: transparent; color: #999; font-size: 13px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+  transition: all .2s;
+}
+.world-chip.active { background: #e5e5e5; color: #0a0a0a; border-color: #e5e5e5; }
+.world-chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+.world-add { padding: 6px 12px; border-radius: 20px; border: 1px dashed #444; background: transparent; color: #666; font-size: 13px; cursor: pointer; }
+
+/* 主内容区 */
+.main-content { padding-top: 48px; padding-bottom: 64px; min-height: 100vh; }
+.view { padding: 0; }
+
+/* CHAR选择界面 */
+.selector-title { font-size: 24px; font-weight: 600; text-align: center; padding: 40px 20px 8px; }
+.selector-subtitle { font-size: 14px; color: #777; text-align: center; padding: 0 20px 24px; }
+.char-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+.char-item {
+  display: flex; align-items: center; gap: 14px; padding: 16px;
+  background: #141414; border-radius: 12px; cursor: pointer; transition: background .2s;
+}
+.char-item:active { background: #1f1f1f; }
+.char-item .avatar { font-size: 36px; width: 50px; text-align: center; }
+.char-item .info { flex: 1; }
+.char-item .name { font-size: 16px; font-weight: 500; }
+.char-item .desc { font-size: 12px; color: #777; margin-top: 2px; }
+
+/* User设置界面 */
+.setup-form { padding: 0 24px; }
+.setup-field { margin-bottom: 20px; }
+.setup-field label { display: block; font-size: 13px; color: #999; margin-bottom: 6px; }
+.setup-field input {
+  width: 100%; padding: 12px; background: #141414; border: 1px solid #2a2a2a;
+  border-radius: 8px; color: #e5e5e5; font-size: 15px; outline: none;
+}
+.setup-field input:focus { border-color: #555; }
+.btn-primary {
+  width: 100%; padding: 14px; background: #e5e5e5; color: #0a0a0a;
+  border: none; border-radius: 10px; font-size: 16px; font-weight: 600;
+  cursor: pointer; margin-top: 12px;
+}
+
+/* 信息流 */
+.feed-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; position: sticky; top: 48px; background: #0a0a0a; z-index: 50;
+  border-bottom: 1px solid #1a1a1a;
+}
+.feed-title { font-size: 18px; font-weight: 600; }
+.btn-icon { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px; }
+.feed-list { padding: 0; }
+
+/* 帖子项 - Ins风流式布局 */
+.post-item {
+  padding: 14px 16px; border-bottom: 1px solid #1a1a1a;
+  transition: background .15s;
+}
+.post-item:active { background: #111; }
+.post-item.char-post { background: #0d1117; }
+.post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.post-avatar {
+  width: 38px; height: 38px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 20px;
+  background: #1a1a1a; flex-shrink: 0; overflow: hidden;
+}
+.post-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.post-meta { flex: 1; min-width: 0; }
+.post-author { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.post-tag {
+  font-size: 10px; padding: 1px 6px; border-radius: 4px;
+  background: #2a2a2a; color: #999;
+}
+.post-tag.char { background: #1a2332; color: #58a6ff; }
+.post-tag.me { background: #1a2e1a; color: #7ee787; }
+.post-tag.media { background: #2d1f00; color: #f0b040; }
+.post-tag.influencer { background: #2d1030; color: #d68fff; }
+.post-tag.fan { background: #2d1a1a; color: #ff8888; }
+.post-tag.troll { background: #1a1a1a; color: #666; }
+.post-time { font-size: 11px; color: #555; }
+.post-body { font-size: 14px; line-height: 1.6; color: #d4d4d4; margin-bottom: 10px; word-break: break-word; }
+.post-body .mention { color: #58a6ff; }
+.post-topic {
+  display: inline-block; font-size: 12px; color: #58a6ff; background: #0d1926;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 8px;
+}
+.post-actions { display: flex; gap: 20px; }
+.post-action {
+  display: flex; align-items: center; gap: 4px; font-size: 12px; color: #555;
+  background: none; border: none; cursor: pointer; padding: 2px 0;
+}
+.post-action.liked { color: #ff6b6b; }
+
+/* FAB */
+.fab {
+  position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px;
+  border-radius: 50%; background: #e5e5e5; color: #0a0a0a; border: none;
+  font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  z-index: 60; display: flex; align-items: center; justify-content: center;
+}
+
+/* 底部Tab栏 */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; background: #0a0a0a; border-top: 1px solid #1a1a1a;
+  padding: 6px 0 env(safe-area-inset-bottom, 8px);
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 6px 0; background: none; border: none;
+  color: #555; font-size: 20px; cursor: pointer; transition: color .2s;
+}
+.tab span { font-size: 10px; }
+.tab.active { color: #e5e5e5; }
+
+/* 热搜榜 */
+.trending-categories {
+  display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto;
+  border-bottom: 1px solid #1a1a1a;
+}
+.trending-categories::-webkit-scrollbar { display: none; }
+.cat-chip {
+  padding: 4px 12px; border-radius: 14px; border: 1px solid #333;
+  background: transparent; color: #999; font-size: 12px; cursor: pointer;
+  white-space: nowrap; transition: all .2s;
+}
+.cat-chip.active { background: #e5e5e5; color: #0a0a0a; border-color: #e5e5e5; }
+.trending-item {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid #1a1a1a; cursor: pointer;
+}
+.trending-item:active { background: #111; }
+.trending-rank {
+  font-size: 18px; font-weight: 700; width: 28px; text-align: center; color: #555;
+}
+.trending-rank.top3 { color: #ff6b6b; }
+.trending-info { flex: 1; }
+.trending-title { font-size: 14px; font-weight: 500; }
+.trending-meta { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+.trending-heat { font-size: 11px; color: #555; }
+.trending-cat-tag {
+  font-size: 10px; padding: 1px 6px; border-radius: 4px; background: #1a1a1a; color: #888;
+}
+.trending-new { font-size: 10px; color: #ff6b6b; font-weight: 500; }
+
+/* CP超话 */
+.cp-milestone {
+  padding: 16px; text-align: center; border-bottom: 1px solid #1a1a1a;
+  background: linear-gradient(135deg, #1a0a1e 0%, #0a1a2e 100%);
+}
+.cp-milestone .days { font-size: 36px; font-weight: 700; color: #ff8fa0; }
+.cp-milestone .label { font-size: 12px; color: #888; margin-top: 4px; }
+.cp-milestone .couple-names { font-size: 14px; color: #bbb; margin-top: 8px; }
+
+/* 私信 */
+.dm-inbox { padding: 0; }
+.dm-item {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid #1a1a1a; cursor: pointer;
+}
+.dm-item:active { background: #111; }
+.dm-avatar { font-size: 28px; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #1a1a1a; flex-shrink: 0; overflow: hidden; }
+.dm-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.dm-info { flex: 1; min-width: 0; }
+.dm-name { font-size: 14px; font-weight: 500; }
+.dm-preview { font-size: 12px; color: #666; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dm-time { font-size: 11px; color: #555; }
+
+/* 我的/个人中心 */
+.profile-content { padding: 0; }
+.profile-card {
+  padding: 24px 16px; text-align: center;
+  border-bottom: 1px solid #1a1a1a;
+}
+.profile-card .avatar { font-size: 48px; margin-bottom: 8px; }
+.profile-card .nickname { font-size: 18px; font-weight: 600; }
+.profile-card .bio { font-size: 13px; color: #777; margin-top: 4px; }
+.profile-stats { display: flex; justify-content: center; gap: 24px; margin-top: 12px; }
+.profile-stat { text-align: center; }
+.profile-stat .num { font-size: 16px; font-weight: 600; }
+.profile-stat .lbl { font-size: 11px; color: #777; }
+.profile-menu { padding: 8px 0; }
+.profile-menu-item {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid #111; cursor: pointer; font-size: 14px;
+}
+.profile-menu-item:active { background: #111; }
+.profile-menu-item .icon { font-size: 20px; width: 28px; text-align: center; }
+.profile-menu-item .arrow { margin-left: auto; color: #444; }
+
+/* 模态框 */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 200;
+}
+.modal {
+  position: fixed; inset: 0; background: #0a0a0a; z-index: 210;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.modal.modal-sm {
+  inset: auto; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 90%; max-width: 360px; max-height: 80vh; border-radius: 16px;
+  background: #141414; padding: 20px;
+}
+.modal-header {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid #1a1a1a; flex-shrink: 0;
+}
+.modal-header span { flex: 1; font-size: 16px; font-weight: 500; }
+.btn-back {
+  background: none; border: none; color: #e5e5e5; font-size: 18px;
+  cursor: pointer; padding: 4px 8px;
+}
+.btn-post {
+  background: #e5e5e5; color: #0a0a0a; border: none; border-radius: 16px;
+  padding: 6px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.btn-close-sm {
+  width: 100%; padding: 10px; background: #2a2a2a; border: none;
+  border-radius: 8px; color: #999; font-size: 13px; cursor: pointer; margin-top: 12px;
+}
+.modal-body { flex: 1; overflow-y: auto; padding: 0; }
+
+/* 发帖 */
+.new-post-textarea {
+  width: 100%; min-height: 200px; padding: 16px; background: transparent;
+  border: none; color: #e5e5e5; font-size: 15px; line-height: 1.6;
+  resize: none; outline: none;
+}
+.new-post-topic { padding: 8px 16px; }
+
+/* 帖子详情评论 */
+.comment-list { padding: 0; }
+.comment-item {
+  display: flex; gap: 10px; padding: 12px 16px;
+  border-bottom: 1px solid #111;
+}
+.comment-avatar { font-size: 16px; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #1a1a1a; flex-shrink: 0; overflow: hidden; }
+.comment-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.comment-body { flex: 1; }
+.comment-author { font-size: 12px; color: #888; margin-bottom: 2px; }
+.comment-text { font-size: 13px; line-height: 1.5; }
+.comment-time { font-size: 10px; color: #555; margin-top: 2px; }
+.comment-input-bar {
+  display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid #1a1a1a;
+  flex-shrink: 0;
+}
+.comment-input-bar input {
+  flex: 1; padding: 10px 14px; background: #141414; border: 1px solid #2a2a2a;
+  border-radius: 20px; color: #e5e5e5; font-size: 13px; outline: none;
+}
+.comment-input-bar button {
+  padding: 8px 16px; background: #e5e5e5; color: #0a0a0a; border: none;
+  border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer;
+}
+
+/* 聊天输入栏 */
+.chat-input-bar {
+  display: flex; gap: 8px; padding: 10px 16px; border-top: 1px solid #1a1a1a;
+  flex-shrink: 0; background: #0a0a0a;
+}
+.chat-input-bar input {
+  flex: 1; padding: 10px 14px; background: #141414; border: 1px solid #2a2a2a;
+  border-radius: 20px; color: #e5e5e5; font-size: 13px; outline: none;
+}
+.chat-input-bar button {
+  padding: 8px 16px; background: #e5e5e5; color: #0a0a0a; border: none;
+  border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer;
+}
+
+/* 直播间 */
+.live-body { display: flex; flex-direction: column; }
+.live-content-area { flex: 1; padding: 16px; font-size: 15px; line-height: 1.8; color: #d4d4d4; }
+.live-danmaku { padding: 8px 16px; max-height: 200px; overflow-y: auto; }
+.danmaku-item { font-size: 12px; color: #999; padding: 3px 0; }
+.danmaku-item .name { color: #58a6ff; margin-right: 6px; }
+.danmaku-item.loyal .name { color: #ff8fa0; }
+.danmaku-item.anti .name { color: #666; }
+.danmaku-item.user .name { color: #7ee787; }
+
+/* NPC信息卡片 */
+.npc-card { text-align: center; }
+.npc-card .avatar { font-size: 40px; margin-bottom: 8px; }
+.npc-card .avatar img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+.npc-card .name { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+.npc-card .identity { font-size: 12px; color: #888; margin-bottom: 8px; }
+.npc-card .personality { font-size: 13px; color: #aaa; line-height: 1.5; }
+
+/* 广告邀请 */
+.ad-card { text-align: center; }
+.ad-card .brand { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+.ad-card .type { font-size: 12px; color: #888; margin-bottom: 12px; }
+.ad-card .reward { font-size: 24px; font-weight: 700; color: #f0b040; margin-bottom: 4px; }
+.ad-card .reward-label { font-size: 12px; color: #888; margin-bottom: 12px; }
+.ad-card .desc { font-size: 13px; color: #aaa; line-height: 1.5; margin-bottom: 16px; }
+.ad-btns { display: flex; gap: 10px; }
+.ad-btns button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.ad-btns .accept { background: #f0b040; color: #0a0a0a; }
+.ad-btns .reject { background: #2a2a2a; color: #999; }
+
+/* 争议事件 */
+.controversy-chain { padding: 16px; }
+.controversy-desc { font-size: 14px; line-height: 1.6; color: #d4d4d4; margin-bottom: 16px; padding: 12px; background: #141414; border-radius: 8px; }
+.response-options { display: flex; flex-direction: column; gap: 8px; padding: 0 16px 16px; }
+.response-btn {
+  padding: 12px; background: #1a1a1a; border: 1px solid #2a2a2a;
+  border-radius: 8px; color: #e5e5e5; font-size: 14px; cursor: pointer;
+  text-align: left; transition: background .2s;
+}
+.response-btn:active { background: #222; }
+
+/* 世界观管理 */
+.world-mgr-item {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.world-mgr-item .info { flex: 1; }
+.world-mgr-item .name { font-size: 14px; font-weight: 500; }
+.world-mgr-item .char { font-size: 12px; color: #777; }
+.world-mgr-actions { display: flex; gap: 8px; }
+.world-mgr-actions button {
+  padding: 4px 10px; border-radius: 6px; border: 1px solid #333;
+  background: transparent; color: #999; font-size: 12px; cursor: pointer;
+}
+.world-mgr-actions .del { border-color: #4a2020; color: #ff6b6b; }
+
+/* 头像库管理 */
+.avatar-pool { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; }
+.avatar-pool-item { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; position: relative; }
+.avatar-pool-item img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-pool-item .del {
+  position: absolute; top: -4px; right: -4px; width: 18px; height: 18px;
+  border-radius: 50%; background: #ff4444; color: #fff; border: none;
+  font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.avatar-mgr-input { padding: 16px; }
+.avatar-mgr-input textarea {
+  width: 100%; height: 80px; padding: 10px; background: #141414;
+  border: 1px solid #2a2a2a; border-radius: 8px; color: #e5e5e5;
+  font-size: 12px; resize: none; outline: none;
+}
+.avatar-mgr-btns { display: flex; gap: 8px; padding: 0 16px 16px; }
+.avatar-mgr-btns button {
+  flex: 1; padding: 10px; border: none; border-radius: 8px;
+  font-size: 13px; cursor: pointer;
+}
+.avatar-mgr-btns .add { background: #e5e5e5; color: #0a0a0a; }
+.avatar-mgr-btns .clear { background: #2a2020; color: #ff6b6b; }
+
+/* 加载 */
+.loading-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 300;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+}
+.loading-spinner {
+  width: 32px; height: 32px; border: 3px solid #333; border-top-color: #e5e5e5;
+  border-radius: 50%; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 14px; color: #999; }
+
+/* 空状态 */
+.empty-state { text-align: center; padding: 60px 20px; color: #555; font-size: 14px; }
+
+/* 粉丝构成条 */
+.fan-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.fan-bar .loyal { background: #ff8fa0; }
+.fan-bar .casual { background: #58a6ff; }
+.fan-bar .anti { background: #555; }
+
+/* 通知提示 */
+.toast {
+  position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+  background: #222; color: #e5e5e5; padding: 10px 20px; border-radius: 20px;
+  font-size: 13px; z-index: 400; opacity: 0; transition: opacity .3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+/* 直播暂存区 */
+.live-staging {
+  border-top: 1px solid #1a1a1a; padding: 8px 16px; background: #0f0f0f;
+  flex-shrink: 0;
+}
+.staging-label { font-size: 11px; color: #777; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.staging-list { max-height: 100px; overflow-y: auto; }
+.staging-item {
+  display: flex; align-items: center; gap: 8px; padding: 4px 0;
+  font-size: 12px; color: #bbb;
+}
+.staging-item .del {
+  background: none; border: none; color: #ff6b6b; font-size: 14px;
+  cursor: pointer; padding: 0 4px; flex-shrink: 0;
+}
+.staging-item .text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.staging-send-btn {
+  width: 100%; padding: 8px; margin-top: 6px; background: #58a6ff; color: #0a0a0a;
+  border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.staging-send-btn:active { opacity: .8; }
+
+/* 直播选择界面 */
+.live-choose { padding: 24px; text-align: center; }
+.live-choose-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.live-choose-btns { display: flex; flex-direction: column; gap: 12px; }
+.live-choose-btn {
+  padding: 16px; background: #141414; border: 1px solid #2a2a2a;
+  border-radius: 12px; cursor: pointer; text-align: left; transition: background .2s;
+}
+.live-choose-btn:active { background: #1f1f1f; }
+.live-choose-btn .name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+.live-choose-btn .desc { font-size: 12px; color: #777; }
+
+/* 直播演绎区 */
+.live-rp-area { padding: 12px 16px; flex: 1; overflow-y: auto; }
+.live-rp-msg { padding: 8px 0; border-bottom: 1px solid #111; }
+.live-rp-msg .author { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+.live-rp-msg .author.char-author { color: #58a6ff; }
+.live-rp-msg .author.user-author { color: #7ee787; }
+.live-rp-msg .rp-text { font-size: 14px; line-height: 1.6; color: #d4d4d4; }
+.live-rp-msg .rp-text .action { color: #999; font-style: italic; }
+.live-rp-msg .rp-text .speech { color: #e5e5e5; }
+
+/* ==================== 返回按钮 ==================== */
+.world-back {
+  background: none; border: none; color: #999; font-size: 20px;
+  padding: 4px 8px; cursor: pointer; flex-shrink: 0;
+}
+.world-back:hover { color: #e5e5e5; }
+
+/* ==================== 富媒体标签 ==================== */
+.media-tag {
+  display: inline-block; padding: 3px 8px; border-radius: 6px;
+  font-size: 12px; margin: 4px 4px 0 0; cursor: default;
+}
+.media-img { background: #1a2a1a; color: #7ee787; border: 1px solid #2a3a2a; }
+.media-vid { background: #2a1a2a; color: #d2a8ff; border: 1px solid #3a2a3a; }
+.media-aud { background: #1a1a2a; color: #79c0ff; border: 1px solid #2a2a3a; }
+.media-loc { background: #2a2a1a; color: #f0c674; border: 1px solid #3a3a2a; }
+
+/* ==================== 热搜吃瓜 ==================== */
+.source-post {
+  border-left: 3px solid #f97316; margin-bottom: 0;
+  background: #1a1510 !important;
+}
+.topic-comments-section {
+  padding: 8px 16px 12px; background: #111;
+}
+.section-label {
+  font-size: 12px; color: #888; padding: 8px 0 6px; font-weight: 500;
+}
+.topic-comment {
+  padding: 6px 0; border-bottom: 1px solid #1a1a1a;
+  font-size: 13px; line-height: 1.5;
+}
+.topic-comment-name {
+  color: #58a6ff; font-weight: 500; margin-right: 8px;
+}
+.topic-comment-text { color: #ccc; }
+
+/* ==================== CSS主题编辑器 ==================== */
+.css-editor-toolbar {
+  display: flex; gap: 8px; padding: 10px 16px;
+  border-bottom: 1px solid #1a1a1a; flex-shrink: 0; align-items: center;
+}
+.css-editor-toolbar select {
+  flex: 1; padding: 8px 10px; background: #141414; border: 1px solid #2a2a2a;
+  border-radius: 8px; color: #e5e5e5; font-size: 13px; outline: none;
+}
+.css-tb-btn {
+  padding: 6px 12px; border-radius: 8px; border: 1px solid #333;
+  background: transparent; color: #999; font-size: 13px; cursor: pointer;
+  white-space: nowrap;
+}
+.css-tb-btn.del { border-color: #4a2020; color: #ff6b6b; }
+.css-editor-textarea {
+  width: 100%; height: 100%; padding: 12px 16px; background: #0d0d0d;
+  border: none; color: #b5cea8; font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px; line-height: 1.6; resize: none; outline: none;
+  tab-size: 2; white-space: pre;
+}
+.css-editor-footer {
+  display: flex; gap: 8px; padding: 10px 16px;
+  border-top: 1px solid #1a1a1a; flex-shrink: 0;
+}
+.css-preview-btn, .css-reset-btn {
+  flex: 1; padding: 10px; border: none; border-radius: 8px;
+  font-size: 13px; cursor: pointer;
+}
+.css-preview-btn { background: #1a2a3a; color: #58a6ff; }
+.css-reset-btn { background: #2a2020; color: #ff8888; }

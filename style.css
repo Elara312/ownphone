@@ -1,0 +1,373 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    overscroll-behavior: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    background: #1a1a2e;
+}
+
+.ipad-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(160deg, #e8d5e0 0%, #d4c5d9 25%, #c9b8d4 50%, #b8c6d9 75%, #d0d8e8 100%);
+    position: relative;
+    /* 安全区域适配 */
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* 状态栏 */
+.status-bar {
+    height: 36px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    z-index: 100;
+}
+
+.status-left {
+    font-variant-numeric: tabular-nums;
+}
+
+.status-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+}
+
+/* 桌面网格 */
+.desktop-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 12px 16px;
+    padding: 24px 48px;
+    overflow: hidden;
+}
+
+/* Dock 栏 */
+.dock {
+    height: 100px;
+    margin: 0 auto 24px;
+    width: calc(100% - 120px);
+    max-width: 720px;
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    padding: 12px 16px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* 图标槽位 */
+.icon-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.icon-slot:active {
+    transform: scale(0.92);
+}
+
+/* 小组件槽位 (2x1) */
+.icon-slot.widget-slot {
+    grid-column: span 2;
+}
+
+.icon-slot.dragging {
+    opacity: 0.5;
+}
+
+.icon-slot.drag-over {
+    transform: scale(0.9);
+}
+
+.icon-slot.drag-invalid {
+    background: rgba(255, 80, 80, 0.15);
+    border-radius: 16px;
+}
+
+/* 图标 */
+.app-icon {
+    width: 68px;
+    height: 68px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 4px 16px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.25s ease;
+    cursor: grab;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 图标光泽效果 */
+.app-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 100%);
+    border-radius: 16px 16px 0 0;
+    pointer-events: none;
+}
+
+.app-icon:active {
+    cursor: grabbing;
+}
+
+.icon-slot:hover .app-icon {
+    transform: scale(1.08);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        0 8px 24px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.app-icon.dragging-icon {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transform: scale(1.15);
+    opacity: 0.85;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 图标名称 */
+.app-name {
+    margin-top: 6px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+/* Dock 内的图标更小 */
+.dock .app-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    border-radius: 14px;
+}
+
+.dock .app-name {
+    font-size: 10px;
+    margin-top: 4px;
+    max-width: 60px;
+}
+
+/* 空槽位 */
+.icon-slot.empty {
+    background: transparent;
+}
+
+/* 响应式调整 */
+
+/* 竖屏平板 (768px - 1024px portrait) */
+@media (max-width: 1024px) {
+    .desktop-grid {
+        padding: 20px 36px;
+        gap: 10px 14px;
+    }
+    
+    .dock {
+        width: calc(100% - 80px);
+        margin-bottom: 20px;
+    }
+    
+    .app-icon {
+        width: 62px;
+        height: 62px;
+        font-size: 30px;
+        border-radius: 15px;
+    }
+    
+    .dock .app-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+    }
+}
+
+/* 小平板/大手机 (max-width: 768px) */
+@media (max-width: 768px) {
+    .status-bar {
+        height: 44px;
+        padding: 0 20px;
+        padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    .desktop-grid {
+        padding: 16px 24px;
+        gap: 8px 10px;
+    }
+    
+    .dock {
+        width: calc(100% - 48px);
+        margin-bottom: 16px;
+        margin-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        height: 88px;
+        padding: 10px 12px;
+        border-radius: 20px;
+    }
+    
+    .app-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 26px;
+        border-radius: 13px;
+    }
+    
+    .dock .app-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 22px;
+        border-radius: 12px;
+    }
+    
+    .app-name {
+        font-size: 10px;
+    }
+    
+    .dock .app-name {
+        font-size: 9px;
+    }
+}
+
+/* 竖屏模式：平板竖着拿时切换为5列 */
+@media (max-width: 900px) and (orientation: portrait) {
+    .desktop-grid {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        padding: 20px 32px;
+        gap: 10px;
+    }
+    
+    .dock {
+        grid-template-columns: repeat(8, 1fr);
+        height: 92px;
+        width: calc(100% - 60px);
+    }
+}
+
+/* 小屏竖屏：4列 */
+@media (max-width: 600px) and (orientation: portrait) {
+    .desktop-grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        padding: 16px 20px;
+        gap: 8px;
+    }
+    
+    .dock {
+        grid-template-columns: repeat(6, 1fr);
+        height: 84px;
+        width: calc(100% - 32px);
+        padding: 8px 10px;
+    }
+    
+    .app-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        border-radius: 12px;
+    }
+    
+    .dock .app-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+        border-radius: 11px;
+    }
+    
+    .app-name {
+        font-size: 9px;
+        margin-top: 4px;
+    }
+}
+
+/* 横屏模式优化 */
+@media (orientation: landscape) and (max-height: 500px) {
+    .status-bar {
+        height: 28px;
+        font-size: 11px;
+    }
+    
+    .desktop-grid {
+        padding: 8px 48px;
+        gap: 6px 12px;
+    }
+    
+    .dock {
+        height: 76px;
+        margin-bottom: 8px;
+        padding: 8px 14px;
+    }
+    
+    .app-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+        border-radius: 12px;
+    }
+    
+    .dock .app-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 20px;
+    }
+    
+    .app-name {
+        font-size: 9px;
+        margin-top: 3px;
+    }
+}

@@ -1,0 +1,389 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+    background: #f5f0eb;
+    min-height: 100vh;
+    color: #2d2a26;
+}
+
+.logi-app {
+    max-width: 800px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 头部 */
+.logi-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e8e2dc;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 12px;
+}
+
+.logi-back {
+    width: 36px; height: 36px;
+    border: none; background: #f5f0eb;
+    border-radius: 10px; font-size: 22px;
+    color: #8b7e74; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.logi-back:hover { background: #ebe5de; }
+
+.logi-header h1 {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.logi-char-picker {
+    padding: 8px 12px;
+    border: 1.5px solid #e0d8d0;
+    border-radius: 10px;
+    font-size: 13px;
+    background: #faf8f5;
+    cursor: pointer;
+}
+.logi-char-picker:focus { outline: none; border-color: #c4a882; }
+
+/* 筛选栏 */
+.logi-filters {
+    display: flex;
+    gap: 0;
+    padding: 0 20px;
+    background: #fff;
+    border-bottom: 1px solid #e8e2dc;
+    overflow-x: auto;
+}
+
+.logi-filter {
+    padding: 11px 14px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a89888;
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.logi-filter:hover { color: #6b5e52; }
+.logi-filter.active { color: #2d2a26; border-bottom-color: #2d2a26; }
+
+/* 内容区 */
+.logi-content {
+    flex: 1;
+    padding: 16px 20px 40px;
+    overflow-y: auto;
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #b8a898;
+}
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* 订单卡片 */
+.order-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e8e2dc;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.order-card:hover {
+    box-shadow: 0 4px 16px rgba(45,42,38,0.08);
+    transform: translateY(-2px);
+}
+
+.order-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+}
+
+.order-card-img {
+    width: 56px; height: 56px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f5f0eb, #ebe5de);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.order-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+.order-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.order-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.order-card-meta {
+    font-size: 12px;
+    color: #a89888;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.order-card-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #d97706;
+    flex-shrink: 0;
+}
+
+.order-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #faf8f5;
+    border-top: 1px solid #f0ebe5;
+}
+
+.order-status-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+.order-status-badge.ordered { background: #fef3c7; color: #92400e; }
+.order-status-badge.shipping { background: #dbeafe; color: #1e40af; }
+.order-status-badge.pending_receive { background: #dcfce7; color: #166534; }
+.order-status-badge.received { background: #f3f4f6; color: #6b7280; }
+.order-status-badge.returned { background: #fee2e2; color: #991b1b; }
+.order-status-badge.pending_accept { background: #fef9c3; color: #854d0e; }
+.order-status-badge.rejected { background: #fce7f3; color: #9d174d; }
+
+.order-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.order-action-btn {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.order-action-btn.receive {
+    background: #2d2a26;
+    color: #fff;
+}
+.order-action-btn.receive:hover { background: #1a1816; }
+.order-action-btn.return {
+    background: #f5f0eb;
+    color: #8b7e74;
+    border: 1px solid #e0d8d0;
+}
+.order-action-btn.return:hover { background: #ebe5de; }
+.order-action-btn.review {
+    background: #fef3c7;
+    color: #92400e;
+}
+.order-action-btn.review:hover { background: #fde68a; }
+
+/* 订单详情弹窗 */
+.detail-modal {
+    max-width: 500px;
+}
+
+.modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(45,42,38,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 700;
+    border-bottom: 1px solid #e8e2dc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    background: none; border: none;
+    font-size: 18px; color: #a89888;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-actions {
+    display: flex; gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid #e8e2dc;
+}
+
+.modal-btn {
+    flex: 1; padding: 12px;
+    border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+}
+.modal-btn.cancel { background: #f5f0eb; color: #6b5e52; }
+.modal-btn.cancel:hover { background: #ebe5de; }
+.modal-btn.confirm { background: #2d2a26; color: #fff; }
+.modal-btn.confirm:hover { background: #1a1816; }
+
+/* 物流时间线 */
+.timeline {
+    position: relative;
+    padding-left: 24px;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px; top: 4px; bottom: 4px;
+    width: 2px;
+    background: #e0d8d0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 16px;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+    position: absolute;
+    left: -20px; top: 4px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #c4a882;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #e0d8d0;
+}
+.timeline-item:first-child .timeline-dot {
+    background: #2d2a26;
+    box-shadow: 0 0 0 2px #2d2a26;
+}
+
+.timeline-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d2a26;
+    margin-bottom: 2px;
+}
+
+.timeline-time {
+    font-size: 11px;
+    color: #a89888;
+}
+
+/* 评价星级 */
+.star-rating {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+.star {
+    font-size: 32px;
+    cursor: pointer;
+    color: #e0d8d0;
+    transition: all 0.15s;
+}
+.star.active { color: #f59e0b; }
+
+#reviewText {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #e0d8d0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    background: #faf8f5;
+}
+#reviewText:focus { outline: none; border-color: #c4a882; }
+
+/* 评价显示 */
+.review-display {
+    margin-top: 14px;
+    padding: 12px;
+    background: #faf8f5;
+    border-radius: 10px;
+    border: 1px solid #e8e2dc;
+}
+.review-stars { font-size: 16px; color: #f59e0b; margin-bottom: 4px; }
+.review-text { font-size: 13px; color: #6b5e52; line-height: 1.5; }
+
+/* 详情信息行 */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #f0ebe5;
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-label { color: #a89888; }
+.detail-value { font-weight: 600; }
+
+.detail-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d2a26;
+    margin: 16px 0 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e8e2dc;
+}
+
+@media (max-width: 480px) {
+    .logi-header { padding: 12px 14px; }
+    .logi-content { padding: 12px 14px 30px; }
+}

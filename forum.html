@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>论坛</title>
+    <link rel="stylesheet" href="forum.css">
+</head>
+<body>
+    <div class="forum-app">
+        <!-- 顶部 -->
+        <header class="forum-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <button class="forum-btn-icon" onclick="window.location.href='index.html'" title="返回桌面" style="font-size:22px;">‹</button>
+                <h1 class="forum-title" id="forumTitle">💬 论坛</h1>
+            </div>
+            <div class="forum-header-actions">
+                <button class="forum-btn-icon" onclick="openDmList()" title="私信">💌</button>
+                <button class="forum-btn-icon" onclick="openPostMemoryManager()" title="发帖记忆">📋</button>
+                <button class="forum-btn-icon" id="refreshBtn" onclick="refreshForum()" title="刷新内容">🔄</button>
+                <button class="forum-btn-icon" onclick="openNewPost()" title="发帖">✏️</button>
+                <button class="forum-btn-icon" onclick="openAvatarManager()" title="头像库">🖼️</button>
+                <button class="forum-btn-icon" onclick="openWorldManager()" title="世界管理">🌍</button>
+                <button class="forum-btn-icon" onclick="openBoardManager()" title="板块管理">⚙️</button>
+            </div>
+        </header>
+
+        <!-- 世界切换栏 -->
+        <div class="forum-world-bar" id="worldBar"></div>
+
+        <!-- 世界描述 -->
+        <div class="forum-world-desc" id="worldDesc" style="display:none;"></div>
+
+        <!-- 板块标签 -->
+        <nav class="forum-boards" id="forumBoards"></nav>
+
+        <!-- 帖子列表 -->
+        <main class="forum-list" id="forumList"></main>
+
+        <!-- 空状态 -->
+        <div class="forum-empty" id="forumEmpty" style="display:none;">
+            <div style="font-size:48px;">📝</div>
+            <p>还没有帖子</p>
+            <p style="font-size:13px;">点击右上角 ✏️ 发布第一个帖子吧</p>
+        </div>
+    </div>
+
+    <!-- 帖子详情弹窗 -->
+    <div class="forum-overlay" id="postDetailOverlay" onclick="closePostDetail()"></div>
+    <div class="forum-modal forum-modal-large" id="postDetailModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closePostDetail()">←</button>
+            <span id="postDetailTitle">帖子详情</span>
+            <div class="forum-detail-actions">
+                <button class="forum-btn-icon" id="bookmarkBtn" onclick="toggleBookmark()" title="追更">🔖</button>
+                <button class="forum-btn-icon" id="refreshRepliesBtn" onclick="refreshReplies()" title="刷新回复">🔄</button>
+                <button class="forum-btn-icon" onclick="openSummarySettings()" title="记忆设置">🧠</button>
+            </div>
+        </div>
+        <div class="forum-modal-body" id="postDetailContent"></div>
+        <div class="forum-reply-bar" id="replyBar">
+            <button class="forum-btn-icon forum-attach-btn" onclick="toggleReplyAttach()" title="添加附件">📎</button>
+            <input type="text" id="replyInput" class="forum-input" placeholder="写回复...">
+            <button class="forum-btn-sm" onclick="submitReply()">发送</button>
+        </div>
+        <div class="forum-attach-panel" id="replyAttachPanel" style="display:none;">
+            <input type="text" id="replyAttachUrl" class="forum-input" placeholder="附件URL（图片/视频/音频）" style="margin:0;flex:1;">
+            <select id="replyAttachType" class="forum-select" style="width:auto;margin:0;">
+                <option value="image">🖼️ 图片</option>
+                <option value="video">🎬 视频</option>
+                <option value="audio">🎵 音频</option>
+            </select>
+            <input type="text" id="replyAttachDesc" class="forum-input" placeholder="文字描述（点击附件时显示）" style="margin:0;flex:1;">
+        </div>
+    </div>
+
+    <!-- 记忆/总结设置弹窗 -->
+    <div class="forum-overlay" id="summarySettingsOverlay" onclick="closeSummarySettings()" style="z-index:300;"></div>
+    <div class="forum-modal" id="summarySettingsModal" style="z-index:301;max-width:500px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeSummarySettings()">←</button>
+            <span>🧠 记忆设置</span>
+            <button class="forum-btn-sm" onclick="saveAllMemorySettings()">保存全部</button>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <!-- 长期记忆 -->
+                <label style="margin-top:0;">📝 长期记忆（帖子总结）</label>
+                <textarea id="postSummaryText" class="forum-textarea" rows="4" placeholder="帖子的长期记忆总结..."></textarea>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                    <button class="forum-btn-sm" onclick="autoSummarize()" id="autoSumBtn" style="flex:1;">🤖 自动总结</button>
+                </div>
+
+                <!-- 自动总结设置 -->
+                <label style="margin-top:16px;">⚡ 自动总结触发</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">每新增N条回复后自动触发总结（0=关闭自动总结）</p>
+                <input type="number" id="autoSumTrigger" class="forum-input" value="0" min="0" max="100" placeholder="触发条数（0=关闭）">
+
+                <!-- 自定义总结提示词 -->
+                <label style="margin-top:16px;">✍️ 自定义总结提示词</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">留空则使用默认提示词</p>
+                <textarea id="customSumPrompt" class="forum-textarea" rows="3" placeholder="例如：请重点关注角色之间的关系变化和情感发展..."></textarea>
+
+                <!-- 短期记忆 -->
+                <label style="margin-top:16px;">🔄 短期记忆（上下文窗口）</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">刷新回复时发送首楼 + 最近N条回复作为上下文</p>
+                <input type="number" id="contextWindowSize" class="forum-input" value="10" min="3" max="50" placeholder="最近回复数量">
+            </div>
+        </div>
+    </div>
+
+    <!-- 头像库管理弹窗 -->
+    <div class="forum-overlay" id="avatarManagerOverlay" onclick="closeAvatarManager()"></div>
+    <div class="forum-modal" id="avatarManagerModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeAvatarManager()">←</button>
+            <span>🖼️ 路人头像库</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <label style="margin-top:0;">批量添加头像URL（每行一个）</label>
+                <textarea id="avatarUrlBatch" class="forum-textarea" rows="8" placeholder="https://example.com/avatar1.jpg&#10;https://example.com/avatar2.jpg&#10;..."></textarea>
+                <button class="forum-btn-sm" onclick="batchAddAvatars()" style="width:100%;margin-top:8px;">添加到头像库</button>
+                <label style="margin-top:16px;">当前头像库 (<span id="avatarCount">0</span>)</label>
+                <div id="avatarPoolPreview" class="avatar-pool-preview"></div>
+                <button class="forum-btn-sm forum-btn-danger" onclick="clearAvatarPool()" style="width:100%;margin-top:12px;">🗑️ 清空头像库</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发帖弹窗 -->
+    <div class="forum-overlay" id="newPostOverlay" onclick="closeNewPost()"></div>
+    <div class="forum-modal" id="newPostModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeNewPost()">←</button>
+            <span>发布新帖</span>
+            <button class="forum-btn-sm" onclick="submitNewPost()">发布</button>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <label>发布身份</label>
+                <select id="newPostAuthor" class="forum-select"></select>
+                <label>板块</label>
+                <select id="newPostBoard" class="forum-select"></select>
+                <label>标题</label>
+                <input type="text" id="newPostTitle" class="forum-input" placeholder="帖子标题">
+                <label>内容</label>
+                <textarea id="newPostContent" class="forum-textarea" placeholder="写点什么..." rows="6"></textarea>
+                <label>📎 附件（可选）</label>
+                <div id="newPostAttachments" class="forum-attachments-editor"></div>
+                <button class="forum-btn-sm" onclick="addNewPostAttachment()" style="width:100%;margin-top:4px;">+ 添加附件</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 板块管理弹窗 -->
+    <div class="forum-overlay" id="boardManagerOverlay" onclick="closeBoardManager()"></div>
+    <div class="forum-modal" id="boardManagerModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeBoardManager()">←</button>
+            <span>板块管理</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <div style="display:flex;gap:8px;margin-bottom:16px;">
+                    <input type="text" id="newBoardName" class="forum-input" placeholder="新板块名称" style="margin:0;flex:1;">
+                    <input type="text" id="newBoardEmoji" class="forum-input" placeholder="emoji" style="margin:0;width:60px;">
+                    <button class="forum-btn-sm" onclick="addBoard()">添加</button>
+                </div>
+                <div id="boardList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 世界管理弹窗 -->
+    <div class="forum-overlay" id="worldManagerOverlay" onclick="closeWorldManager()"></div>
+    <div class="forum-modal" id="worldManagerModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeWorldManager()">←</button>
+            <span>🌍 世界管理</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <!-- 新建世界 -->
+                <label style="margin-top:0;">新建世界</label>
+                <input type="text" id="newWorldName" class="forum-input" placeholder="世界名称（如：白色论坛）">
+                <input type="text" id="newWorldDesc" class="forum-input" placeholder="世界观描述（可选）">
+                <label>主题色</label>
+                <div class="theme-preview-row" id="newWorldThemeRow"></div>
+                <input type="text" id="newWorldThemeCustom" class="forum-input" placeholder="自定义主题色 HEX（如 #ff6b6b）">
+                <button class="forum-btn-sm" onclick="addWorld()" style="width:100%;margin-top:8px;">创建世界</button>
+
+                <!-- 已有世界列表 -->
+                <label style="margin-top:24px;">已有世界</label>
+                <div id="worldList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑世界弹窗 -->
+    <div class="forum-overlay" id="editWorldOverlay" onclick="closeEditWorld()"></div>
+    <div class="forum-modal" id="editWorldModal">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeEditWorld()">←</button>
+            <span>编辑世界</span>
+            <button class="forum-btn-sm" onclick="saveEditWorld()">保存</button>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <label style="margin-top:0;">世界名称</label>
+                <input type="text" id="editWorldName" class="forum-input">
+                <label>世界观描述</label>
+                <textarea id="editWorldDesc" class="forum-textarea" rows="3"></textarea>
+                <label>主题色</label>
+                <div class="theme-preview-row" id="editWorldThemeRow"></div>
+                <input type="text" id="editWorldThemeCustom" class="forum-input" placeholder="自定义 HEX">
+                <button class="forum-btn-sm forum-btn-danger" onclick="deleteCurrentEditWorld()" style="width:100%;margin-top:24px;">🗑️ 删除此世界</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 私信列表弹窗 -->
+    <div class="forum-overlay" id="dmListOverlay" onclick="closeDmList()"></div>
+    <div class="forum-modal" id="dmListModal" style="max-width:500px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeDmList()">←</button>
+            <span>💌 私信列表</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body" id="dmListContent"></div>
+    </div>
+
+    <!-- 私信记忆设置弹窗 -->
+    <div class="forum-overlay" id="dmMemoryOverlay" onclick="closeDmMemory()" style="z-index:400;"></div>
+    <div class="forum-modal" id="dmMemoryModal" style="z-index:401;max-width:500px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeDmMemory()">←</button>
+            <span>🧠 私信记忆设置</span>
+            <button class="forum-btn-sm" onclick="saveDmMemorySettings()">保存</button>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <label style="margin:0;font-weight:600;">🧠 结构化记忆</label>
+                    <span id="dmSmTokenCount" style="font-size:12px;color:var(--forum-text-sub);">Token: ~0</span>
+                </div>
+                <div id="dmSmContainer"></div>
+
+                <label style="margin-top:16px;">⚡ 自动总结触发</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">每新增N条消息后自动触发记忆提取（0=关闭）</p>
+                <input type="number" id="dmAutoSumTrigger" class="forum-input" value="0" min="0" max="100" placeholder="触发条数（0=关闭）">
+
+                <label style="margin-top:16px;">🔄 短期记忆（上下文窗口）</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">发送给LLM的最近消息条数</p>
+                <input type="number" id="dmContextWindow" class="forum-input" value="10" min="3" max="50">
+            </div>
+        </div>
+    </div>
+
+    <!-- 私信聊天弹窗 -->
+    <div class="forum-overlay" id="dmChatOverlay" onclick="closeDmChat()" style="z-index:300;"></div>
+    <div class="forum-modal forum-modal-large" id="dmChatModal" style="z-index:301;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeDmChat()">←</button>
+            <span id="dmChatTitle">私信</span>
+            <button class="forum-btn-icon" onclick="openDmMemory()" title="记忆设置">🧠</button>
+        </div>
+        <div class="forum-modal-body" id="dmChatMessages"></div>
+        <div class="dm-chat-input-bar">
+            <input type="text" id="dmChatInput" class="forum-input" placeholder="输入消息..." onkeydown="if(event.key==='Enter')sendDmMessage()">
+            <button class="forum-btn-sm" id="dmSendBtn" onclick="sendDmMessage()">发送</button>
+        </div>
+    </div>
+
+    <!-- NPC资料弹窗 -->
+    <div class="forum-overlay" id="npcProfileOverlay" onclick="closeNpcProfile()" style="z-index:300;"></div>
+    <div class="forum-modal" id="npcProfileModal" style="z-index:301;max-width:480px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeNpcProfile()">←</button>
+            <span id="npcProfileTitle">NPC资料</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form" id="npcProfileContent">
+                <!-- 头像区 -->
+                <div class="npc-profile-avatar-area">
+                    <div class="npc-profile-avatar" id="npcProfileAvatar"></div>
+                    <div class="npc-profile-name" id="npcProfileName"></div>
+                    <div class="npc-profile-time" id="npcProfileTime"></div>
+                </div>
+                <!-- 头像URL编辑（仅关注后可见） -->
+                <div id="npcProfileEditAvatar" style="display:none;">
+                    <label>🖼️ 头像URL</label>
+                    <input type="text" id="npcProfileAvatarUrl" class="forum-input" placeholder="头像图片URL">
+                </div>
+                <!-- 时区编辑（仅关注后可见） -->
+                <div id="npcProfileEditTimezone" style="display:none;">
+                    <label>🌍 时区</label>
+                    <select id="npcProfileTimezoneSelect" class="forum-select"></select>
+                </div>
+                <!-- 性格描述 -->
+                <label>🎭 性格描述</label>
+                <div id="npcProfilePersonalityReadonly" class="npc-profile-readonly"></div>
+                <textarea id="npcProfilePersonalityEdit" class="forum-textarea" rows="3" style="display:none;" placeholder="描述NPC的性格特点..."></textarea>
+                <!-- 发帖记忆（仅关注后可见） -->
+                <div id="npcProfilePostMemory" style="display:none;"></div>
+                <!-- 按钮区 -->
+                <div class="npc-profile-actions" style="margin-top:16px;">
+                    <button class="forum-btn-sm" id="npcProfileFollowBtn" onclick="handleNpcFollow()" style="flex:1;"></button>
+                    <button class="forum-btn-sm" id="npcProfileDmBtn" onclick="handleNpcDm()" style="flex:1;">💌 发私信</button>
+                </div>
+                <!-- 保存按钮（仅关注后可见） -->
+                <button class="forum-btn-sm" id="npcProfileSaveBtn" onclick="saveNpcProfile()" style="display:none;width:100%;margin-top:8px;">💾 保存资料</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 附件查看弹窗 -->
+    <div class="forum-overlay" id="attachViewerOverlay" onclick="closeAttachViewer()" style="z-index:400;"></div>
+    <div class="forum-modal" id="attachViewerModal" style="z-index:401;max-width:500px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closeAttachViewer()">←</button>
+            <span id="attachViewerTitle">附件详情</span>
+            <span></span>
+        </div>
+        <div class="forum-modal-body" id="attachViewerContent"></div>
+    </div>
+
+    <!-- 发帖记忆管理弹窗 -->
+    <div class="forum-overlay" id="postMemoryManagerOverlay" onclick="closePostMemoryManager()"></div>
+    <div class="forum-modal" id="postMemoryManagerModal" style="max-width:600px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closePostMemoryManager()">←</button>
+            <span>📋 发帖记忆</span>
+            <button class="forum-btn-icon" onclick="openPostMemorySettings()" title="设置">⚙️</button>
+        </div>
+        <div class="forum-modal-body" id="postMemoryManagerContent"></div>
+    </div>
+
+    <!-- 发帖记忆设置弹窗 -->
+    <div class="forum-overlay" id="postMemorySettingsOverlay" onclick="closePostMemorySettings()" style="z-index:300;"></div>
+    <div class="forum-modal" id="postMemorySettingsModal" style="z-index:301;max-width:400px;">
+        <div class="forum-modal-header">
+            <button class="forum-back-btn" onclick="closePostMemorySettings()">←</button>
+            <span>⚙️ 记忆上限设置</span>
+            <button class="forum-btn-sm" onclick="savePostMemorySettings()">保存</button>
+        </div>
+        <div class="forum-modal-body">
+            <div class="forum-form">
+                <label style="margin-top:0;">CHAR 发帖记忆上限</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">每个CHAR最多保留的发帖记忆条数</p>
+                <input type="number" id="charPostMemoryLimit" class="forum-input" value="20" min="5" max="100">
+                <label>NPC 发帖记忆上限</label>
+                <p style="font-size:12px;color:var(--forum-text-sub);margin-bottom:8px;">每个已关注NPC最多保留的发帖记忆条数</p>
+                <input type="number" id="npcPostMemoryLimit" class="forum-input" value="15" min="5" max="100">
+            </div>
+        </div>
+    </div>
+
+    <script src="forum.js"></script>
+</body>
+</html>

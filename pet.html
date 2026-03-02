@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>魔法生物</title>
+    <link rel="stylesheet" href="pet.css">
+</head>
+<body>
+    <div class="pet-app">
+        <!-- 顶部栏 -->
+        <header class="pet-header">
+            <button class="pet-back" onclick="window.location.href='index.html'">‹</button>
+            <div class="pet-header-center">
+                <select id="charSelect" class="char-picker" onchange="onCharChange()">
+                    <option value="">选择CHAR</option>
+                </select>
+            </div>
+            <div class="pet-wallet">
+                <span class="wallet-icon">💰</span>
+                <span class="wallet-amount" id="walletAmount">0</span>
+            </div>
+        </header>
+
+        <!-- 未选择 CHAR 占位 -->
+        <div class="no-char-placeholder" id="noCharPlaceholder">
+            <div class="placeholder-icon">🥚</div>
+            <p>请先选择一个 CHAR 开始养育之旅</p>
+        </div>
+
+        <!-- 宠物内容区（选择 CHAR 后显示） -->
+        <div class="pet-content" id="petContent" style="display:none;">
+
+            <!-- 孵化入口（无 Creature 时显示） -->
+            <div class="hatch-entry" id="hatchEntry" style="display:none;">
+                <div class="hatch-icon">🥚✨</div>
+                <p>这里还没有魔法生物</p>
+                <button class="hatch-btn" onclick="createCreature(currentCharId)">🌟 孵化新生命</button>
+            </div>
+
+            <!-- ===== 主页视图 ===== -->
+            <div class="pet-view" id="view-home">
+                <!-- Creature 形象展示区 -->
+                <div class="creature-stage" id="creatureStage">
+                    <div class="creature-image-wrap" id="creatureImageWrap">
+                        <img class="creature-img" id="creatureImg" src="" alt="魔法生物">
+                        <!-- 饰品叠加层 -->
+                        <div class="accessory-layer" id="accessoryLayer"></div>
+                    </div>
+                </div>
+
+                <!-- 状态信息区 -->
+                <div class="creature-info" id="creatureInfo">
+                    <div class="creature-name" id="creatureName">--</div>
+                    <div class="creature-meta">
+                        <span class="creature-age" id="creatureAge">0天</span>
+                        <span class="creature-stage-label" id="creatureStageLabel">蛋</span>
+                        <span class="creature-location" id="creatureLocation">🏠 家</span>
+                    </div>
+                    <!-- 进度条区 -->
+                    <div class="stat-bars">
+                        <div class="stat-row">
+                            <span class="stat-label">🍖 饱食度</span>
+                            <div class="stat-bar"><div class="stat-fill satiety-fill" id="satietyBar" style="width:100%"></div></div>
+                            <span class="stat-value" id="satietyValue">100</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label" id="moodEmoji">😊 心情</span>
+                            <div class="stat-bar"><div class="stat-fill mood-fill" id="moodBar" style="width:70%"></div></div>
+                            <span class="stat-value" id="moodValue">70</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">❤️ 生命</span>
+                            <div class="stat-bar"><div class="stat-fill hp-fill" id="hpBar" style="width:100%"></div></div>
+                            <span class="stat-value" id="hpValue">100</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">⏳ 进化</span>
+                            <div class="stat-bar"><div class="stat-fill evolution-fill" id="evolutionBar" style="width:0%"></div></div>
+                            <span class="stat-value" id="evolutionValue">--</span>
+                        </div>
+                    </div>
+                    <!-- 属性面板 -->
+                    <div class="attributes-panel" id="attributesPanel">
+                        <div class="attr-item"><span class="attr-icon">🧠</span><span class="attr-name">智力</span><span class="attr-val" id="attrIntelligence">10</span></div>
+                        <div class="attr-item"><span class="attr-icon">💪</span><span class="attr-name">体力</span><span class="attr-val" id="attrStamina">10</span></div>
+                        <div class="attr-item"><span class="attr-icon">✨</span><span class="attr-name">魅力</span><span class="attr-val" id="attrCharisma">10</span></div>
+                        <div class="attr-item"><span class="attr-icon">🎨</span><span class="attr-name">创造力</span><span class="attr-val" id="attrCreativity">10</span></div>
+                    </div>
+                </div>
+
+                <!-- 事件通知卡片 -->
+                <div class="event-notification" id="eventNotification" style="display:none;">
+                    <div class="event-card">
+                        <div class="event-title" id="eventTitle"></div>
+                        <div class="event-desc" id="eventDesc"></div>
+                        <div class="event-choices" id="eventChoices"></div>
+                        <button class="event-detail-btn" onclick="switchView('event-log')">📋 查看详情</button>
+                    </div>
+                </div>
+
+                <!-- CHAR 评论气泡 -->
+                <div class="char-bubble" id="charBubble" style="display:none;">
+                    <span class="char-bubble-text" id="charBubbleText"></span>
+                </div>
+
+                <!-- 操作按钮区 -->
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="switchView('feed')"><span class="action-icon">🍖</span><span class="action-label">喂食</span></button>
+                    <button class="action-btn" onclick="switchView('chat')"><span class="action-icon">💬</span><span class="action-label">对话</span></button>
+                    <button class="action-btn" onclick="switchView('wardrobe')"><span class="action-icon">👗</span><span class="action-label">换装</span></button>
+                    <button class="action-btn" onclick="switchView('schedule')"><span class="action-icon">📅</span><span class="action-label">日程</span></button>
+                    <button class="action-btn" onclick="switchView('diary')"><span class="action-icon">📔</span><span class="action-label">日记</span></button>
+                    <button class="action-btn" onclick="switchView('kitchen')"><span class="action-icon">🍳</span><span class="action-label">厨房</span></button>
+                    <button class="action-btn" onclick="switchView('event-log')"><span class="action-icon">📜</span><span class="action-label">事件</span></button>
+                    <button class="action-btn" onclick="switchView('anecdotes')"><span class="action-icon">📖</span><span class="action-label">趣闻</span></button>
+                    <button class="action-btn" onclick="switchView('settings')"><span class="action-icon">⚙️</span><span class="action-label">设置</span></button>
+                </div>
+            </div>
+
+            <!-- ===== 喂食面板视图 ===== -->
+            <div class="pet-view" id="view-feed" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">🍖 喂食</span>
+                </div>
+                <div class="view-body" id="feedPanel"></div>
+            </div>
+
+            <!-- ===== 对话视图 ===== -->
+            <div class="pet-view" id="view-chat" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">💬 对话</span>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-bar">
+                    <input type="text" id="chatInput" placeholder="和宝宝说点什么..." onkeydown="if(event.key==='Enter')sendPetMessage(currentCharId, this.value)">
+                    <button class="chat-send-btn" onclick="sendPetMessage(currentCharId, document.getElementById('chatInput').value)">发送</button>
+                </div>
+            </div>
+
+            <!-- ===== 换装/形象编辑视图 ===== -->
+            <div class="pet-view" id="view-wardrobe" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">👗 换装</span>
+                </div>
+                <div class="view-body" id="wardrobePanel"></div>
+            </div>
+
+            <!-- ===== 日程管理视图 ===== -->
+            <div class="pet-view" id="view-schedule" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">📅 日程</span>
+                </div>
+                <div class="view-body" id="schedulePanel"></div>
+            </div>
+
+            <!-- ===== 日记本视图 ===== -->
+            <div class="pet-view" id="view-diary" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">📔 日记本</span>
+                </div>
+                <div class="view-body" id="diaryPanel"></div>
+            </div>
+
+            <!-- ===== 厨房视图 ===== -->
+            <div class="pet-view" id="view-kitchen" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">🍳 厨房</span>
+                </div>
+                <div class="view-body" id="kitchenPanel"></div>
+            </div>
+
+            <!-- ===== 事件日志视图 ===== -->
+            <div class="pet-view" id="view-event-log" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">📜 事件日志</span>
+                </div>
+                <div class="view-body" id="eventLogPanel"></div>
+            </div>
+
+            <!-- ===== 趣闻集视图 ===== -->
+            <div class="pet-view" id="view-anecdotes" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">📖 趣闻集</span>
+                </div>
+                <div class="view-body" id="anecdotePanel"></div>
+            </div>
+
+            <!-- ===== 设置视图 ===== -->
+            <div class="pet-view" id="view-settings" style="display:none;">
+                <div class="view-header">
+                    <button class="view-back" onclick="switchView('home')">‹ 返回</button>
+                    <span class="view-title">⚙️ 设置</span>
+                </div>
+                <div class="view-body" id="settingsPanel"></div>
+            </div>
+
+        </div><!-- /pet-content -->
+    </div><!-- /pet-app -->
+
+    <!-- 命名对话框 -->
+    <div class="modal-overlay" id="namingModal" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-header">🌟 给宝宝取个名字吧</div>
+            <div class="modal-body">
+                <input type="text" id="namingInput" maxlength="12" placeholder="1-12个字符">
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn confirm" onclick="confirmNaming()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 进化动画弹窗 -->
+    <div class="modal-overlay" id="evolutionModal" style="display:none;">
+        <div class="modal-card evolution-card">
+            <div class="evolution-anim" id="evolutionAnim"></div>
+            <div class="evolution-text" id="evolutionText"></div>
+            <button class="modal-btn confirm" onclick="document.getElementById('evolutionModal').style.display='none'">太棒了！</button>
+        </div>
+    </div>
+
+    <!-- 死亡动画弹窗 -->
+    <div class="modal-overlay" id="deathModal" style="display:none;">
+        <div class="modal-card death-card">
+            <div class="death-anim" id="deathAnim">💀</div>
+            <div class="death-text" id="deathText"></div>
+            <div class="death-farewell" id="deathFarewell"></div>
+            <div class="death-actions">
+                <button class="modal-btn confirm" onclick="document.getElementById('deathModal').style.display='none'">告别</button>
+                <button class="modal-btn rehatch-btn" id="rehatchBtn" onclick="rehatch(currentCharId)">🥚 重新孵化</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HP 危险警告浮层 -->
+    <div class="hp-danger-overlay" id="hpDangerOverlay" style="display:none;">
+        <span class="hp-danger-text">⚠️ 生命值危险！请尽快喂食或互动！</span>
+    </div>
+
+    <script src="pet.js"></script>
+</body>
+</html>
