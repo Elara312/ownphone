@@ -1,0 +1,18 @@
+{
+    "name": "情侣空间",
+    "short_name": "情侣空间",
+    "description": "情侣专属iPad模拟器",
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "orientation": "any",
+    "background_color": "#c9b8d4",
+    "theme_color": "#c9b8d4",
+    "icons": [
+        {
+            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}
