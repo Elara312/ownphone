@@ -372,8 +372,31 @@ function attachDragEvents(slot, app) {
     // 鼠标事件
     icon.addEventListener('mousedown', (e) => startDrag(e, app, slot));
     
-    // 触摸事件
-    icon.addEventListener('touchstart', (e) => startDrag(e, app, slot), { passive: false });
+    // 触摸事件 - 记录触摸起始信息用于判断是点击还是拖拽
+    let touchStartTime = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
+    icon.addEventListener('touchstart', (e) => {
+        touchStartTime = Date.now();
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        startDrag(e, app, slot);
+    }, { passive: true });
+    
+    // 在 touchend 直接处理点击，不依赖浏览器合成的 click 事件
+    icon.addEventListener('touchend', (e) => {
+        if (isDragging) return;
+        const dt = Date.now() - touchStartTime;
+        const touch = e.changedTouches[0];
+        const dx = Math.abs(touch.clientX - touchStartX);
+        const dy = Math.abs(touch.clientY - touchStartY);
+        // 短按 + 没有大幅移动 = 点击
+        if (dt < 300 && dx < 15 && dy < 15) {
+            e.preventDefault(); // 阻止后续的 click 避免双重触发
+            openApp(app.id);
+        }
+    });
 }
 
 // 开始拖拽
@@ -576,7 +599,7 @@ function attachWidgetDragEvents(slot, widget) {
     widgetElement.addEventListener('touchstart', (e) => {
         if (e.target.classList.contains('widget-close')) return;
         startWidgetDrag(e, widget, slot);
-    }, { passive: false });
+    }, { passive: true });
 }
 
 // 开始拖拽小组件
