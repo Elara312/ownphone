@@ -2278,7 +2278,7 @@ body {
 /* ==================== 消息类型菜单和表情包菜单 ==================== */
 .message-type-menu,
 .sticker-menu {
-    display: none;
+    display: none !important;
     position: fixed;
     bottom: 70px;
     left: 12px;
@@ -2290,7 +2290,7 @@ body {
 
 .message-type-menu.active,
 .sticker-menu.active {
-    display: block;
+    display: block !important;
 }
 
 .message-type-item {

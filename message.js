@@ -10303,6 +10303,7 @@ function showStickerMenu() {
     
     // 关闭其他菜单
     document.getElementById('messageTypeMenu').classList.remove('active');
+    document.removeEventListener('click', closeStickerMenuOutside);
     
     if (isActive) {
         menu.classList.remove('active');
@@ -10310,6 +10311,20 @@ function showStickerMenu() {
         menu.classList.add('active');
         renderStickerCategories();
         renderStickerGrid();
+        // 延迟添加监听器，避免立即触发
+        setTimeout(() => {
+            document.addEventListener('click', closeStickerMenuOutside);
+        }, 100);
+    }
+}
+
+// 点击外部关闭表情包菜单
+function closeStickerMenuOutside(e) {
+    const menu = document.getElementById('stickerMenu');
+    const btn = document.querySelector('.chat-action-btn[onclick="showStickerMenu()"]');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('active');
+        document.removeEventListener('click', closeStickerMenuOutside);
     }
 }
 
