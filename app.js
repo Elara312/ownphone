@@ -409,13 +409,14 @@ function attachDragEvents(slot, app) {
     let touchStartY = 0;
     
     icon.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // 阻止长按弹出系统菜单
         touchStartTime = Date.now();
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
         startDrag(e, app, slot);
-    }, { passive: true });
+    }, { passive: false });
     
-    // 在 touchend 直接处理点击，不依赖浏览器合成的 click 事件
+    // 在 touchend 直接处理点击（因为 preventDefault 阻止了 click 合成）
     icon.addEventListener('touchend', (e) => {
         if (isDragging) return;
         const dt = Date.now() - touchStartTime;
@@ -424,7 +425,6 @@ function attachDragEvents(slot, app) {
         const dy = Math.abs(touch.clientY - touchStartY);
         // 短按 + 没有大幅移动 = 点击
         if (dt < 300 && dx < 15 && dy < 15) {
-            e.preventDefault(); // 阻止后续的 click 避免双重触发
             openApp(app.id);
         }
     });
@@ -629,8 +629,9 @@ function attachWidgetDragEvents(slot, widget) {
     
     widgetElement.addEventListener('touchstart', (e) => {
         if (e.target.classList.contains('widget-close')) return;
+        e.preventDefault(); // 阻止长按弹出系统菜单
         startWidgetDrag(e, widget, slot);
-    }, { passive: true });
+    }, { passive: false });
 }
 
 // 开始拖拽小组件
