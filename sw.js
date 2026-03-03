@@ -1,5 +1,5 @@
 // Service Worker - 让 PWA 可安装 + 处理导航请求
-const CACHE_NAME = 'couple-space-v2';
+const CACHE_NAME = 'couple-space-v3';
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => {

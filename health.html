@@ -171,6 +171,48 @@
                 </div>
             </div>
 
+            <!-- 日记弹窗 -->
+            <div class="diary-modal" id="diaryModal">
+                <div class="diary-modal-content">
+                    <div class="diary-modal-header">
+                        <h3 id="diaryModalTitle">📝 记日记</h3>
+                        <button class="modal-close" onclick="closeDiaryModal()">×</button>
+                    </div>
+                    <div class="diary-modal-body">
+                        <div class="diary-mood-select">
+                            <span>今日心情：</span>
+                            <div class="diary-mood-options" id="diaryMoodOptions">
+                                <span class="diary-mood-item" data-mood="😊" onclick="selectDiaryMood(this)">😊</span>
+                                <span class="diary-mood-item" data-mood="😢" onclick="selectDiaryMood(this)">😢</span>
+                                <span class="diary-mood-item" data-mood="😡" onclick="selectDiaryMood(this)">😡</span>
+                                <span class="diary-mood-item" data-mood="🥰" onclick="selectDiaryMood(this)">🥰</span>
+                                <span class="diary-mood-item" data-mood="😴" onclick="selectDiaryMood(this)">😴</span>
+                                <span class="diary-mood-item" data-mood="🤔" onclick="selectDiaryMood(this)">🤔</span>
+                                <span class="diary-mood-item" data-mood="✨" onclick="selectDiaryMood(this)">✨</span>
+                            </div>
+                        </div>
+                        <textarea id="diaryContent" placeholder="今天发生了什么..." rows="6"></textarea>
+                        <div class="diary-actions">
+                            <button class="diary-save-btn" onclick="saveDiary()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日记回顾弹窗 -->
+            <div class="diary-review-modal" id="diaryReviewModal">
+                <div class="diary-review-content">
+                    <div class="diary-review-header">
+                        <h3>📖 日记回顾</h3>
+                        <div class="diary-review-actions">
+                            <button class="diary-export-btn" onclick="exportDiaries()">📤 导出</button>
+                            <button class="modal-close" onclick="closeDiaryReview()">×</button>
+                        </div>
+                    </div>
+                    <div class="diary-review-list" id="diaryReviewList"></div>
+                </div>
+            </div>
+
             <!-- 周计划 -->
             <div class="todo-section">
                 <div class="week-header">
