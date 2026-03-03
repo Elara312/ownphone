@@ -11618,20 +11618,88 @@ const builtinCSSThemes = {
         name: '⭐ 赛博朋克',
         css: `/* ===== 赛博朋克主题 - 霓虹紫青暗色风格 ===== */
 :root {
+    /* 页面背景 */
     --chat-page-bg: #0a0a12;
     --chat-page-bg-image: none;
     --chat-window-bg: #0a0a12;
     --chat-window-border: #00ffff;
     --chat-window-shadow: rgba(0, 255, 255, 0.2);
+    
+    /* 通用主题色 */
+    --theme-primary: #ff00ff;
+    --theme-primary-dark: #cc00cc;
+    --theme-primary-light: #ff66ff;
+    --theme-secondary: rgba(0, 255, 255, 0.2);
+    --theme-bg-light: #0a0a12;
+    --theme-text-primary: #00ffff;
+    --theme-text-secondary: #888899;
+    --theme-border: #00ffff;
+    --theme-shadow: rgba(0, 255, 255, 0.3);
+    
+    /* 卡片和面板 */
+    --card-bg: rgba(18, 18, 26, 0.95);
+    --card-border: #00ffff;
+    --card-shadow: rgba(0, 255, 255, 0.3);
+    --card-hover-bg: rgba(255, 0, 255, 0.2);
+    
+    /* 按钮 */
+    --btn-primary-bg: #ff00ff;
+    --btn-primary-color: #000000;
+    --btn-primary-border: #00ffff;
+    --btn-primary-shadow: rgba(0, 255, 255, 0.3);
+    --btn-primary-hover-bg: #cc00cc;
+    
+    /* 头像 */
+    --avatar-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+    --avatar-border: #00ffff;
+    --avatar-shadow: rgba(0, 255, 255, 0.3);
+    
+    /* 模态框 */
+    --modal-bg: #12121a;
+    --modal-header-bg: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%);
+    --modal-header-color: #000000;
+    --modal-border: #00ffff;
+    --modal-shadow: rgba(0, 255, 255, 0.3);
+    
+    /* 表单 */
+    --form-label-color: #00ffff;
+    --form-input-bg: #0a0a12;
+    --form-input-border: #00ffff;
+    --form-input-focus-border: #ff00ff;
+    --form-input-focus-shadow: rgba(255, 0, 255, 0.3);
+    
+    /* 分组 */
+    --group-header-bg: rgba(18, 18, 26, 0.95);
+    --group-header-hover-bg: rgba(255, 0, 255, 0.2);
+    --group-title-color: #00ffff;
+    --group-count-bg: #ff00ff;
+    --group-border: #00ffff;
+    
+    /* NPC */
+    --npc-info-bg: rgba(255, 0, 255, 0.15);
+    --npc-info-border: #ff00ff;
+    --npc-char-header-bg: linear-gradient(135deg, #12121a 0%, rgba(255, 0, 255, 0.2) 100%);
+    
+    /* 关系图 */
+    --graph-bg: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 50%, #0a0a12 100%);
+    --graph-node-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+    
+    /* 页面头部 */
+    --page-header-bg: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%);
+    --page-header-color: #000000;
+    --page-header-border: #00ffff;
+    
+    /* 侧边栏 */
     --sidebar-bg: #12121a;
     --sidebar-border: #ff00ff;
-    --sidebar-width: 100px;
     --sidebar-nav-item-color: #00ffff;
     --sidebar-nav-item-bg: transparent;
     --sidebar-nav-item-hover-bg: rgba(255, 0, 255, 0.2);
     --sidebar-nav-item-active-bg: #ff00ff;
     --sidebar-nav-item-active-color: #000000;
     --sidebar-nav-item-active-border: #00ffff;
+    
+    /* 聊天头部 */
     --chat-header-bg: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%);
     --chat-header-border: #00ffff;
     --chat-header-text-color: #000000;
@@ -11639,29 +11707,55 @@ const builtinCSSThemes = {
     --chat-header-avatar-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
     --chat-header-btn-bg: rgba(0, 0, 0, 0.3);
     --chat-header-btn-color: #000000;
+    
+    /* 消息区域 */
     --chat-messages-bg: #0a0a12;
     --received-bubble-bg: rgba(18, 18, 26, 0.95);
     --received-bubble-border: #00ffff;
-    --received-bubble-text: #00ffff;
+    --received-bubble-shadow: rgba(0, 255, 255, 0.3);
+    --received-bubble-color: #00ffff;
     --sent-bubble-bg: linear-gradient(135deg, #ff00ff 0%, #cc00cc 100%);
     --sent-bubble-border: #ff00ff;
-    --sent-bubble-text: #ffffff;
-    --input-area-bg: #12121a;
-    --input-area-border: #ff00ff;
-    --input-field-bg: #0a0a12;
-    --input-field-border: #00ffff;
-    --input-field-text: #00ffff;
-    --send-btn-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
-    --send-btn-text: #000000;
-    --timestamp-color: #666688;
-    --contact-item-bg: #12121a;
-    --contact-item-border: #333355;
-    --contact-item-hover-bg: rgba(255, 0, 255, 0.1);
-    --contact-item-active-bg: rgba(0, 255, 255, 0.1);
-    --contact-name-color: #00ffff;
-    --contact-preview-color: #888899;
-    --unread-badge-bg: #ff00ff;
-    --unread-badge-text: #000000;
+    --sent-bubble-shadow: rgba(255, 0, 255, 0.3);
+    --sent-bubble-color: #ffffff;
+    
+    /* 输入区域 */
+    --chat-input-container-bg: #12121a;
+    --chat-input-container-border: #ff00ff;
+    --chat-input-bg: #0a0a12;
+    --chat-input-border: #00ffff;
+    --chat-input-color: #00ffff;
+    --chat-input-focus-border: #ff00ff;
+    --chat-send-btn-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+    --chat-send-btn-border: #00ffff;
+    --chat-send-btn-color: #000000;
+    --chat-send-btn-shadow: rgba(0, 255, 255, 0.3);
+    --chat-send-btn-hover-bg: #cc00cc;
+    --chat-action-btn-bg: #ff00ff;
+    --chat-action-btn-border: #00ffff;
+    --chat-action-btn-color: #000000;
+    --chat-action-btn-shadow: rgba(0, 255, 255, 0.3);
+    --chat-action-btn-hover-bg: #cc00cc;
+    
+    /* 菜单 */
+    --chat-menu-bg: #12121a;
+    --chat-menu-border: #00ffff;
+    --chat-menu-shadow: rgba(0, 255, 255, 0.3);
+    --chat-menu-item-color: #00ffff;
+    --chat-menu-item-hover-bg: rgba(255, 0, 255, 0.2);
+    --chat-menu-item-border: #333355;
+    
+    /* 通知 */
+    --notification-banner-bg: rgba(18, 18, 26, 0.95);
+    --notification-banner-border: #00ffff;
+    --notification-banner-shadow: rgba(0, 255, 255, 0.3);
+    --notification-title-color: #ff00ff;
+    --notification-message-color: #00ffff;
+    --notification-avatar-border: #00ffff;
+    --notification-avatar-shadow: rgba(0, 255, 255, 0.3);
+    
+    /* 打字指示器 */
+    --typing-indicator-color: rgba(0, 255, 255, 0.3);
 }`
     },
     'builtin-nature': {
@@ -11669,20 +11763,88 @@ const builtinCSSThemes = {
         name: '⭐ 清新自然',
         css: `/* ===== 清新自然主题 - 绿色森林风格 ===== */
 :root {
+    /* 页面背景 */
     --chat-page-bg: #f0f7f0;
     --chat-page-bg-image: none;
     --chat-window-bg: #f0f7f0;
     --chat-window-border: #2d5a2d;
     --chat-window-shadow: rgba(45, 90, 45, 0.15);
+    
+    /* 通用主题色 */
+    --theme-primary: #4caf50;
+    --theme-primary-dark: #2e7d32;
+    --theme-primary-light: #a5d6a7;
+    --theme-secondary: #e8f5e8;
+    --theme-bg-light: #f0f7f0;
+    --theme-text-primary: #2d5a2d;
+    --theme-text-secondary: #689f68;
+    --theme-border: #2d5a2d;
+    --theme-shadow: #a5d6a7;
+    
+    /* 卡片和面板 */
+    --card-bg: #ffffff;
+    --card-border: #2d5a2d;
+    --card-shadow: #a5d6a7;
+    --card-hover-bg: #e8f5e8;
+    
+    /* 按钮 */
+    --btn-primary-bg: #4caf50;
+    --btn-primary-color: #ffffff;
+    --btn-primary-border: #2d5a2d;
+    --btn-primary-shadow: #a5d6a7;
+    --btn-primary-hover-bg: #2e7d32;
+    
+    /* 头像 */
+    --avatar-bg: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+    --avatar-border: #2d5a2d;
+    --avatar-shadow: #a5d6a7;
+    
+    /* 模态框 */
+    --modal-bg: #ffffff;
+    --modal-header-bg: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+    --modal-header-color: #ffffff;
+    --modal-border: #2d5a2d;
+    --modal-shadow: #a5d6a7;
+    
+    /* 表单 */
+    --form-label-color: #2e7d32;
+    --form-input-bg: #ffffff;
+    --form-input-border: #2d5a2d;
+    --form-input-focus-border: #4caf50;
+    --form-input-focus-shadow: #a5d6a7;
+    
+    /* 分组 */
+    --group-header-bg: #ffffff;
+    --group-header-hover-bg: #e8f5e8;
+    --group-title-color: #2e7d32;
+    --group-count-bg: #a5d6a7;
+    --group-border: #a5d6a7;
+    
+    /* NPC */
+    --npc-info-bg: #e8f5e8;
+    --npc-info-border: #4caf50;
+    --npc-char-header-bg: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+    
+    /* 关系图 */
+    --graph-bg: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 50%, #f0f7f0 100%);
+    --graph-node-bg: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+    
+    /* 页面头部 */
+    --page-header-bg: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+    --page-header-color: #ffffff;
+    --page-header-border: #2e7d32;
+    
+    /* 侧边栏 */
     --sidebar-bg: #e8f5e8;
     --sidebar-border: #4a7c4a;
-    --sidebar-width: 100px;
     --sidebar-nav-item-color: #2d5a2d;
     --sidebar-nav-item-bg: transparent;
     --sidebar-nav-item-hover-bg: rgba(76, 175, 80, 0.15);
     --sidebar-nav-item-active-bg: #4caf50;
     --sidebar-nav-item-active-color: #ffffff;
     --sidebar-nav-item-active-border: #2e7d32;
+    
+    /* 聊天头部 */
     --chat-header-bg: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
     --chat-header-border: #2e7d32;
     --chat-header-text-color: #ffffff;
@@ -11690,29 +11852,55 @@ const builtinCSSThemes = {
     --chat-header-avatar-bg: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
     --chat-header-btn-bg: rgba(255, 255, 255, 0.25);
     --chat-header-btn-color: #ffffff;
+    
+    /* 消息区域 */
     --chat-messages-bg: #f5faf5;
     --received-bubble-bg: #ffffff;
     --received-bubble-border: #a5d6a7;
-    --received-bubble-text: #2d5a2d;
+    --received-bubble-shadow: #c8e6c9;
+    --received-bubble-color: #2d5a2d;
     --sent-bubble-bg: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
     --sent-bubble-border: #4caf50;
-    --sent-bubble-text: #ffffff;
-    --input-area-bg: #e8f5e8;
-    --input-area-border: #a5d6a7;
-    --input-field-bg: #ffffff;
-    --input-field-border: #81c784;
-    --input-field-text: #2d5a2d;
-    --send-btn-bg: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-    --send-btn-text: #ffffff;
-    --timestamp-color: #689f68;
-    --contact-item-bg: #ffffff;
-    --contact-item-border: #c8e6c9;
-    --contact-item-hover-bg: rgba(76, 175, 80, 0.08);
-    --contact-item-active-bg: rgba(76, 175, 80, 0.15);
-    --contact-name-color: #2d5a2d;
-    --contact-preview-color: #689f68;
-    --unread-badge-bg: #4caf50;
-    --unread-badge-text: #ffffff;
+    --sent-bubble-shadow: #a5d6a7;
+    --sent-bubble-color: #ffffff;
+    
+    /* 输入区域 */
+    --chat-input-container-bg: #e8f5e8;
+    --chat-input-container-border: #a5d6a7;
+    --chat-input-bg: #ffffff;
+    --chat-input-border: #81c784;
+    --chat-input-color: #2d5a2d;
+    --chat-input-focus-border: #4caf50;
+    --chat-send-btn-bg: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+    --chat-send-btn-border: #2e7d32;
+    --chat-send-btn-color: #ffffff;
+    --chat-send-btn-shadow: #a5d6a7;
+    --chat-send-btn-hover-bg: #2e7d32;
+    --chat-action-btn-bg: #4caf50;
+    --chat-action-btn-border: #2d5a2d;
+    --chat-action-btn-color: #ffffff;
+    --chat-action-btn-shadow: #a5d6a7;
+    --chat-action-btn-hover-bg: #2e7d32;
+    
+    /* 菜单 */
+    --chat-menu-bg: #ffffff;
+    --chat-menu-border: #2d5a2d;
+    --chat-menu-shadow: #a5d6a7;
+    --chat-menu-item-color: #2d5a2d;
+    --chat-menu-item-hover-bg: #e8f5e8;
+    --chat-menu-item-border: #c8e6c9;
+    
+    /* 通知 */
+    --notification-banner-bg: rgba(255, 255, 255, 0.95);
+    --notification-banner-border: #2d5a2d;
+    --notification-banner-shadow: #a5d6a7;
+    --notification-title-color: #2e7d32;
+    --notification-message-color: #2d5a2d;
+    --notification-avatar-border: #2d5a2d;
+    --notification-avatar-shadow: #a5d6a7;
+    
+    /* 打字指示器 */
+    --typing-indicator-color: #c8e6c9;
 }`
     },
     'builtin-sunset': {
@@ -11720,20 +11908,88 @@ const builtinCSSThemes = {
         name: '⭐ 温暖日落',
         css: `/* ===== 温暖日落主题 - 橙黄暖色风格 ===== */
 :root {
+    /* 页面背景 */
     --chat-page-bg: #fff8f0;
     --chat-page-bg-image: none;
     --chat-window-bg: #fff8f0;
     --chat-window-border: #d84315;
     --chat-window-shadow: rgba(216, 67, 21, 0.15);
+    
+    /* 通用主题色 */
+    --theme-primary: #ff7043;
+    --theme-primary-dark: #d84315;
+    --theme-primary-light: #ffcc80;
+    --theme-secondary: #fff3e0;
+    --theme-bg-light: #fff8f0;
+    --theme-text-primary: #5d4037;
+    --theme-text-secondary: #a1887f;
+    --theme-border: #d84315;
+    --theme-shadow: #ffcc80;
+    
+    /* 卡片和面板 */
+    --card-bg: #ffffff;
+    --card-border: #d84315;
+    --card-shadow: #ffcc80;
+    --card-hover-bg: #fff3e0;
+    
+    /* 按钮 */
+    --btn-primary-bg: #ff7043;
+    --btn-primary-color: #ffffff;
+    --btn-primary-border: #d84315;
+    --btn-primary-shadow: #ffcc80;
+    --btn-primary-hover-bg: #d84315;
+    
+    /* 头像 */
+    --avatar-bg: linear-gradient(135deg, #ffcc80 0%, #ff9800 100%);
+    --avatar-border: #d84315;
+    --avatar-shadow: #ffcc80;
+    
+    /* 模态框 */
+    --modal-bg: #ffffff;
+    --modal-header-bg: linear-gradient(135deg, #ffab91 0%, #ff7043 100%);
+    --modal-header-color: #ffffff;
+    --modal-border: #d84315;
+    --modal-shadow: #ffcc80;
+    
+    /* 表单 */
+    --form-label-color: #d84315;
+    --form-input-bg: #ffffff;
+    --form-input-border: #d84315;
+    --form-input-focus-border: #ff7043;
+    --form-input-focus-shadow: #ffcc80;
+    
+    /* 分组 */
+    --group-header-bg: #ffffff;
+    --group-header-hover-bg: #fff3e0;
+    --group-title-color: #d84315;
+    --group-count-bg: #ffcc80;
+    --group-border: #ffcc80;
+    
+    /* NPC */
+    --npc-info-bg: #fff3e0;
+    --npc-info-border: #ff7043;
+    --npc-char-header-bg: linear-gradient(135deg, #fff8f0 0%, #fff3e0 100%);
+    
+    /* 关系图 */
+    --graph-bg: linear-gradient(135deg, #fff8f0 0%, #fff3e0 50%, #fff8f0 100%);
+    --graph-node-bg: linear-gradient(135deg, #ffcc80 0%, #ff9800 100%);
+    
+    /* 页面头部 */
+    --page-header-bg: linear-gradient(135deg, #ffab91 0%, #ff7043 100%);
+    --page-header-color: #ffffff;
+    --page-header-border: #d84315;
+    
+    /* 侧边栏 */
     --sidebar-bg: #fff3e0;
     --sidebar-border: #ff8a65;
-    --sidebar-width: 100px;
     --sidebar-nav-item-color: #bf360c;
     --sidebar-nav-item-bg: transparent;
     --sidebar-nav-item-hover-bg: rgba(255, 138, 101, 0.2);
     --sidebar-nav-item-active-bg: #ff7043;
     --sidebar-nav-item-active-color: #ffffff;
     --sidebar-nav-item-active-border: #d84315;
+    
+    /* 聊天头部 */
     --chat-header-bg: linear-gradient(135deg, #ffab91 0%, #ff7043 100%);
     --chat-header-border: #d84315;
     --chat-header-text-color: #ffffff;
@@ -11741,29 +11997,55 @@ const builtinCSSThemes = {
     --chat-header-avatar-bg: linear-gradient(135deg, #ffcc80 0%, #ff9800 100%);
     --chat-header-btn-bg: rgba(255, 255, 255, 0.3);
     --chat-header-btn-color: #ffffff;
+    
+    /* 消息区域 */
     --chat-messages-bg: #fffaf5;
     --received-bubble-bg: #ffffff;
     --received-bubble-border: #ffcc80;
-    --received-bubble-text: #5d4037;
+    --received-bubble-shadow: #ffe0b2;
+    --received-bubble-color: #5d4037;
     --sent-bubble-bg: linear-gradient(135deg, #ffab91 0%, #ff8a65 100%);
     --sent-bubble-border: #ff7043;
-    --sent-bubble-text: #ffffff;
-    --input-area-bg: #fff3e0;
-    --input-area-border: #ffcc80;
-    --input-field-bg: #ffffff;
-    --input-field-border: #ffab91;
-    --input-field-text: #5d4037;
-    --send-btn-bg: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
-    --send-btn-text: #ffffff;
-    --timestamp-color: #a1887f;
-    --contact-item-bg: #ffffff;
-    --contact-item-border: #ffe0b2;
-    --contact-item-hover-bg: rgba(255, 138, 101, 0.1);
-    --contact-item-active-bg: rgba(255, 138, 101, 0.2);
-    --contact-name-color: #bf360c;
-    --contact-preview-color: #a1887f;
-    --unread-badge-bg: #ff7043;
-    --unread-badge-text: #ffffff;
+    --sent-bubble-shadow: #ffcc80;
+    --sent-bubble-color: #ffffff;
+    
+    /* 输入区域 */
+    --chat-input-container-bg: #fff3e0;
+    --chat-input-container-border: #ffcc80;
+    --chat-input-bg: #ffffff;
+    --chat-input-border: #ffab91;
+    --chat-input-color: #5d4037;
+    --chat-input-focus-border: #ff7043;
+    --chat-send-btn-bg: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+    --chat-send-btn-border: #d84315;
+    --chat-send-btn-color: #ffffff;
+    --chat-send-btn-shadow: #ffcc80;
+    --chat-send-btn-hover-bg: #d84315;
+    --chat-action-btn-bg: #ff7043;
+    --chat-action-btn-border: #d84315;
+    --chat-action-btn-color: #ffffff;
+    --chat-action-btn-shadow: #ffcc80;
+    --chat-action-btn-hover-bg: #d84315;
+    
+    /* 菜单 */
+    --chat-menu-bg: #ffffff;
+    --chat-menu-border: #d84315;
+    --chat-menu-shadow: #ffcc80;
+    --chat-menu-item-color: #5d4037;
+    --chat-menu-item-hover-bg: #fff3e0;
+    --chat-menu-item-border: #ffe0b2;
+    
+    /* 通知 */
+    --notification-banner-bg: rgba(255, 255, 255, 0.95);
+    --notification-banner-border: #d84315;
+    --notification-banner-shadow: #ffcc80;
+    --notification-title-color: #d84315;
+    --notification-message-color: #5d4037;
+    --notification-avatar-border: #d84315;
+    --notification-avatar-shadow: #ffcc80;
+    
+    /* 打字指示器 */
+    --typing-indicator-color: #ffe0b2;
 }`
     },
     'builtin-minimal': {
@@ -11771,20 +12053,88 @@ const builtinCSSThemes = {
         name: '⭐ 极简黑白',
         css: `/* ===== 极简黑白主题 - 纯净简约风格 ===== */
 :root {
+    /* 页面背景 */
     --chat-page-bg: #ffffff;
     --chat-page-bg-image: none;
     --chat-window-bg: #ffffff;
     --chat-window-border: #e0e0e0;
     --chat-window-shadow: rgba(0, 0, 0, 0.08);
+    
+    /* 通用主题色 */
+    --theme-primary: #333333;
+    --theme-primary-dark: #000000;
+    --theme-primary-light: #cccccc;
+    --theme-secondary: #f5f5f5;
+    --theme-bg-light: #ffffff;
+    --theme-text-primary: #333333;
+    --theme-text-secondary: #888888;
+    --theme-border: #e0e0e0;
+    --theme-shadow: #cccccc;
+    
+    /* 卡片和面板 */
+    --card-bg: #ffffff;
+    --card-border: #e0e0e0;
+    --card-shadow: #cccccc;
+    --card-hover-bg: #f5f5f5;
+    
+    /* 按钮 */
+    --btn-primary-bg: #333333;
+    --btn-primary-color: #ffffff;
+    --btn-primary-border: #000000;
+    --btn-primary-shadow: #cccccc;
+    --btn-primary-hover-bg: #000000;
+    
+    /* 头像 */
+    --avatar-bg: linear-gradient(135deg, #666666 0%, #333333 100%);
+    --avatar-border: #000000;
+    --avatar-shadow: #cccccc;
+    
+    /* 模态框 */
+    --modal-bg: #ffffff;
+    --modal-header-bg: #333333;
+    --modal-header-color: #ffffff;
+    --modal-border: #000000;
+    --modal-shadow: #cccccc;
+    
+    /* 表单 */
+    --form-label-color: #333333;
+    --form-input-bg: #ffffff;
+    --form-input-border: #cccccc;
+    --form-input-focus-border: #333333;
+    --form-input-focus-shadow: #e0e0e0;
+    
+    /* 分组 */
+    --group-header-bg: #ffffff;
+    --group-header-hover-bg: #f5f5f5;
+    --group-title-color: #333333;
+    --group-count-bg: #e0e0e0;
+    --group-border: #e0e0e0;
+    
+    /* NPC */
+    --npc-info-bg: #f5f5f5;
+    --npc-info-border: #333333;
+    --npc-char-header-bg: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    
+    /* 关系图 */
+    --graph-bg: linear-gradient(135deg, #ffffff 0%, #fafafa 50%, #ffffff 100%);
+    --graph-node-bg: linear-gradient(135deg, #666666 0%, #333333 100%);
+    
+    /* 页面头部 */
+    --page-header-bg: #333333;
+    --page-header-color: #ffffff;
+    --page-header-border: #000000;
+    
+    /* 侧边栏 */
     --sidebar-bg: #fafafa;
     --sidebar-border: #e0e0e0;
-    --sidebar-width: 100px;
     --sidebar-nav-item-color: #333333;
     --sidebar-nav-item-bg: transparent;
     --sidebar-nav-item-hover-bg: #f0f0f0;
     --sidebar-nav-item-active-bg: #333333;
     --sidebar-nav-item-active-color: #ffffff;
     --sidebar-nav-item-active-border: #000000;
+    
+    /* 聊天头部 */
     --chat-header-bg: #333333;
     --chat-header-border: #000000;
     --chat-header-text-color: #ffffff;
@@ -11792,29 +12142,55 @@ const builtinCSSThemes = {
     --chat-header-avatar-bg: linear-gradient(135deg, #666666 0%, #333333 100%);
     --chat-header-btn-bg: rgba(255, 255, 255, 0.15);
     --chat-header-btn-color: #ffffff;
+    
+    /* 消息区域 */
     --chat-messages-bg: #ffffff;
     --received-bubble-bg: #f5f5f5;
     --received-bubble-border: #e0e0e0;
-    --received-bubble-text: #333333;
+    --received-bubble-shadow: #cccccc;
+    --received-bubble-color: #333333;
     --sent-bubble-bg: #333333;
     --sent-bubble-border: #000000;
-    --sent-bubble-text: #ffffff;
-    --input-area-bg: #fafafa;
-    --input-area-border: #e0e0e0;
-    --input-field-bg: #ffffff;
-    --input-field-border: #cccccc;
-    --input-field-text: #333333;
-    --send-btn-bg: #333333;
-    --send-btn-text: #ffffff;
-    --timestamp-color: #999999;
-    --contact-item-bg: #ffffff;
-    --contact-item-border: #eeeeee;
-    --contact-item-hover-bg: #f5f5f5;
-    --contact-item-active-bg: #f0f0f0;
-    --contact-name-color: #333333;
-    --contact-preview-color: #888888;
-    --unread-badge-bg: #333333;
-    --unread-badge-text: #ffffff;
+    --sent-bubble-shadow: #cccccc;
+    --sent-bubble-color: #ffffff;
+    
+    /* 输入区域 */
+    --chat-input-container-bg: #fafafa;
+    --chat-input-container-border: #e0e0e0;
+    --chat-input-bg: #ffffff;
+    --chat-input-border: #cccccc;
+    --chat-input-color: #333333;
+    --chat-input-focus-border: #333333;
+    --chat-send-btn-bg: #333333;
+    --chat-send-btn-border: #000000;
+    --chat-send-btn-color: #ffffff;
+    --chat-send-btn-shadow: #cccccc;
+    --chat-send-btn-hover-bg: #000000;
+    --chat-action-btn-bg: #333333;
+    --chat-action-btn-border: #000000;
+    --chat-action-btn-color: #ffffff;
+    --chat-action-btn-shadow: #cccccc;
+    --chat-action-btn-hover-bg: #000000;
+    
+    /* 菜单 */
+    --chat-menu-bg: #ffffff;
+    --chat-menu-border: #e0e0e0;
+    --chat-menu-shadow: #cccccc;
+    --chat-menu-item-color: #333333;
+    --chat-menu-item-hover-bg: #f5f5f5;
+    --chat-menu-item-border: #eeeeee;
+    
+    /* 通知 */
+    --notification-banner-bg: rgba(255, 255, 255, 0.95);
+    --notification-banner-border: #000000;
+    --notification-banner-shadow: #cccccc;
+    --notification-title-color: #333333;
+    --notification-message-color: #333333;
+    --notification-avatar-border: #000000;
+    --notification-avatar-shadow: #cccccc;
+    
+    /* 打字指示器 */
+    --typing-indicator-color: #e0e0e0;
 }`
     },
     'builtin-ocean': {
@@ -11822,20 +12198,88 @@ const builtinCSSThemes = {
         name: '⭐ 深海蓝调',
         css: `/* ===== 深海蓝调主题 - 海洋深邃风格 ===== */
 :root {
+    /* 页面背景 */
     --chat-page-bg: #0d1b2a;
     --chat-page-bg-image: none;
     --chat-window-bg: #0d1b2a;
     --chat-window-border: #1b4965;
     --chat-window-shadow: rgba(27, 73, 101, 0.3);
+    
+    /* 通用主题色 */
+    --theme-primary: #5bc0eb;
+    --theme-primary-dark: #1b4965;
+    --theme-primary-light: #9dd9f3;
+    --theme-secondary: rgba(91, 192, 235, 0.15);
+    --theme-bg-light: #0d1b2a;
+    --theme-text-primary: #e0e1dd;
+    --theme-text-secondary: #778da9;
+    --theme-border: #415a77;
+    --theme-shadow: rgba(91, 192, 235, 0.3);
+    
+    /* 卡片和面板 */
+    --card-bg: rgba(27, 38, 59, 0.95);
+    --card-border: #415a77;
+    --card-shadow: rgba(91, 192, 235, 0.3);
+    --card-hover-bg: rgba(91, 192, 235, 0.15);
+    
+    /* 按钮 */
+    --btn-primary-bg: #5bc0eb;
+    --btn-primary-color: #0d1b2a;
+    --btn-primary-border: #1b4965;
+    --btn-primary-shadow: rgba(91, 192, 235, 0.3);
+    --btn-primary-hover-bg: #1b4965;
+    
+    /* 头像 */
+    --avatar-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
+    --avatar-border: #5bc0eb;
+    --avatar-shadow: rgba(91, 192, 235, 0.3);
+    
+    /* 模态框 */
+    --modal-bg: #1b263b;
+    --modal-header-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
+    --modal-header-color: #ffffff;
+    --modal-border: #5bc0eb;
+    --modal-shadow: rgba(91, 192, 235, 0.3);
+    
+    /* 表单 */
+    --form-label-color: #5bc0eb;
+    --form-input-bg: #0d1b2a;
+    --form-input-border: #415a77;
+    --form-input-focus-border: #5bc0eb;
+    --form-input-focus-shadow: rgba(91, 192, 235, 0.3);
+    
+    /* 分组 */
+    --group-header-bg: rgba(27, 38, 59, 0.95);
+    --group-header-hover-bg: rgba(91, 192, 235, 0.15);
+    --group-title-color: #5bc0eb;
+    --group-count-bg: #5bc0eb;
+    --group-border: #415a77;
+    
+    /* NPC */
+    --npc-info-bg: rgba(91, 192, 235, 0.1);
+    --npc-info-border: #5bc0eb;
+    --npc-char-header-bg: linear-gradient(135deg, #1b263b 0%, rgba(91, 192, 235, 0.15) 100%);
+    
+    /* 关系图 */
+    --graph-bg: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #0d1b2a 100%);
+    --graph-node-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
+    
+    /* 页面头部 */
+    --page-header-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
+    --page-header-color: #ffffff;
+    --page-header-border: #5bc0eb;
+    
+    /* 侧边栏 */
     --sidebar-bg: #1b263b;
     --sidebar-border: #415a77;
-    --sidebar-width: 100px;
     --sidebar-nav-item-color: #5bc0eb;
     --sidebar-nav-item-bg: transparent;
     --sidebar-nav-item-hover-bg: rgba(91, 192, 235, 0.15);
     --sidebar-nav-item-active-bg: #5bc0eb;
     --sidebar-nav-item-active-color: #0d1b2a;
     --sidebar-nav-item-active-border: #9dd9f3;
+    
+    /* 聊天头部 */
     --chat-header-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
     --chat-header-border: #5bc0eb;
     --chat-header-text-color: #ffffff;
@@ -11843,29 +12287,55 @@ const builtinCSSThemes = {
     --chat-header-avatar-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
     --chat-header-btn-bg: rgba(255, 255, 255, 0.2);
     --chat-header-btn-color: #ffffff;
+    
+    /* 消息区域 */
     --chat-messages-bg: #0d1b2a;
     --received-bubble-bg: rgba(27, 38, 59, 0.95);
     --received-bubble-border: #415a77;
-    --received-bubble-text: #e0e1dd;
+    --received-bubble-shadow: rgba(91, 192, 235, 0.2);
+    --received-bubble-color: #e0e1dd;
     --sent-bubble-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
     --sent-bubble-border: #5bc0eb;
-    --sent-bubble-text: #ffffff;
-    --input-area-bg: #1b263b;
-    --input-area-border: #415a77;
-    --input-field-bg: #0d1b2a;
-    --input-field-border: #5bc0eb;
-    --input-field-text: #e0e1dd;
-    --send-btn-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
-    --send-btn-text: #ffffff;
-    --timestamp-color: #778da9;
-    --contact-item-bg: #1b263b;
-    --contact-item-border: #415a77;
-    --contact-item-hover-bg: rgba(91, 192, 235, 0.1);
-    --contact-item-active-bg: rgba(91, 192, 235, 0.2);
-    --contact-name-color: #e0e1dd;
-    --contact-preview-color: #778da9;
-    --unread-badge-bg: #5bc0eb;
-    --unread-badge-text: #0d1b2a;
+    --sent-bubble-shadow: rgba(91, 192, 235, 0.3);
+    --sent-bubble-color: #ffffff;
+    
+    /* 输入区域 */
+    --chat-input-container-bg: #1b263b;
+    --chat-input-container-border: #415a77;
+    --chat-input-bg: #0d1b2a;
+    --chat-input-border: #5bc0eb;
+    --chat-input-color: #e0e1dd;
+    --chat-input-focus-border: #9dd9f3;
+    --chat-send-btn-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
+    --chat-send-btn-border: #5bc0eb;
+    --chat-send-btn-color: #ffffff;
+    --chat-send-btn-shadow: rgba(91, 192, 235, 0.3);
+    --chat-send-btn-hover-bg: #1b4965;
+    --chat-action-btn-bg: #5bc0eb;
+    --chat-action-btn-border: #1b4965;
+    --chat-action-btn-color: #0d1b2a;
+    --chat-action-btn-shadow: rgba(91, 192, 235, 0.3);
+    --chat-action-btn-hover-bg: #1b4965;
+    
+    /* 菜单 */
+    --chat-menu-bg: #1b263b;
+    --chat-menu-border: #415a77;
+    --chat-menu-shadow: rgba(91, 192, 235, 0.3);
+    --chat-menu-item-color: #e0e1dd;
+    --chat-menu-item-hover-bg: rgba(91, 192, 235, 0.15);
+    --chat-menu-item-border: #415a77;
+    
+    /* 通知 */
+    --notification-banner-bg: rgba(27, 38, 59, 0.95);
+    --notification-banner-border: #5bc0eb;
+    --notification-banner-shadow: rgba(91, 192, 235, 0.3);
+    --notification-title-color: #5bc0eb;
+    --notification-message-color: #e0e1dd;
+    --notification-avatar-border: #5bc0eb;
+    --notification-avatar-shadow: rgba(91, 192, 235, 0.3);
+    
+    /* 打字指示器 */
+    --typing-indicator-color: rgba(91, 192, 235, 0.3);
 }`
     }
 };
