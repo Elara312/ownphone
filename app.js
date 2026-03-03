@@ -20,6 +20,29 @@ let draggedElement = null;
 let longPressTimer = null;
 let isDragging = false;
 
+// 防止双指缩放和长按上下文菜单
+document.addEventListener('gesturestart', (e) => e.preventDefault());
+document.addEventListener('gesturechange', (e) => e.preventDefault());
+document.addEventListener('gestureend', (e) => e.preventDefault());
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// 防止双指缩放（Android）
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
+
+// 阻止多指触摸缩放
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
 // 辅助函数：从localStorage获取并解析JSON
 function getStorageJSON(key, defaultValue = null) {
     try {
@@ -51,6 +74,14 @@ async function init() {
     updateTime();
     setInterval(updateTime, 60000);
 }
+
+// 从其他页面返回时重置视口缩放
+window.addEventListener('pageshow', () => {
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+        viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+    }
+});
 
 // 应用壁纸
 function applyWallpaper() {
