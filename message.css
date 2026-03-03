@@ -5338,3 +5338,10 @@ body {
     line-height: 1.6;
     margin-top: 4px;
 }
+
+.diary-share-date {
+    font-size: 13px;
+    color: var(--primary-color, #6366f1);
+    font-weight: 500;
+    margin: 4px 0 2px;
+}

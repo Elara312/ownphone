@@ -435,6 +435,12 @@ class HealthApp {
                 cell.style.backgroundImage = `url('${this.calendarCovers[dateKey]}')`;
             }
             
+            // 检查是否有日记
+            const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+            if (diaries[dateKey]) {
+                cell.classList.add('has-diary');
+            }
+            
             // 双击事件
             cell.addEventListener('dblclick', () => {
                 if (year === this.calendarDate.getFullYear() && month === this.calendarDate.getMonth()) {
@@ -1630,9 +1636,151 @@ function closeCalendarModal() {
 }
 
 function goToDiary() {
-    // 未来跳转到日记页面
-    alert('日记功能正在开发中...');
     closeCalendarModal();
+    const app = window.healthApp;
+    const dateKey = app.selectedDate;
+    if (!dateKey) return;
+    
+    // 解析日期显示
+    const [y, m, d] = dateKey.split('-');
+    document.getElementById('diaryModalTitle').textContent = `📝 ${y}年${parseInt(m)}月${parseInt(d)}日 日记`;
+    
+    // 加载已有日记
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    const existing = diaries[dateKey];
+    
+    document.getElementById('diaryContent').value = existing ? existing.text : '';
+    
+    // 重置心情选择
+    document.querySelectorAll('.diary-mood-item').forEach(el => el.classList.remove('selected'));
+    if (existing && existing.mood) {
+        const moodEl = document.querySelector(`.diary-mood-item[data-mood="${existing.mood}"]`);
+        if (moodEl) moodEl.classList.add('selected');
+    }
+    
+    document.getElementById('diaryModal').classList.add('active');
+    document.getElementById('diaryModal').dataset.dateKey = dateKey;
+}
+
+function selectDiaryMood(el) {
+    document.querySelectorAll('.diary-mood-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function closeDiaryModal() {
+    document.getElementById('diaryModal').classList.remove('active');
+}
+
+function saveDiary() {
+    const modal = document.getElementById('diaryModal');
+    const dateKey = modal.dataset.dateKey;
+    const text = document.getElementById('diaryContent').value.trim();
+    const moodEl = document.querySelector('.diary-mood-item.selected');
+    const mood = moodEl ? moodEl.dataset.mood : '';
+    
+    if (!text) { alert('请写点什么吧~'); return; }
+    
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    diaries[dateKey] = { text, mood, timestamp: Date.now() };
+    localStorage.setItem('health-diaries', JSON.stringify(diaries));
+    
+    closeDiaryModal();
+    // 刷新日历显示（日记日期可以有标记）
+    if (window.healthApp) window.healthApp.renderCalendar();
+}
+
+function openDiaryReview() {
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    const reviewList = document.getElementById('diaryReviewList');
+    
+    const entries = Object.entries(diaries).sort((a, b) => b[0].localeCompare(a[0]));
+    
+    if (entries.length === 0) {
+        reviewList.innerHTML = '<div class="diary-empty">还没有日记哦，双击日历日期开始记录吧~ ✨</div>';
+    } else {
+        reviewList.innerHTML = entries.map(([dateKey, entry]) => {
+            const [y, m, d] = dateKey.split('-');
+            return `<div class="diary-entry-card">
+                <div class="diary-entry-header">
+                    <span class="diary-entry-date">${y}年${parseInt(m)}月${parseInt(d)}日</span>
+                    <span class="diary-entry-mood">${entry.mood || ''}</span>
+                </div>
+                <div class="diary-entry-text">${escapeHtml(entry.text)}</div>
+                <div class="diary-entry-actions">
+                    <button class="diary-share-btn" onclick="shareDiaryToChat('${dateKey}')">💬 分享给TA</button>
+                    <button class="diary-delete-btn" onclick="deleteDiary('${dateKey}')">🗑️ 删除</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+    
+    document.getElementById('diaryReviewModal').classList.add('active');
+}
+
+function closeDiaryReview() {
+    document.getElementById('diaryReviewModal').classList.remove('active');
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function deleteDiary(dateKey) {
+    if (!confirm('确定删除这篇日记吗？')) return;
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    delete diaries[dateKey];
+    localStorage.setItem('health-diaries', JSON.stringify(diaries));
+    openDiaryReview(); // 刷新列表
+    if (window.healthApp) window.healthApp.renderCalendar();
+}
+
+function exportDiaries() {
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    const entries = Object.entries(diaries).sort((a, b) => a[0].localeCompare(b[0]));
+    
+    if (entries.length === 0) { alert('没有日记可以导出~'); return; }
+    
+    let text = '📖 我的日记\n' + '='.repeat(30) + '\n\n';
+    entries.forEach(([dateKey, entry]) => {
+        const [y, m, d] = dateKey.split('-');
+        text += `📅 ${y}年${parseInt(m)}月${parseInt(d)}日 ${entry.mood || ''}\n`;
+        text += '-'.repeat(20) + '\n';
+        text += entry.text + '\n\n';
+    });
+    
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `日记导出_${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function shareDiaryToChat(dateKey) {
+    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
+    const entry = diaries[dateKey];
+    if (!entry) return;
+    
+    const [y, m, d] = dateKey.split('-');
+    const dateStr = `${y}年${parseInt(m)}月${parseInt(d)}日`;
+    
+    // 构造分享消息
+    const shareText = `[日记分享] ${dateStr} ${entry.mood || ''}\n${entry.text}`;
+    
+    // 存储到待发送消息
+    localStorage.setItem('pending-diary-share', JSON.stringify({
+        date: dateStr,
+        mood: entry.mood || '',
+        text: entry.text,
+        message: shareText
+    }));
+    
+    closeDiaryReview();
+    // 跳转到消息页面
+    window.location.href = 'message.html#diary-share';
 }
 
 function uploadCoverImage() {
