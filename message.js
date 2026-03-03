@@ -3182,9 +3182,8 @@ function formatReportBubble(text) {
         }
         // 日记分享标记
         else if (line.startsWith('[日记分享]')) {
-            const info = line.replace('[日记分享] ', '');
             html += `<div class="report-title">📖 日记分享</div>`;
-            html += `<div class="diary-share-date">${info}</div>`;
+            html += `<div class="report-section-content">${line.replace('[日记分享] ', '')}</div>`;
         }
         // 分区标题（emoji开头）
         else if (/^[📋📝🏃💰😊💤🧴🩸🏋🚽🍽️📖]/.test(line.trim()) && !line.trim().startsWith('-')) {
@@ -4777,38 +4776,6 @@ setTimeout(() => {
         console.warn('检测微博分享失败:', e);
     }
 }, 300);
-
-// 检测日记分享
-setTimeout(() => {
-    try {
-        if (window.location.hash === '#diary-share') {
-            const shareRaw = localStorage.getItem('pending-diary-share');
-            if (shareRaw) {
-                const share = JSON.parse(shareRaw);
-                localStorage.removeItem('pending-diary-share');
-                window.location.hash = '';
-                if (vibeContacts.length > 0) {
-                    const contact = vibeContacts[0];
-                    openChat(contact.id);
-                    setTimeout(() => {
-                        const msg = {
-                            sender: 'user',
-                            message: share.message,
-                            timestamp: Date.now()
-                        };
-                        contact.chat_history = contact.chat_history || [];
-                        contact.chat_history.push(msg);
-                        saveContacts();
-                        renderChatMessages(contact);
-                        scrollToBottom();
-                    }, 500);
-                }
-            }
-        }
-    } catch (e) {
-        console.warn('检测日记分享失败:', e);
-    }
-}, 500);
 
 // 注入微博分享消息到聊天
 function injectWeiboShare(contact, share) {

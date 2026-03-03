@@ -18,16 +18,6 @@ class HealthApp {
         this.savedColors = this.loadSavedColors();
         this.cssSchemes = this.loadCssSchemes();
         this.currentCssScheme = this.loadCurrentCssScheme();
-        // CSS方案版本检查 - 如果版本过旧则强制更新默认方案
-        const cssVer = localStorage.getItem('health-css-scheme-version');
-        if (cssVer !== '3') {
-            localStorage.removeItem('health-plan-css-schemes');
-            localStorage.removeItem('health-plan-current-css-scheme');
-            this.cssSchemes = this.loadCssSchemes();
-            this.currentCssScheme = this.loadCurrentCssScheme();
-            this.saveCssSchemes();
-            localStorage.setItem('health-css-scheme-version', '3');
-        }
         this.backgroundSettings = this.loadBackgroundSettings();
         this.fontSettings = this.loadFontSettings();
         this.selectedDate = null;
@@ -401,25 +391,6 @@ class HealthApp {
         const year = this.calendarDate.getFullYear();
         const month = this.calendarDate.getMonth();
         
-        // 动态注入日记回顾按钮（确保不受缓存影响）
-        if (!document.getElementById('diaryReviewBtnDynamic')) {
-            const calSection = document.querySelector('.calendar-section');
-            if (calSection) {
-                const h3 = calSection.querySelector('h3');
-                if (h3 && !h3.parentElement.querySelector('.diary-review-btn')) {
-                    const btn = document.createElement('button');
-                    btn.id = 'diaryReviewBtnDynamic';
-                    btn.className = 'diary-review-btn';
-                    btn.onclick = openDiaryReview;
-                    btn.title = '日记回顾';
-                    btn.textContent = '📖 回顾';
-                    btn.style.cssText = 'background:#fff0f5;border:1.5px solid #e8b4b8;border-radius:8px;padding:4px 12px;font-size:13px;cursor:pointer;color:#8b5e6b;';
-                    h3.parentElement.style.cssText = 'display:flex;justify-content:space-between;align-items:center;';
-                    h3.parentElement.appendChild(btn);
-                }
-            }
-        }
-        
         calendarMonth.textContent = `${year}年${month + 1}月`;
         
         const firstDay = new Date(year, month, 1).getDay();
@@ -462,12 +433,6 @@ class HealthApp {
             if (this.calendarCovers[dateKey]) {
                 cell.classList.add('has-cover');
                 cell.style.backgroundImage = `url('${this.calendarCovers[dateKey]}')`;
-            }
-            
-            // 检查是否有日记
-            const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-            if (diaries[dateKey]) {
-                cell.classList.add('has-diary');
             }
             
             // 双击事件
@@ -1085,25 +1050,14 @@ class HealthApp {
 
     // 设置功能
     loadCssSchemes() {
-        const defaultCss = this.getDefaultCss();
         const defaultScheme = {
             id: 'default',
             name: '默认样式',
-            css: defaultCss
+            css: this.getDefaultCss()
         };
         const schemes = JSON.parse(localStorage.getItem('health-plan-css-schemes') || '[]');
         if (schemes.length === 0) {
             schemes.push(defaultScheme);
-        } else {
-            // 始终用最新的默认CSS更新default方案
-            const def = schemes.find(s => s.id === 'default');
-            if (def) def.css = defaultCss;
-            // 修复自定义方案中的 vertical-rl 镜像问题
-            schemes.forEach(s => {
-                if (s.id !== 'default' && s.css && s.css.includes('vertical-rl')) {
-                    s.css = s.css.replace(/vertical-rl/g, 'vertical-lr');
-                }
-            });
         }
         return schemes;
     }
@@ -1459,7 +1413,7 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     font-size: 13px;
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
     text-orientation: upright;
     letter-spacing: 2px;
     border-left: 3px solid transparent;
@@ -1574,53 +1528,6 @@ body {
     align-items: flex-start;
 }
 
-.calendar-section {
-    background: var(--calendar-bg);
-    border: 2px solid var(--calendar-border);
-    border-radius: 16px;
-    padding: 15px;
-    width: 400px;
-    flex-shrink: 0;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-}
-
-.weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 8px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 10px;
-}
-
-.habit-days-header {
-    display: flex;
-    gap: 3px;
-    margin-bottom: 5px;
-    margin-left: 63px;
-}
-
-.habit-days {
-    display: flex;
-    gap: 3px;
-    flex-wrap: nowrap;
-    margin-left: -63px;
-}
-
-.habit-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    border-radius: 10px;
-}
-
 /* 周计划 */
 .todo-section {
     background: var(--card-color);
@@ -1722,203 +1629,10 @@ function closeCalendarModal() {
     healthApp.selectedDate = null;
 }
 
-function ensureDiaryModals() {
-    if (!document.getElementById('diaryModal')) {
-        const d = document.createElement('div');
-        d.className = 'diary-modal';
-        d.id = 'diaryModal';
-        d.innerHTML = `<div class="diary-modal-content">
-            <div class="diary-modal-header">
-                <h3 id="diaryModalTitle">\u{1f4dd} 记日记</h3>
-                <button class="modal-close" onclick="closeDiaryModal()">\u00d7</button>
-            </div>
-            <div class="diary-modal-body">
-                <div class="diary-mood-select">
-                    <span>今日心情：</span>
-                    <div class="diary-mood-options" id="diaryMoodOptions">
-                        <span class="diary-mood-item" data-mood="\u{1f60a}" onclick="selectDiaryMood(this)">\u{1f60a}</span>
-                        <span class="diary-mood-item" data-mood="\u{1f622}" onclick="selectDiaryMood(this)">\u{1f622}</span>
-                        <span class="diary-mood-item" data-mood="\u{1f621}" onclick="selectDiaryMood(this)">\u{1f621}</span>
-                        <span class="diary-mood-item" data-mood="\u{1f970}" onclick="selectDiaryMood(this)">\u{1f970}</span>
-                        <span class="diary-mood-item" data-mood="\u{1f634}" onclick="selectDiaryMood(this)">\u{1f634}</span>
-                        <span class="diary-mood-item" data-mood="\u{1f914}" onclick="selectDiaryMood(this)">\u{1f914}</span>
-                        <span class="diary-mood-item" data-mood="\u2728" onclick="selectDiaryMood(this)">\u2728</span>
-                    </div>
-                </div>
-                <textarea id="diaryContent" placeholder="今天发生了什么..." rows="6"></textarea>
-                <div class="diary-actions">
-                    <button class="diary-save-btn" onclick="saveDiary()">保存</button>
-                </div>
-            </div>
-        </div>`;
-        document.body.appendChild(d);
-    }
-    if (!document.getElementById('diaryReviewModal')) {
-        const r = document.createElement('div');
-        r.className = 'diary-review-modal';
-        r.id = 'diaryReviewModal';
-        r.innerHTML = `<div class="diary-review-content">
-            <div class="diary-review-header">
-                <h3>\u{1f4d6} 日记回顾</h3>
-                <div class="diary-review-actions">
-                    <button class="diary-export-btn" onclick="exportDiaries()">\u{1f4e4} 导出</button>
-                    <button class="modal-close" onclick="closeDiaryReview()">\u00d7</button>
-                </div>
-            </div>
-            <div class="diary-review-list" id="diaryReviewList"></div>
-        </div>`;
-        document.body.appendChild(r);
-    }
-}
-
 function goToDiary() {
-    ensureDiaryModals();
-    const app = window.healthApp || healthApp;
-    const dateKey = app.selectedDate;
+    // 未来跳转到日记页面
+    alert('日记功能正在开发中...');
     closeCalendarModal();
-    if (!dateKey) return;
-    
-    // 解析日期显示
-    const [y, m, d] = dateKey.split('-');
-    document.getElementById('diaryModalTitle').textContent = `📝 ${y}年${parseInt(m)}月${parseInt(d)}日 日记`;
-    
-    // 加载已有日记
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    const existing = diaries[dateKey];
-    
-    document.getElementById('diaryContent').value = existing ? existing.text : '';
-    
-    // 重置心情选择
-    document.querySelectorAll('.diary-mood-item').forEach(el => el.classList.remove('selected'));
-    if (existing && existing.mood) {
-        const moodEl = document.querySelector(`.diary-mood-item[data-mood="${existing.mood}"]`);
-        if (moodEl) moodEl.classList.add('selected');
-    }
-    
-    document.getElementById('diaryModal').classList.add('active');
-    document.getElementById('diaryModal').dataset.dateKey = dateKey;
-}
-
-function selectDiaryMood(el) {
-    document.querySelectorAll('.diary-mood-item').forEach(e => e.classList.remove('selected'));
-    el.classList.add('selected');
-}
-
-function closeDiaryModal() {
-    document.getElementById('diaryModal').classList.remove('active');
-}
-
-function saveDiary() {
-    const modal = document.getElementById('diaryModal');
-    const dateKey = modal.dataset.dateKey;
-    const text = document.getElementById('diaryContent').value.trim();
-    const moodEl = document.querySelector('.diary-mood-item.selected');
-    const mood = moodEl ? moodEl.dataset.mood : '';
-    
-    if (!text) { alert('请写点什么吧~'); return; }
-    
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    diaries[dateKey] = { text, mood, timestamp: Date.now() };
-    localStorage.setItem('health-diaries', JSON.stringify(diaries));
-    
-    closeDiaryModal();
-    // 刷新日历显示（日记日期可以有标记）
-    if (window.healthApp) window.healthApp.renderCalendar();
-}
-
-function openDiaryReview() {
-    ensureDiaryModals();
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    const reviewList = document.getElementById('diaryReviewList');
-    
-    const entries = Object.entries(diaries).sort((a, b) => b[0].localeCompare(a[0]));
-    
-    if (entries.length === 0) {
-        reviewList.innerHTML = '<div class="diary-empty">还没有日记哦，双击日历日期开始记录吧~ ✨</div>';
-    } else {
-        reviewList.innerHTML = entries.map(([dateKey, entry]) => {
-            const [y, m, d] = dateKey.split('-');
-            return `<div class="diary-entry-card">
-                <div class="diary-entry-header">
-                    <span class="diary-entry-date">${y}年${parseInt(m)}月${parseInt(d)}日</span>
-                    <span class="diary-entry-mood">${entry.mood || ''}</span>
-                </div>
-                <div class="diary-entry-text">${escapeHtml(entry.text)}</div>
-                <div class="diary-entry-actions">
-                    <button class="diary-share-btn" onclick="shareDiaryToChat('${dateKey}')">💬 分享给TA</button>
-                    <button class="diary-delete-btn" onclick="deleteDiary('${dateKey}')">🗑️ 删除</button>
-                </div>
-            </div>`;
-        }).join('');
-    }
-    
-    document.getElementById('diaryReviewModal').classList.add('active');
-}
-
-function closeDiaryReview() {
-    document.getElementById('diaryReviewModal').classList.remove('active');
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function deleteDiary(dateKey) {
-    if (!confirm('确定删除这篇日记吗？')) return;
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    delete diaries[dateKey];
-    localStorage.setItem('health-diaries', JSON.stringify(diaries));
-    openDiaryReview(); // 刷新列表
-    if (window.healthApp) window.healthApp.renderCalendar();
-}
-
-function exportDiaries() {
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    const entries = Object.entries(diaries).sort((a, b) => a[0].localeCompare(b[0]));
-    
-    if (entries.length === 0) { alert('没有日记可以导出~'); return; }
-    
-    let text = '📖 我的日记\n' + '='.repeat(30) + '\n\n';
-    entries.forEach(([dateKey, entry]) => {
-        const [y, m, d] = dateKey.split('-');
-        text += `📅 ${y}年${parseInt(m)}月${parseInt(d)}日 ${entry.mood || ''}\n`;
-        text += '-'.repeat(20) + '\n';
-        text += entry.text + '\n\n';
-    });
-    
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `日记导出_${new Date().toISOString().slice(0,10)}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-function shareDiaryToChat(dateKey) {
-    const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
-    const entry = diaries[dateKey];
-    if (!entry) return;
-    
-    const [y, m, d] = dateKey.split('-');
-    const dateStr = `${y}年${parseInt(m)}月${parseInt(d)}日`;
-    
-    // 构造分享消息
-    const shareText = `[日记分享] ${dateStr} ${entry.mood || ''}\n${entry.text}`;
-    
-    // 存储到待发送消息
-    localStorage.setItem('pending-diary-share', JSON.stringify({
-        date: dateStr,
-        mood: entry.mood || '',
-        text: entry.text,
-        message: shareText
-    }));
-    
-    closeDiaryReview();
-    // 跳转到消息页面
-    window.location.href = 'message.html#diary-share';
 }
 
 function uploadCoverImage() {

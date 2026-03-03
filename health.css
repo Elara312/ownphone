@@ -793,15 +793,6 @@ body {
     font-weight: bold;
 }
 
-.cal-cell.has-diary::before {
-    content: '📝';
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    font-size: 8px;
-    line-height: 1;
-}
-
 /* 记账板块 */
 .accounting-section {
     background: var(--card-color);
@@ -1074,114 +1065,6 @@ body {
     color: var(--text-color);
     font-weight: 500;
 }
-
-/* 日记回顾按钮 */
-.diary-review-btn {
-    background: #fff0f5;
-    border: 1.5px solid #e8b4b8;
-    border-radius: 8px;
-    padding: 4px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #8b5e6b;
-    transition: background 0.2s;
-}
-.diary-review-btn:hover { background: #fce4ec; }
-
-/* 日记弹窗 */
-.diary-modal, .diary-review-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); display: none;
-    align-items: center; justify-content: center; z-index: 10000;
-}
-.diary-modal.active, .diary-review-modal.active { display: flex; }
-
-.diary-modal-content {
-    background: var(--modal-bg); border-radius: 16px;
-    padding: 24px; width: 90%; max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
-.diary-modal-header, .diary-review-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
-}
-.diary-modal-header h3, .diary-review-header h3 {
-    font-size: 18px; color: var(--text-color);
-}
-.diary-mood-select {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
-}
-.diary-mood-select span:first-child { font-size: 14px; color: var(--text-color); }
-.diary-mood-options { display: flex; gap: 6px; }
-.diary-mood-item {
-    font-size: 22px; cursor: pointer; padding: 4px; border-radius: 8px;
-    border: 2px solid transparent; transition: all 0.2s;
-}
-.diary-mood-item.selected {
-    border-color: var(--primary-color); background: var(--settings-scheme-active-bg);
-    transform: scale(1.2);
-}
-#diaryContent {
-    width: 100%; border: 1px solid var(--settings-section-border);
-    border-radius: 10px; padding: 12px; font-size: 14px; resize: vertical;
-    background: var(--settings-section-bg); color: var(--text-color);
-    font-family: inherit; min-height: 120px;
-}
-.diary-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
-.diary-save-btn {
-    background: var(--primary-color, #6366f1); color: #fff; border: none;
-    border-radius: 10px; padding: 10px 24px; font-size: 14px; cursor: pointer;
-    font-weight: 500; transition: opacity 0.2s;
-}
-.diary-save-btn:hover { opacity: 0.85; }
-
-/* 日记回顾弹窗 */
-.diary-review-content {
-    background: var(--modal-bg); border-radius: 16px;
-    padding: 24px; width: 95%; max-width: 560px; max-height: 80vh;
-    overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
-.diary-review-actions { display: flex; gap: 8px; align-items: center; }
-.diary-export-btn {
-    background: var(--settings-section-bg); border: 1px solid var(--settings-section-border);
-    border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer;
-    color: var(--text-color);
-}
-.diary-review-calendar {
-    display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 16px;
-}
-.diary-review-day {
-    text-align: center; padding: 6px 2px; border-radius: 8px; font-size: 12px;
-    color: var(--text-secondary); cursor: default;
-}
-.diary-review-day.has-diary {
-    background: var(--settings-scheme-active-bg); color: var(--primary-color, #6366f1);
-    cursor: pointer; font-weight: 600;
-}
-.diary-review-day.has-diary:hover { opacity: 0.8; }
-.diary-review-day.selected { outline: 2px solid var(--primary-color, #6366f1); }
-
-.diary-entry-card {
-    background: var(--settings-section-bg); border: 1px solid var(--settings-section-border);
-    border-radius: 12px; padding: 16px; margin-bottom: 10px;
-}
-.diary-entry-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
-}
-.diary-entry-date { font-size: 14px; font-weight: 600; color: var(--text-color); }
-.diary-entry-mood { font-size: 20px; }
-.diary-entry-text {
-    font-size: 14px; color: var(--text-color); line-height: 1.6; white-space: pre-wrap;
-}
-.diary-entry-actions { display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; }
-.diary-share-btn, .diary-delete-btn {
-    border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px;
-    cursor: pointer; transition: opacity 0.2s;
-}
-.diary-share-btn { background: var(--primary-color, #6366f1); color: #fff; }
-.diary-delete-btn { background: #f87171; color: #fff; }
-.diary-share-btn:hover, .diary-delete-btn:hover { opacity: 0.8; }
-
-.diary-empty { text-align: center; padding: 40px; color: var(--text-secondary); font-size: 14px; }
 
 /* 周计划 */
 .todo-section {
