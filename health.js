@@ -18,6 +18,16 @@ class HealthApp {
         this.savedColors = this.loadSavedColors();
         this.cssSchemes = this.loadCssSchemes();
         this.currentCssScheme = this.loadCurrentCssScheme();
+        // CSS方案版本检查 - 如果版本过旧则强制更新默认方案
+        const cssVer = localStorage.getItem('health-css-scheme-version');
+        if (cssVer !== '2') {
+            localStorage.removeItem('health-plan-css-schemes');
+            localStorage.removeItem('health-plan-current-css-scheme');
+            this.cssSchemes = this.loadCssSchemes();
+            this.currentCssScheme = this.loadCurrentCssScheme();
+            this.saveCssSchemes();
+            localStorage.setItem('health-css-scheme-version', '2');
+        }
         this.backgroundSettings = this.loadBackgroundSettings();
         this.fontSettings = this.loadFontSettings();
         this.selectedDate = null;
@@ -1075,16 +1085,25 @@ class HealthApp {
 
     // 设置功能
     loadCssSchemes() {
+        const defaultCss = this.getDefaultCss();
         const defaultScheme = {
             id: 'default',
             name: '默认样式',
-            css: this.getDefaultCss()
+            css: defaultCss
         };
         const schemes = JSON.parse(localStorage.getItem('health-plan-css-schemes') || '[]');
-        // 修复旧版本中 vertical-rl 导致文字镜像的问题
-        schemes.forEach(s => { if (s.css) s.css = s.css.replace(/vertical-rl/g, 'vertical-lr'); });
         if (schemes.length === 0) {
             schemes.push(defaultScheme);
+        } else {
+            // 始终用最新的默认CSS更新default方案
+            const def = schemes.find(s => s.id === 'default');
+            if (def) def.css = defaultCss;
+            // 修复自定义方案中的 vertical-rl 镜像问题
+            schemes.forEach(s => {
+                if (s.id !== 'default' && s.css && s.css.includes('vertical-rl')) {
+                    s.css = s.css.replace(/vertical-rl/g, 'vertical-lr');
+                }
+            });
         }
         return schemes;
     }
