@@ -20,13 +20,13 @@ class HealthApp {
         this.currentCssScheme = this.loadCurrentCssScheme();
         // CSS方案版本检查 - 如果版本过旧则强制更新默认方案
         const cssVer = localStorage.getItem('health-css-scheme-version');
-        if (cssVer !== '2') {
+        if (cssVer !== '3') {
             localStorage.removeItem('health-plan-css-schemes');
             localStorage.removeItem('health-plan-current-css-scheme');
             this.cssSchemes = this.loadCssSchemes();
             this.currentCssScheme = this.loadCurrentCssScheme();
             this.saveCssSchemes();
-            localStorage.setItem('health-css-scheme-version', '2');
+            localStorage.setItem('health-css-scheme-version', '3');
         }
         this.backgroundSettings = this.loadBackgroundSettings();
         this.fontSettings = this.loadFontSettings();
@@ -1572,6 +1572,53 @@ body {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+}
+
+.calendar-section {
+    background: var(--calendar-bg);
+    border: 2px solid var(--calendar-border);
+    border-radius: 16px;
+    padding: 15px;
+    width: 400px;
+    flex-shrink: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.habit-days-header {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 5px;
+    margin-left: 63px;
+}
+
+.habit-days {
+    display: flex;
+    gap: 3px;
+    flex-wrap: nowrap;
+    margin-left: -63px;
+}
+
+.habit-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 10px;
 }
 
 /* 周计划 */
