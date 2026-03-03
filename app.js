@@ -357,11 +357,7 @@ function renderApps() {
         }
     });
     
-    // Dock 自适应：标记第一个空槽位为拖拽放置目标
-    const dockSlots = dock.querySelectorAll('.icon-slot.empty:not(.occupied-by-widget)');
-    if (dockSlots.length > 0) {
-        dockSlots[0].classList.add('dock-drop-target');
-    }
+    // Dock 自适应：拖拽时才显示空槽位，平时全部隐藏
 }
 
 // 应用小组件自定义样式
