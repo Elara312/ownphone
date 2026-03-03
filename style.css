@@ -73,22 +73,21 @@ body {
 .dock {
     height: 100px;
     margin: 0 auto 24px;
-    width: calc(100% - 120px);
-    max-width: 720px;
+    width: fit-content;
+    max-width: calc(100% - 120px);
     background: rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.35);
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    display: flex;
+    justify-content: center;
     gap: 6px;
     padding: 12px 16px;
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-
 /* 图标槽位 */
 .icon-slot {
     display: flex;
@@ -109,6 +108,11 @@ body {
 /* 小组件槽位 (2x1) */
 .icon-slot.widget-slot {
     grid-column: span 2;
+}
+
+/* dock 内小组件槽位用 flex 宽度 */
+.dock .icon-slot.widget-slot {
+    min-width: 140px;
 }
 
 .icon-slot.dragging {
@@ -216,6 +220,20 @@ body {
     background: transparent;
 }
 
+/* dock 内的空槽位默认隐藏，拖拽时显示 */
+.dock .icon-slot.empty {
+    display: none;
+}
+
+.dock .icon-slot.empty.dock-drop-target {
+    display: flex;
+    width: 56px;
+    min-width: 56px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
+    min-height: 60px;
+}
+
 /* 响应式调整 */
 
 /* 竖屏平板 (768px - 1024px portrait) */
@@ -226,7 +244,7 @@ body {
     }
     
     .dock {
-        width: calc(100% - 80px);
+        max-width: calc(100% - 80px);
         margin-bottom: 20px;
     }
     
@@ -258,7 +276,7 @@ body {
     }
     
     .dock {
-        width: calc(100% - 48px);
+        max-width: calc(100% - 48px);
         margin-bottom: 16px;
         margin-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
         height: 88px;
@@ -299,9 +317,8 @@ body {
     }
     
     .dock {
-        grid-template-columns: repeat(8, 1fr);
         height: 92px;
-        width: calc(100% - 60px);
+        max-width: calc(100% - 60px);
     }
 }
 
@@ -315,9 +332,8 @@ body {
     }
     
     .dock {
-        grid-template-columns: repeat(6, 1fr);
         height: 84px;
-        width: calc(100% - 32px);
+        max-width: calc(100% - 32px);
         padding: 8px 10px;
     }
     

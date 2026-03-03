@@ -356,6 +356,12 @@ function renderApps() {
             attachDragEvents(slot, app);
         }
     });
+    
+    // Dock 自适应：标记第一个空槽位为拖拽放置目标
+    const dockSlots = dock.querySelectorAll('.icon-slot.empty:not(.occupied-by-widget)');
+    if (dockSlots.length > 0) {
+        dockSlots[0].classList.add('dock-drop-target');
+    }
 }
 
 // 应用小组件自定义样式
@@ -457,6 +463,11 @@ function startDrag(e, app, slot) {
         document.body.appendChild(draggedElement);
 
         slot.classList.add('dragging');
+        
+        // 拖拽时显示 dock 所有空槽位作为放置目标
+        document.querySelectorAll('.dock .icon-slot.empty').forEach(s => {
+            s.classList.add('dock-drop-target');
+        });
 
         // 移动事件
         document.addEventListener('mousemove', onDragMove);
@@ -661,6 +672,11 @@ function startWidgetDrag(e, widget, slot) {
         document.body.appendChild(draggedElement);
 
         slot.classList.add('dragging');
+
+        // 拖拽时显示 dock 所有空槽位作为放置目标
+        document.querySelectorAll('.dock .icon-slot.empty').forEach(s => {
+            s.classList.add('dock-drop-target');
+        });
 
         document.addEventListener('mousemove', onDragMove);
         document.addEventListener('touchmove', onDragMove, { passive: false });
