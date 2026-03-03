@@ -371,3 +371,38 @@ body {
         margin-top: 3px;
     }
 }
+
+/* ===== 移动端性能优化 ===== */
+/* 触摸设备上禁用 backdrop-filter blur，大幅提升渲染性能 */
+@media (hover: none) and (pointer: coarse) {
+    .dock {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.35);
+    }
+    
+    .app-icon {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .app-icon::before {
+        /* 简化光泽效果 */
+        background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 50%);
+    }
+    
+    .icon-slot:hover .app-icon {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* 减少不必要的 transition */
+    .icon-slot {
+        transition: transform 0.15s ease;
+    }
+    
+    .app-icon {
+        transition: transform 0.15s ease;
+    }
+}
