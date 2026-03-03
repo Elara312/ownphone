@@ -240,7 +240,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: scroll;
-    min-height: 100vh;
+    min-height: var(--app-height, 100vh);
     overflow: hidden;
     image-rendering: -webkit-optimize-contrast;
 }
@@ -249,7 +249,7 @@ body {
 .main-container {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     overflow: hidden;
     position: relative;
 }
@@ -488,7 +488,7 @@ body {
 /* ==================== 联系人分组 ==================== */
 .contacts-groups-container {
     overflow-y: auto;
-    height: calc(100vh - 120px);
+    height: calc(var(--app-height, 100vh) - 120px);
 }
 
 .contact-group {
@@ -658,7 +658,7 @@ body {
 
 .npc-list {
     overflow-y: auto;
-    height: calc(100vh - 240px);
+    height: calc(var(--app-height, 100vh) - 240px);
 }
 
 .npc-item {
@@ -2328,7 +2328,7 @@ body {
 
 .video-call-content {
     display: flex;
-    height: calc(100vh - 140px);
+    height: calc(var(--app-height, 100vh) - 140px);
     background: #FFF;
 }
 

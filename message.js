@@ -11927,7 +11927,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    min-height: 100vh;
+    min-height: var(--app-height, 100vh);
     overflow: hidden;
 }
 
@@ -11935,7 +11935,7 @@ body {
 .main-container {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     overflow: hidden;
 }
 
@@ -12176,7 +12176,7 @@ body {
 /* ==================== 联系人分组 ==================== */
 .contacts-groups-container {
     overflow-y: auto;
-    height: calc(100vh - 120px);
+    height: calc(var(--app-height, 100vh) - 120px);
 }
 
 .contact-group {
@@ -12328,7 +12328,7 @@ body {
 /* ==================== 动态页面 ==================== */
 .moments-list {
     overflow-y: auto;
-    height: calc(100vh - 120px);
+    height: calc(var(--app-height, 100vh) - 120px);
 }
 
 .moment-item {
@@ -12439,7 +12439,7 @@ body {
 
 .npc-list {
     overflow-y: auto;
-    height: calc(100vh - 240px);
+    height: calc(var(--app-height, 100vh) - 240px);
 }
 
 .npc-item {
@@ -12813,7 +12813,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     background: #FFF0F5;
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);

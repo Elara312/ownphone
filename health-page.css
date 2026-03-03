@@ -187,7 +187,7 @@ body {
 /* 主容器 - 全屏布局，与健康app完全一致 */
 .health-container {
     display: flex;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     width: 100vw;
     position: relative;
 }

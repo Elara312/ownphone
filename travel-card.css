@@ -37,14 +37,14 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    min-height: 100vh;
+    min-height: var(--app-height, 100vh);
     overflow: hidden;
 }
 
 /* ==================== 主容器 ==================== */
 .travel-card-container {
     width: 100vw;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -511,7 +511,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: var(--app-height, 100vh);
     background: rgba(0, 0, 0, 0.8);
     display: flex;
     align-items: center;
