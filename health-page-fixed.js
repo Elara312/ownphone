@@ -4855,10 +4855,10 @@ function navigateToPage(page) {
             window.location.href = 'health.html#diary';
             break;
         case 'mood':
-            window.location.href = 'mood.html';
+            window.location.href = 'health.html#mood';
             break;
-        case 'monthly':
-            window.location.href = 'monthly.html';
+        case 'share':
+            window.location.href = 'health.html#share';
             break;
         default:
             console.log('未知页面:', page);
