@@ -391,6 +391,25 @@ class HealthApp {
         const year = this.calendarDate.getFullYear();
         const month = this.calendarDate.getMonth();
         
+        // 动态注入日记回顾按钮（确保不受缓存影响）
+        if (!document.getElementById('diaryReviewBtnDynamic')) {
+            const calSection = document.querySelector('.calendar-section');
+            if (calSection) {
+                const h3 = calSection.querySelector('h3');
+                if (h3 && !h3.parentElement.querySelector('.diary-review-btn')) {
+                    const btn = document.createElement('button');
+                    btn.id = 'diaryReviewBtnDynamic';
+                    btn.className = 'diary-review-btn';
+                    btn.onclick = openDiaryReview;
+                    btn.title = '日记回顾';
+                    btn.textContent = '📖 回顾';
+                    btn.style.cssText = 'background:#fff0f5;border:1.5px solid #e8b4b8;border-radius:8px;padding:4px 12px;font-size:13px;cursor:pointer;color:#8b5e6b;';
+                    h3.parentElement.style.cssText = 'display:flex;justify-content:space-between;align-items:center;';
+                    h3.parentElement.appendChild(btn);
+                }
+            }
+        }
+        
         calendarMonth.textContent = `${year}年${month + 1}月`;
         
         const firstDay = new Date(year, month, 1).getDay();
@@ -1637,7 +1656,57 @@ function closeCalendarModal() {
     healthApp.selectedDate = null;
 }
 
+function ensureDiaryModals() {
+    if (!document.getElementById('diaryModal')) {
+        const d = document.createElement('div');
+        d.className = 'diary-modal';
+        d.id = 'diaryModal';
+        d.innerHTML = `<div class="diary-modal-content">
+            <div class="diary-modal-header">
+                <h3 id="diaryModalTitle">\u{1f4dd} 记日记</h3>
+                <button class="modal-close" onclick="closeDiaryModal()">\u00d7</button>
+            </div>
+            <div class="diary-modal-body">
+                <div class="diary-mood-select">
+                    <span>今日心情：</span>
+                    <div class="diary-mood-options" id="diaryMoodOptions">
+                        <span class="diary-mood-item" data-mood="\u{1f60a}" onclick="selectDiaryMood(this)">\u{1f60a}</span>
+                        <span class="diary-mood-item" data-mood="\u{1f622}" onclick="selectDiaryMood(this)">\u{1f622}</span>
+                        <span class="diary-mood-item" data-mood="\u{1f621}" onclick="selectDiaryMood(this)">\u{1f621}</span>
+                        <span class="diary-mood-item" data-mood="\u{1f970}" onclick="selectDiaryMood(this)">\u{1f970}</span>
+                        <span class="diary-mood-item" data-mood="\u{1f634}" onclick="selectDiaryMood(this)">\u{1f634}</span>
+                        <span class="diary-mood-item" data-mood="\u{1f914}" onclick="selectDiaryMood(this)">\u{1f914}</span>
+                        <span class="diary-mood-item" data-mood="\u2728" onclick="selectDiaryMood(this)">\u2728</span>
+                    </div>
+                </div>
+                <textarea id="diaryContent" placeholder="今天发生了什么..." rows="6"></textarea>
+                <div class="diary-actions">
+                    <button class="diary-save-btn" onclick="saveDiary()">保存</button>
+                </div>
+            </div>
+        </div>`;
+        document.body.appendChild(d);
+    }
+    if (!document.getElementById('diaryReviewModal')) {
+        const r = document.createElement('div');
+        r.className = 'diary-review-modal';
+        r.id = 'diaryReviewModal';
+        r.innerHTML = `<div class="diary-review-content">
+            <div class="diary-review-header">
+                <h3>\u{1f4d6} 日记回顾</h3>
+                <div class="diary-review-actions">
+                    <button class="diary-export-btn" onclick="exportDiaries()">\u{1f4e4} 导出</button>
+                    <button class="modal-close" onclick="closeDiaryReview()">\u00d7</button>
+                </div>
+            </div>
+            <div class="diary-review-list" id="diaryReviewList"></div>
+        </div>`;
+        document.body.appendChild(r);
+    }
+}
+
 function goToDiary() {
+    ensureDiaryModals();
     const app = window.healthApp || healthApp;
     const dateKey = app.selectedDate;
     closeCalendarModal();
@@ -1692,6 +1761,7 @@ function saveDiary() {
 }
 
 function openDiaryReview() {
+    ensureDiaryModals();
     const diaries = JSON.parse(localStorage.getItem('health-diaries') || '{}');
     const reviewList = document.getElementById('diaryReviewList');
     
