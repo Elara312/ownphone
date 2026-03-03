@@ -224,17 +224,10 @@ function deleteScheme(schemeId) {
 function exportAllData() {
     const data = {};
     
-    // 导出所有 localStorage 数据
+    // 导出所有 localStorage 数据（不再过滤，全部备份）
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        // 只导出项目相关的数据
-        if (key.startsWith('vibe_') || key.startsWith('ipad') || 
-            ['apiUrl', 'apiKey', 'selectedModel', 'availableModels', 'wallpaper', 
-             'customFont', 'systemFont', 'customIcons', 'widgets', 'todos',
-             'widgetCustomStyles', 'bubble_schemes', 'shared_avatars',
-             'messageAppUser', 'current_profile_id'].includes(key)) {
-            data[key] = localStorage.getItem(key);
-        }
+        data[key] = localStorage.getItem(key);
     }
     
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -245,7 +238,7 @@ function exportAllData() {
     a.click();
     URL.revokeObjectURL(url);
     
-    alert('所有数据已导出');
+    alert('所有数据已导出（共 ' + Object.keys(data).length + ' 项）');
 }
 
 // 导入数据
