@@ -1077,16 +1077,16 @@ body {
 
 /* 日记回顾按钮 */
 .diary-review-btn {
-    background: var(--settings-section-bg);
-    border: 1px solid var(--settings-section-border);
+    background: #fff0f5;
+    border: 1.5px solid #e8b4b8;
     border-radius: 8px;
     padding: 4px 12px;
     font-size: 13px;
     cursor: pointer;
-    color: var(--text-color);
+    color: #8b5e6b;
     transition: background 0.2s;
 }
-.diary-review-btn:hover { background: var(--settings-scheme-active-bg); }
+.diary-review-btn:hover { background: #fce4ec; }
 
 /* 日记弹窗 */
 .diary-modal, .diary-review-modal {
