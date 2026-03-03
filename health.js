@@ -1413,7 +1413,7 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     font-size: 13px;
-    writing-mode: vertical-rl;
+    writing-mode: vertical-lr;
     text-orientation: upright;
     letter-spacing: 2px;
     border-left: 3px solid transparent;

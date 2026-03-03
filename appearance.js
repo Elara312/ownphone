@@ -900,6 +900,43 @@ const defaultWidgetStyles = {
 }`
 };
 
+// 内置预设方案（不可删除）
+const builtinWidgetSchemes = {
+    clock: {
+        '透明居中': `/* 透明居中时钟样式 */
+.clock-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.clock-time {
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: -1px;
+}
+
+.clock-date {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 6px;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}`
+    }
+};
+
 // 加载小组件样式
 function loadWidgetStyles() {
     const widgetType = document.getElementById('widgetTypeSelect').value;
@@ -910,6 +947,17 @@ function loadWidgetStyles() {
     const schemeSelect = document.getElementById('widgetSchemeSelect');
     schemeSelect.innerHTML = '<option value="default">默认样式</option>';
     
+    // 添加内置预设方案
+    if (builtinWidgetSchemes[widgetType]) {
+        Object.keys(builtinWidgetSchemes[widgetType]).forEach(schemeName => {
+            const option = document.createElement('option');
+            option.value = schemeName;
+            option.textContent = '⭐ ' + schemeName;
+            schemeSelect.appendChild(option);
+        });
+    }
+    
+    // 添加用户自定义方案
     if (customStyles[widgetType]) {
         Object.keys(customStyles[widgetType]).forEach(schemeName => {
             if (schemeName !== 'default') {
@@ -925,6 +973,9 @@ function loadWidgetStyles() {
     
     // 加载CSS
     let css = defaultWidgetStyles[widgetType];
+    if (builtinWidgetSchemes[widgetType] && builtinWidgetSchemes[widgetType][activeScheme]) {
+        css = builtinWidgetSchemes[widgetType][activeScheme];
+    }
     if (customStyles[widgetType] && customStyles[widgetType][activeScheme]) {
         css = customStyles[widgetType][activeScheme];
     }
@@ -975,6 +1026,11 @@ function deleteWidgetScheme() {
     
     if (scheme === 'default') {
         alert('无法删除默认样式');
+        return;
+    }
+    
+    if (builtinWidgetSchemes[widgetType] && builtinWidgetSchemes[widgetType][scheme]) {
+        alert('无法删除内置预设方案');
         return;
     }
     

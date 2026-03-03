@@ -267,6 +267,43 @@ function updateAllWidgets() {
     });
 }
 
+// 内置预设小组件方案（供 app.js 和 appearance.js 共用）
+const builtinWidgetSchemes = {
+    clock: {
+        '透明居中': `/* 透明居中时钟样式 */
+.clock-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.clock-time {
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: -1px;
+}
+
+.clock-date {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 6px;
+    font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}`
+    }
+};
+
 // 每分钟更新时钟
 setInterval(() => {
     document.querySelectorAll('.clock-widget').forEach(widget => {

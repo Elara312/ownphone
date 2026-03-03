@@ -363,7 +363,15 @@ function applyWidgetCustomStyle(widgetElement, type) {
     const customStyles = getStorageJSON('widgetCustomStyles', {});
     const activeScheme = localStorage.getItem(`widget_${type}_activeScheme`) || 'default'; // 这是字符串，不是JSON
     
+    // 查找CSS：优先用户自定义 > 内置预设
+    let css = null;
     if (customStyles[type] && customStyles[type][activeScheme]) {
+        css = customStyles[type][activeScheme];
+    } else if (typeof builtinWidgetSchemes !== 'undefined' && builtinWidgetSchemes[type] && builtinWidgetSchemes[type][activeScheme]) {
+        css = builtinWidgetSchemes[type][activeScheme];
+    }
+    
+    if (css) {
         const styleId = `widget-custom-${type}`;
         let styleElement = document.getElementById(styleId);
         
@@ -373,7 +381,7 @@ function applyWidgetCustomStyle(widgetElement, type) {
             document.head.appendChild(styleElement);
         }
         
-        styleElement.textContent = customStyles[type][activeScheme];
+        styleElement.textContent = css;
     }
 }
 
