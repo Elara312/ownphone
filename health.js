@@ -1062,6 +1062,8 @@ class HealthApp {
             css: this.getDefaultCss()
         };
         const schemes = JSON.parse(localStorage.getItem('health-plan-css-schemes') || '[]');
+        // 修复旧版本中 vertical-rl 导致文字镜像的问题
+        schemes.forEach(s => { if (s.css) s.css = s.css.replace(/vertical-rl/g, 'vertical-lr'); });
         if (schemes.length === 0) {
             schemes.push(defaultScheme);
         }
@@ -1419,7 +1421,7 @@ body {
     cursor: pointer;
     transition: all 0.3s;
     font-size: 13px;
-    writing-mode: vertical-rl;
+    writing-mode: vertical-lr;
     text-orientation: upright;
     letter-spacing: 2px;
     border-left: 3px solid transparent;
