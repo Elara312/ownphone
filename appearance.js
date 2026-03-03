@@ -48,10 +48,17 @@ function loadIconCustomList() {
 // 更新图标
 function updateIcon(appId, value) {
     const customIcons = JSON.parse(localStorage.getItem('customIcons') || '{}');
-    customIcons[appId] = value;
+    
+    // 如果是 URL，自动包装成 img 标签
+    let iconValue = value;
+    if (value && (value.startsWith('http://') || value.startsWith('https://') || value.startsWith('data:image'))) {
+        iconValue = `<img src="${value}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`;
+    }
+    
+    customIcons[appId] = iconValue;
     localStorage.setItem('customIcons', JSON.stringify(customIcons));
     
-    document.getElementById(`preview-${appId}`).innerHTML = value;
+    document.getElementById(`preview-${appId}`).innerHTML = iconValue;
 }
 
 // 从文件更新图标
