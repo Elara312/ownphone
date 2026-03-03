@@ -10558,7 +10558,11 @@ function saveStickersToStorage() {
 
 // 从 localStorage 加载表情包数据
 function loadStickersFromStorage() {
-    globalStickers = getStorageJSON('globalStickers', []);
+    const saved = getStorageJSON('globalStickers', null);
+    if (saved && saved.categories && saved.stickers) {
+        globalStickers = saved;
+    }
+    // 如果没有保存的数据或数据格式不对，保留默认的 globalStickers
 }
 
 // 页面加载时初始化表情包数据
