@@ -11611,6 +11611,265 @@ function setNPCRelation(contact, node1, node2) {
 
 // ==================== CSS主题管理功能 ====================
 
+// 内置预设主题（不可删除）
+const builtinCSSThemes = {
+    'builtin-cyber': {
+        id: 'builtin-cyber',
+        name: '⭐ 赛博朋克',
+        css: `/* ===== 赛博朋克主题 - 霓虹紫青暗色风格 ===== */
+:root {
+    --chat-page-bg: #0a0a12;
+    --chat-page-bg-image: none;
+    --chat-window-bg: #0a0a12;
+    --chat-window-border: #00ffff;
+    --chat-window-shadow: rgba(0, 255, 255, 0.2);
+    --sidebar-bg: #12121a;
+    --sidebar-border: #ff00ff;
+    --sidebar-width: 100px;
+    --sidebar-nav-item-color: #00ffff;
+    --sidebar-nav-item-bg: transparent;
+    --sidebar-nav-item-hover-bg: rgba(255, 0, 255, 0.2);
+    --sidebar-nav-item-active-bg: #ff00ff;
+    --sidebar-nav-item-active-color: #000000;
+    --sidebar-nav-item-active-border: #00ffff;
+    --chat-header-bg: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%);
+    --chat-header-border: #00ffff;
+    --chat-header-text-color: #000000;
+    --chat-header-avatar-border: #00ffff;
+    --chat-header-avatar-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+    --chat-header-btn-bg: rgba(0, 0, 0, 0.3);
+    --chat-header-btn-color: #000000;
+    --chat-messages-bg: #0a0a12;
+    --received-bubble-bg: rgba(18, 18, 26, 0.95);
+    --received-bubble-border: #00ffff;
+    --received-bubble-text: #00ffff;
+    --sent-bubble-bg: linear-gradient(135deg, #ff00ff 0%, #cc00cc 100%);
+    --sent-bubble-border: #ff00ff;
+    --sent-bubble-text: #ffffff;
+    --input-area-bg: #12121a;
+    --input-area-border: #ff00ff;
+    --input-field-bg: #0a0a12;
+    --input-field-border: #00ffff;
+    --input-field-text: #00ffff;
+    --send-btn-bg: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+    --send-btn-text: #000000;
+    --timestamp-color: #666688;
+    --contact-item-bg: #12121a;
+    --contact-item-border: #333355;
+    --contact-item-hover-bg: rgba(255, 0, 255, 0.1);
+    --contact-item-active-bg: rgba(0, 255, 255, 0.1);
+    --contact-name-color: #00ffff;
+    --contact-preview-color: #888899;
+    --unread-badge-bg: #ff00ff;
+    --unread-badge-text: #000000;
+}`
+    },
+    'builtin-nature': {
+        id: 'builtin-nature',
+        name: '⭐ 清新自然',
+        css: `/* ===== 清新自然主题 - 绿色森林风格 ===== */
+:root {
+    --chat-page-bg: #f0f7f0;
+    --chat-page-bg-image: none;
+    --chat-window-bg: #f0f7f0;
+    --chat-window-border: #2d5a2d;
+    --chat-window-shadow: rgba(45, 90, 45, 0.15);
+    --sidebar-bg: #e8f5e8;
+    --sidebar-border: #4a7c4a;
+    --sidebar-width: 100px;
+    --sidebar-nav-item-color: #2d5a2d;
+    --sidebar-nav-item-bg: transparent;
+    --sidebar-nav-item-hover-bg: rgba(76, 175, 80, 0.15);
+    --sidebar-nav-item-active-bg: #4caf50;
+    --sidebar-nav-item-active-color: #ffffff;
+    --sidebar-nav-item-active-border: #2e7d32;
+    --chat-header-bg: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+    --chat-header-border: #2e7d32;
+    --chat-header-text-color: #ffffff;
+    --chat-header-avatar-border: #ffffff;
+    --chat-header-avatar-bg: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+    --chat-header-btn-bg: rgba(255, 255, 255, 0.25);
+    --chat-header-btn-color: #ffffff;
+    --chat-messages-bg: #f5faf5;
+    --received-bubble-bg: #ffffff;
+    --received-bubble-border: #a5d6a7;
+    --received-bubble-text: #2d5a2d;
+    --sent-bubble-bg: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+    --sent-bubble-border: #4caf50;
+    --sent-bubble-text: #ffffff;
+    --input-area-bg: #e8f5e8;
+    --input-area-border: #a5d6a7;
+    --input-field-bg: #ffffff;
+    --input-field-border: #81c784;
+    --input-field-text: #2d5a2d;
+    --send-btn-bg: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+    --send-btn-text: #ffffff;
+    --timestamp-color: #689f68;
+    --contact-item-bg: #ffffff;
+    --contact-item-border: #c8e6c9;
+    --contact-item-hover-bg: rgba(76, 175, 80, 0.08);
+    --contact-item-active-bg: rgba(76, 175, 80, 0.15);
+    --contact-name-color: #2d5a2d;
+    --contact-preview-color: #689f68;
+    --unread-badge-bg: #4caf50;
+    --unread-badge-text: #ffffff;
+}`
+    },
+    'builtin-sunset': {
+        id: 'builtin-sunset',
+        name: '⭐ 温暖日落',
+        css: `/* ===== 温暖日落主题 - 橙黄暖色风格 ===== */
+:root {
+    --chat-page-bg: #fff8f0;
+    --chat-page-bg-image: none;
+    --chat-window-bg: #fff8f0;
+    --chat-window-border: #d84315;
+    --chat-window-shadow: rgba(216, 67, 21, 0.15);
+    --sidebar-bg: #fff3e0;
+    --sidebar-border: #ff8a65;
+    --sidebar-width: 100px;
+    --sidebar-nav-item-color: #bf360c;
+    --sidebar-nav-item-bg: transparent;
+    --sidebar-nav-item-hover-bg: rgba(255, 138, 101, 0.2);
+    --sidebar-nav-item-active-bg: #ff7043;
+    --sidebar-nav-item-active-color: #ffffff;
+    --sidebar-nav-item-active-border: #d84315;
+    --chat-header-bg: linear-gradient(135deg, #ffab91 0%, #ff7043 100%);
+    --chat-header-border: #d84315;
+    --chat-header-text-color: #ffffff;
+    --chat-header-avatar-border: #ffffff;
+    --chat-header-avatar-bg: linear-gradient(135deg, #ffcc80 0%, #ff9800 100%);
+    --chat-header-btn-bg: rgba(255, 255, 255, 0.3);
+    --chat-header-btn-color: #ffffff;
+    --chat-messages-bg: #fffaf5;
+    --received-bubble-bg: #ffffff;
+    --received-bubble-border: #ffcc80;
+    --received-bubble-text: #5d4037;
+    --sent-bubble-bg: linear-gradient(135deg, #ffab91 0%, #ff8a65 100%);
+    --sent-bubble-border: #ff7043;
+    --sent-bubble-text: #ffffff;
+    --input-area-bg: #fff3e0;
+    --input-area-border: #ffcc80;
+    --input-field-bg: #ffffff;
+    --input-field-border: #ffab91;
+    --input-field-text: #5d4037;
+    --send-btn-bg: linear-gradient(135deg, #ff9800 0%, #ff7043 100%);
+    --send-btn-text: #ffffff;
+    --timestamp-color: #a1887f;
+    --contact-item-bg: #ffffff;
+    --contact-item-border: #ffe0b2;
+    --contact-item-hover-bg: rgba(255, 138, 101, 0.1);
+    --contact-item-active-bg: rgba(255, 138, 101, 0.2);
+    --contact-name-color: #bf360c;
+    --contact-preview-color: #a1887f;
+    --unread-badge-bg: #ff7043;
+    --unread-badge-text: #ffffff;
+}`
+    },
+    'builtin-minimal': {
+        id: 'builtin-minimal',
+        name: '⭐ 极简黑白',
+        css: `/* ===== 极简黑白主题 - 纯净简约风格 ===== */
+:root {
+    --chat-page-bg: #ffffff;
+    --chat-page-bg-image: none;
+    --chat-window-bg: #ffffff;
+    --chat-window-border: #e0e0e0;
+    --chat-window-shadow: rgba(0, 0, 0, 0.08);
+    --sidebar-bg: #fafafa;
+    --sidebar-border: #e0e0e0;
+    --sidebar-width: 100px;
+    --sidebar-nav-item-color: #333333;
+    --sidebar-nav-item-bg: transparent;
+    --sidebar-nav-item-hover-bg: #f0f0f0;
+    --sidebar-nav-item-active-bg: #333333;
+    --sidebar-nav-item-active-color: #ffffff;
+    --sidebar-nav-item-active-border: #000000;
+    --chat-header-bg: #333333;
+    --chat-header-border: #000000;
+    --chat-header-text-color: #ffffff;
+    --chat-header-avatar-border: #ffffff;
+    --chat-header-avatar-bg: linear-gradient(135deg, #666666 0%, #333333 100%);
+    --chat-header-btn-bg: rgba(255, 255, 255, 0.15);
+    --chat-header-btn-color: #ffffff;
+    --chat-messages-bg: #ffffff;
+    --received-bubble-bg: #f5f5f5;
+    --received-bubble-border: #e0e0e0;
+    --received-bubble-text: #333333;
+    --sent-bubble-bg: #333333;
+    --sent-bubble-border: #000000;
+    --sent-bubble-text: #ffffff;
+    --input-area-bg: #fafafa;
+    --input-area-border: #e0e0e0;
+    --input-field-bg: #ffffff;
+    --input-field-border: #cccccc;
+    --input-field-text: #333333;
+    --send-btn-bg: #333333;
+    --send-btn-text: #ffffff;
+    --timestamp-color: #999999;
+    --contact-item-bg: #ffffff;
+    --contact-item-border: #eeeeee;
+    --contact-item-hover-bg: #f5f5f5;
+    --contact-item-active-bg: #f0f0f0;
+    --contact-name-color: #333333;
+    --contact-preview-color: #888888;
+    --unread-badge-bg: #333333;
+    --unread-badge-text: #ffffff;
+}`
+    },
+    'builtin-ocean': {
+        id: 'builtin-ocean',
+        name: '⭐ 深海蓝调',
+        css: `/* ===== 深海蓝调主题 - 海洋深邃风格 ===== */
+:root {
+    --chat-page-bg: #0d1b2a;
+    --chat-page-bg-image: none;
+    --chat-window-bg: #0d1b2a;
+    --chat-window-border: #1b4965;
+    --chat-window-shadow: rgba(27, 73, 101, 0.3);
+    --sidebar-bg: #1b263b;
+    --sidebar-border: #415a77;
+    --sidebar-width: 100px;
+    --sidebar-nav-item-color: #5bc0eb;
+    --sidebar-nav-item-bg: transparent;
+    --sidebar-nav-item-hover-bg: rgba(91, 192, 235, 0.15);
+    --sidebar-nav-item-active-bg: #5bc0eb;
+    --sidebar-nav-item-active-color: #0d1b2a;
+    --sidebar-nav-item-active-border: #9dd9f3;
+    --chat-header-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
+    --chat-header-border: #5bc0eb;
+    --chat-header-text-color: #ffffff;
+    --chat-header-avatar-border: #9dd9f3;
+    --chat-header-avatar-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
+    --chat-header-btn-bg: rgba(255, 255, 255, 0.2);
+    --chat-header-btn-color: #ffffff;
+    --chat-messages-bg: #0d1b2a;
+    --received-bubble-bg: rgba(27, 38, 59, 0.95);
+    --received-bubble-border: #415a77;
+    --received-bubble-text: #e0e1dd;
+    --sent-bubble-bg: linear-gradient(135deg, #1b4965 0%, #5bc0eb 100%);
+    --sent-bubble-border: #5bc0eb;
+    --sent-bubble-text: #ffffff;
+    --input-area-bg: #1b263b;
+    --input-area-border: #415a77;
+    --input-field-bg: #0d1b2a;
+    --input-field-border: #5bc0eb;
+    --input-field-text: #e0e1dd;
+    --send-btn-bg: linear-gradient(135deg, #5bc0eb 0%, #1b4965 100%);
+    --send-btn-text: #ffffff;
+    --timestamp-color: #778da9;
+    --contact-item-bg: #1b263b;
+    --contact-item-border: #415a77;
+    --contact-item-hover-bg: rgba(91, 192, 235, 0.1);
+    --contact-item-active-bg: rgba(91, 192, 235, 0.2);
+    --contact-name-color: #e0e1dd;
+    --contact-preview-color: #778da9;
+    --unread-badge-bg: #5bc0eb;
+    --unread-badge-text: #0d1b2a;
+}`
+    }
+};
+
 let cssThemes = [];
 let currentCSSThemeId = 'default';
 
@@ -13018,12 +13277,21 @@ function openCSSThemeManager() {
         
         select.innerHTML = '<option value="default">默认主题（Y2K粉色像素风）</option>';
         
+        // 添加内置预设主题
+        Object.values(builtinCSSThemes).forEach(theme => {
+            const option = document.createElement('option');
+            option.value = theme.id;
+            option.textContent = theme.name;
+            select.appendChild(option);
+        });
+        
         // 确保cssThemes是数组
         if (!Array.isArray(cssThemes)) {
             console.error('cssThemes不是数组，重置为数组');
             cssThemes = [];
         }
         
+        // 添加用户自定义主题
         cssThemes.forEach(theme => {
             const option = document.createElement('option');
             option.value = theme.id;
@@ -13061,6 +13329,9 @@ function loadCSSTheme() {
         // 加载默认CSS
         const defaultCSS = getDefaultCSS();
         editor.value = defaultCSS;
+    } else if (builtinCSSThemes[themeId]) {
+        // 加载内置预设主题
+        editor.value = builtinCSSThemes[themeId].css;
     } else {
         // 确保cssThemes是数组
         if (!Array.isArray(cssThemes)) {
@@ -13119,6 +13390,12 @@ function deleteCSSTheme() {
     
     if (themeId === 'default') {
         alert('无法删除默认主题');
+        return;
+    }
+    
+    // 检查是否是内置预设主题
+    if (builtinCSSThemes[themeId]) {
+        alert('无法删除内置预设主题');
         return;
     }
     
@@ -13271,6 +13548,16 @@ function applyCSSTheme(themeId) {
     if (themeId === 'default') {
         console.log('应用默认主题');
         // 使用默认CSS（已经通过link标签加载）
+        return;
+    }
+    
+    // 检查是否是内置预设主题
+    if (builtinCSSThemes[themeId]) {
+        console.log('应用内置预设主题:', builtinCSSThemes[themeId].name);
+        const style = document.createElement('style');
+        style.id = 'custom-css-theme';
+        style.textContent = builtinCSSThemes[themeId].css;
+        document.head.appendChild(style);
         return;
     }
     
