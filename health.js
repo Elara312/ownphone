@@ -1636,9 +1636,9 @@ function closeCalendarModal() {
 }
 
 function goToDiary() {
-    closeCalendarModal();
-    const app = window.healthApp;
+    const app = window.healthApp || healthApp;
     const dateKey = app.selectedDate;
+    closeCalendarModal();
     if (!dateKey) return;
     
     // 解析日期显示
